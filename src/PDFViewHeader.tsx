@@ -20,7 +20,7 @@ export default function PDFViewHeader({
           <ShopLogo
             url={logo}
             alt={name}
-            className="max-h-12 w-auto object-contain shrink-0"
+            className="max-h-16 w-auto object-contain shrink-0"
           />
         ) : name ? (
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-900 font-bold text-base text-white shadow-xs">

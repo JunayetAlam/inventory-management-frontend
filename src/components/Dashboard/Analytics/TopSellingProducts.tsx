@@ -27,7 +27,7 @@ export default function TopSellingProducts({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Top 5 Selling Products</CardTitle>
+        <CardTitle className="text-base">Top 10 Selling Products</CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
@@ -37,7 +37,8 @@ export default function TopSellingProducts({
             No sales in the selected range.
           </p>
         ) : (
-          <Table>
+          <div className="overflow-x-auto">
+            <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-8">#</TableHead>
@@ -75,6 +76,7 @@ export default function TopSellingProducts({
               ))}
             </TableBody>
           </Table>
+          </div>
         )}
       </CardContent>
     </Card>

@@ -10,12 +10,13 @@ import {
   useGetSalesPerformanceQuery,
 } from "@/redux/api/statsApi";
 import type { TDashboardPreset } from "@/types/dashboard";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardHeader from "@/components/Dashboard/Analytics/DashboardHeader";
 import DashboardStatCards from "@/components/Dashboard/Analytics/DashboardStatCards";
-import SalesPerformanceChart from "@/components/Dashboard/Analytics/SalesPerformanceChart";
-import ProfitBreakdownChart from "@/components/Dashboard/Analytics/ProfitBreakdownChart";
+import SalesAndProfitCard from "@/components/Dashboard/Analytics/SalesAndProfitCard";
 import TopSellingProducts from "@/components/Dashboard/Analytics/TopSellingProducts";
 import LowStockTable from "@/components/Dashboard/Analytics/LowStockTable";
+import CustomerTransactionTable from "@/components/CustomerTransactions/CustomerTransactionTable";
 
 const PRESET_VALUES: TDashboardPreset[] = ["today", "week", "month", "all", "custom"];
 
@@ -24,11 +25,8 @@ function DashboardContent() {
   const searchParams = useSearchParams();
   const { handleSetSearchParams } = useHandleSearchParams();
 
-  const [salesRange, setSalesRange] = useState<{
-    startMonth?: string;
-    endMonth?: string;
-  }>({});
-  const [profitRange, setProfitRange] = useState<{
+  // Shared month range filter for Sales Performance & Profit Breakdown
+  const [analyticsMonthRange, setAnalyticsMonthRange] = useState<{
     startMonth?: string;
     endMonth?: string;
   }>({});
@@ -46,11 +44,15 @@ function DashboardContent() {
     { skip },
   );
   const salesQ = useGetSalesPerformanceQuery(
-    salesRange.startMonth && salesRange.endMonth ? salesRange : undefined,
+    analyticsMonthRange.startMonth && analyticsMonthRange.endMonth
+      ? analyticsMonthRange
+      : undefined,
     { skip: !isAdmin },
   );
   const profitQ = useGetProfitBreakdownQuery(
-    profitRange.startMonth && profitRange.endMonth ? profitRange : undefined,
+    analyticsMonthRange.startMonth && analyticsMonthRange.endMonth
+      ? analyticsMonthRange
+      : undefined,
     { skip: !isAdmin },
   );
 
@@ -92,27 +94,39 @@ function DashboardContent() {
         isLoading={summaryQ.isLoading || summaryQ.isFetching}
       />
 
-      <SalesPerformanceChart
-        data={salesQ.data?.data}
-        isLoading={salesQ.isLoading || salesQ.isFetching}
-        range={salesRange}
-        onRangeChange={setSalesRange}
+      {/* Row 1: Sales Performance & Profit Breakdown in one card with one month range selector */}
+      <SalesAndProfitCard
+        salesData={salesQ.data?.data}
+        profitData={profitQ.data?.data}
+        isSalesLoading={salesQ.isLoading || salesQ.isFetching}
+        isProfitLoading={profitQ.isLoading || profitQ.isFetching}
+        range={analyticsMonthRange}
+        onRangeChange={setAnalyticsMonthRange}
       />
 
+      {/* Row 2: Top 10 Selling Products & Low Stock in one row */}
       <div className="grid gap-6 xl:grid-cols-2">
-        <ProfitBreakdownChart
-          data={profitQ.data?.data}
-          isLoading={profitQ.isLoading || profitQ.isFetching}
-          range={profitRange}
-          onRangeChange={setProfitRange}
-        />
         <TopSellingProducts
           products={summary?.topProducts}
           isLoading={summaryQ.isLoading || summaryQ.isFetching}
         />
+        <LowStockTable />
       </div>
 
-      <LowStockTable />
+      {/* Row 3: Customer Transactions inside a Card (stats hidden for dashboard) */}
+      <Card className="overflow-hidden">
+        <CardHeader className="border-b pb-4">
+          <CardTitle className="text-base font-semibold">
+            Customer Transactions
+          </CardTitle>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Search, filter by client or date range, view details, and export records
+          </p>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <CustomerTransactionTable hideStats={true} />
+        </CardContent>
+      </Card>
     </div>
   );
 }

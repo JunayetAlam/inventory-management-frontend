@@ -39,7 +39,7 @@ function StockBadge({ stock, unit }: { stock: number; unit: string }) {
 export default function LowStockTable() {
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
-  const limit = Number(searchParams.get("limit")) || 10;
+  const limit = 10;
 
   const { data, isLoading, isFetching } = useGetLowStockQuery({ page, limit });
   const products = data?.data?.products ?? [];
@@ -91,7 +91,9 @@ export default function LowStockTable() {
                 ))}
               </TableBody>
             </Table>
-            {data?.meta && <DefaultPagination meta={data.meta} />}
+            {data?.meta && (
+              <DefaultPagination meta={data.meta} showItemPerPage={false} />
+            )}
           </div>
         )}
       </CardContent>

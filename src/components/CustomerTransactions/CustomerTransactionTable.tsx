@@ -71,7 +71,11 @@ const SORT_OPTIONS = [
   { label: "Oldest First", sortBy: "createdAt", sortOrder: "asc" },
 ];
 
-export default function CustomerTransactionTable() {
+export default function CustomerTransactionTable({
+  hideStats = false,
+}: {
+  hideStats?: boolean;
+} = {}) {
   const [activeTypeTab, setActiveTypeTab] = useState<TransactionTab>("ALL");
   const [selectedCustomerId, setSelectedCustomerId] = useState<string>("ALL");
   const [startDate, setStartDate] = useState<string>("");
@@ -185,16 +189,18 @@ export default function CustomerTransactionTable() {
   return (
     <div className="space-y-6">
       {/* 1. Top Stats Cards (Requested by User) */}
-      <CustomerTransactionStatsCards
-        queryParams={{
-          ...(selectedCustomerId !== "ALL"
-            ? { customerId: selectedCustomerId }
-            : {}),
-          ...(startDate ? { startDate } : {}),
-          ...(endDate ? { endDate } : {}),
-          ...(activeTypeTab !== "ALL" ? { type: activeTypeTab } : {}),
-        }}
-      />
+      {!hideStats && (
+        <CustomerTransactionStatsCards
+          queryParams={{
+            ...(selectedCustomerId !== "ALL"
+              ? { customerId: selectedCustomerId }
+              : {}),
+            ...(startDate ? { startDate } : {}),
+            ...(endDate ? { endDate } : {}),
+            ...(activeTypeTab !== "ALL" ? { type: activeTypeTab } : {}),
+          }}
+        />
+      )}
 
       {/* 2. Top Header Controls: Filter Tabs & Export Button */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
