@@ -190,7 +190,11 @@
   height: 2rem !important; /* matches h-8 */
   min-height: 2rem !important;
   font-size: 0.875rem !important;
-  background-color: color-mix(in srgb, var(--input) 50%, transparent) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--input) 50%,
+    transparent
+  ) !important;
   color: var(--foreground) !important;
   border: 1px solid transparent !important;
   border-radius: 1rem !important; /* rounded-2xl */
@@ -201,14 +205,21 @@
   line-height: 1.25rem !important;
   outline: none !important;
   box-shadow: none !important;
-  transition: color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+  transition:
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease !important;
 }
 
 .custom-phone-input .react-tel-input:focus-within .form-control,
 .custom-phone-input .react-tel-input .form-control:focus {
   border-color: var(--ring) !important;
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 30%, transparent) !important;
-  background-color: color-mix(in srgb, var(--input) 50%, transparent) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--input) 50%,
+    transparent
+  ) !important;
 }
 
 .custom-phone-input .react-tel-input .flag-dropdown {
@@ -255,7 +266,9 @@
   color: var(--popover-foreground) !important;
   border: 1px solid var(--border) !important;
   border-radius: 1rem !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.15),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
   scrollbar-width: thin;
   margin-top: 6px !important;
   padding: 4px !important;
@@ -286,7 +299,11 @@
 
 .custom-phone-input .react-tel-input .country-list .search-box {
   width: 100% !important;
-  background-color: color-mix(in srgb, var(--input) 50%, transparent) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--input) 50%,
+    transparent
+  ) !important;
   color: var(--foreground) !important;
   border: 1px solid transparent !important;
   border-radius: 0.5rem !important;
@@ -344,12 +361,10 @@ input[type="number"] {
 .animate-navbar-marquee {
   display: flex;
   width: max-content;
-  animation: navbar-marquee 25s linear infinite;
+  animation: navbar-marquee 16s linear infinite;
+  will-change: transform;
 }
 
 .animate-navbar-marquee:hover {
   animation-play-state: paused;
 }
-
-
-

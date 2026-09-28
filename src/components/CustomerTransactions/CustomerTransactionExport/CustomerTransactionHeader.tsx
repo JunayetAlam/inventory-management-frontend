@@ -36,6 +36,7 @@ export default function CustomerTransactionHeader({
         title="Customer Transactions"
         logo={shop?.logo}
         name={shop?.name}
+        subtitle={shop?.proprietor}
       />
 
       {/* Professional Customer Details Card (When Customer is Selected) */}

@@ -157,9 +157,10 @@ export default function UsersList() {
                   </TableCell>
                 </TableRow>
               ) : (
-                users.map((user) => (
+                users.map((user, index) => (
                   <TableRow
                     key={user.id}
+                    index={index}
                     className={user.status === "PENDING" ? "bg-amber-50/70" : undefined}
                   >
                     <TableCell>

@@ -151,13 +151,14 @@ export default function RIV_Calculation({ receipt }: { receipt: TReceipt }) {
                       </span>
                     </div>
                   )}
-                  {(ret.items || []).length > 0 && (
+                  {/* Product details of what returned - skipped for return invoice */}
+                  {/* {(ret.items || []).length > 0 && (
                     <p className="text-[10px] text-slate-500 leading-snug pl-0.5">
                       {(ret.items || [])
                         .map((it) => `${it.productName} × ${it.quantity}`)
                         .join(", ")}
                     </p>
-                  )}
+                  )} */}
                 </div>
               );
             })}

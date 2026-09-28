@@ -46,7 +46,7 @@ export default function ShopDetailsForm() {
 
   // Form states
   const [name, setName] = useState("");
-  const [tagline, setTagline] = useState("");
+  const [proprietor, setProprietor] = useState("");
   const [logo, setLogo] = useState("");
   const [phoneNumbers, setPhoneNumbers] = useState<string[]>([""]);
   const [emails, setEmails] = useState<string[]>([""]);
@@ -56,7 +56,7 @@ export default function ShopDetailsForm() {
   useEffect(() => {
     if (shop) {
       setName(shop.name || "");
-      setTagline(shop.tagline || "");
+      setProprietor(shop.proprietor || "");
       setLogo(shop.logo || "");
       setPhoneNumbers(
         shop.phoneNumbers && shop.phoneNumbers.length > 0
@@ -191,7 +191,7 @@ export default function ShopDetailsForm() {
 
     const payload = {
       name: name.trim(),
-      tagline: tagline.trim() || null,
+      proprietor: proprietor.trim() || null,
       logo: logo.trim() || null,
       phoneNumbers: cleanedPhones,
       emails: cleanedEmails,
@@ -366,13 +366,23 @@ export default function ShopDetailsForm() {
                   <Sparkles className="size-3 text-amber-500" />
                   Receipt Preview
                 </div>
-                <div className="border border-dashed border-border/80 rounded p-2.5 bg-background text-center">
+                <div className="border border-dashed border-border/80 rounded p-2.5 bg-background text-center space-y-0.5">
                   <p className="font-bold text-sm tracking-wide text-foreground">
                     {name || "Your Store Name"}
                   </p>
-                  <p className="text-[11px] text-muted-foreground italic">
-                    {tagline || "Your store tagline or slogan"}
+                  <p className="text-[11px] text-muted-foreground font-medium">
+                    {proprietor
+                      ? (proprietor.toLowerCase().startsWith("prop")
+                          ? proprietor
+                          : `Proprietor: ${proprietor}`)
+                      : "Proprietor: Your Name"}
                   </p>
+                  {phoneNumbers.filter(Boolean).length > 0 && (
+                    <p className="text-[10px] text-muted-foreground">
+                      <span className="font-semibold text-foreground/80">Phone: </span>
+                      {phoneNumbers.filter(Boolean).join(", ")}
+                    </p>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -406,14 +416,14 @@ export default function ShopDetailsForm() {
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="shop-tagline" className="text-xs font-medium">
-                  Tagline / Slogan
+                <Label htmlFor="shop-proprietor" className="text-xs font-medium">
+                  Proprietor Name
                 </Label>
                 <Input
-                  id="shop-tagline"
-                  placeholder="e.g., Quality Products, Guaranteed Satisfaction"
-                  value={tagline}
-                  onChange={(e) => setTagline(e.target.value)}
+                  id="shop-proprietor"
+                  placeholder="e.g., Mohammad Rahman"
+                  value={proprietor}
+                  onChange={(e) => setProprietor(e.target.value)}
                   disabled={!isAdmin || isSaving}
                   className="h-9 text-sm"
                 />

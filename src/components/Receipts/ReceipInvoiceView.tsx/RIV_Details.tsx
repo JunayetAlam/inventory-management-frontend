@@ -38,18 +38,19 @@ export default function RIV_Details({
             {" "}
             {shopName}{" "}
           </h1>{" "}
-          <div className="mt-1 flex items-center justify-center gap-x-2 overflow-hidden whitespace-nowrap text-xs font-medium leading-none text-slate-600">
-            {" "}
-            {shop?.tagline && (
-              <span className="truncate">{shop.tagline}</span>
-            )}{" "}
-            {shop?.tagline && shop?.phoneNumbers?.length ? (
-              <span className="shrink-0 text-slate-400">•</span>
-            ) : null}{" "}
-            {shop?.phoneNumbers?.length ? (
-              <span className="shrink-0"> {shop.phoneNumbers.join(", ")} </span>
-            ) : null}{" "}
-          </div>{" "}
+          {shop?.proprietor && (
+            <p className="mt-1 truncate text-xs font-semibold leading-tight text-slate-700">
+              {shop.proprietor.toLowerCase().startsWith("prop")
+                ? shop.proprietor
+                : `Proprietor: ${shop.proprietor}`}
+            </p>
+          )}
+          {shop?.phoneNumbers && shop.phoneNumbers.length > 0 ? (
+            <p className="mt-0.5 truncate text-[11px] font-medium leading-tight text-slate-600">
+              <span className="font-semibold text-slate-700">Phone: </span>
+              {shop.phoneNumbers.join(", ")}
+            </p>
+          ) : null}
         </div>{" "}
         {/* Right: Invoice */}{" "}
         <div className="min-w-[130px] text-right">
@@ -114,13 +115,13 @@ export default function RIV_Details({
             {" "}
             Date{" "}
           </div>{" "}
-          <div className="py-1.5 text-right font-mono text-slate-900 leading-tight">
-            <div className="font-medium">
+          <div className="py-1.5 text-right font-mono text-slate-900 whitespace-nowrap flex items-center justify-end gap-1.5">
+            <span className="font-semibold text-xs text-slate-900">
               {formatInvoiceDate(receipt.createdAt)}
-            </div>
-            <div className="text-[10px] text-slate-500 font-normal mt-0.5">
+            </span>
+            <span className="text-[11px] text-slate-500 font-normal">
               {formatInvoiceTime(receipt.createdAt)}
-            </div>
+            </span>
           </div>{" "}
         </div>{" "}
       </div>{" "}

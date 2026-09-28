@@ -38,38 +38,29 @@ export default function RetIV_Details({
             {shopName}
           </h1>
 
-          <div className="mt-1 flex items-center justify-center gap-x-2 overflow-hidden whitespace-nowrap text-xs font-medium leading-none text-slate-600">
-            {shop?.tagline ? (
-              <span className="truncate">{shop.tagline}</span>
-            ) : !shop ? (
-              <span className="truncate">
-                Meet All Your Needs • Electrical Goods
-              </span>
-            ) : null}
+          {shop?.proprietor ? (
+            <p className="mt-1 truncate text-xs font-semibold leading-tight text-slate-700">
+              {shop.proprietor.toLowerCase().startsWith("prop")
+                ? shop.proprietor
+                : `Proprietor: ${shop.proprietor}`}
+            </p>
+          ) : null}
 
-            {(shop?.tagline || !shop) &&
-            shop?.phoneNumbers &&
-            shop.phoneNumbers.length > 0 ? (
-              <span className="shrink-0 text-slate-400">•</span>
-            ) : null}
-
-            {shop?.phoneNumbers && shop.phoneNumbers.length > 0 ? (
-              <span className="shrink-0">{shop.phoneNumbers.join(", ")}</span>
-            ) : null}
-          </div>
+          {shop?.phoneNumbers && shop.phoneNumbers.length > 0 ? (
+            <p className="mt-0.5 truncate text-[11px] font-medium leading-tight text-slate-600">
+              <span className="font-semibold text-slate-700">Phone: </span>
+              {shop.phoneNumbers.join(", ")}
+            </p>
+          ) : null}
         </div>
 
         {/* Right: Return Invoice */}
-        <div className="min-w-[140px] text-right">
-          <h2 className="text-[23px] font-black leading-[0.9] tracking-[0.06em] text-slate-950">
-            RETURN
+        <div className="min-w-[170px] text-right">
+          <h2 className="text-[22px] font-black leading-none tracking-[0.05em] text-slate-950 whitespace-nowrap">
+            RETURN INVOICE
           </h2>
 
-          <h2 className="mt-1 text-[23px] font-black leading-[0.9] tracking-[0.08em] text-slate-950">
-            INVOICE
-          </h2>
-
-          <p className="mt-1.5 text-[11px] font-semibold uppercase leading-none tracking-[0.12em] text-slate-500">
+          <p className="mt-1 text-[11px] font-semibold uppercase leading-none tracking-[0.12em] text-slate-500">
             Sales Return
           </p>
         </div>
@@ -111,7 +102,7 @@ export default function RetIV_Details({
         </div>
 
         {/* Return Invoice Info */}
-        <div className="grid min-w-[250px] grid-cols-[95px_1fr] text-xs leading-none">
+        <div className="grid min-w-[260px] grid-cols-[95px_1fr] text-xs leading-none">
           {/* Return No */}
           <div className="border-b border-slate-200 py-1.5 font-bold uppercase text-slate-500">
             Return No.
@@ -146,13 +137,13 @@ export default function RetIV_Details({
           {/* Date */}
           <div className="py-1.5 font-bold uppercase text-slate-500">Date</div>
 
-          <div className="py-1.5 text-right font-mono text-slate-900 leading-tight">
-            <div className="font-medium">
+          <div className="py-1.5 text-right font-mono text-slate-900 whitespace-nowrap flex items-center justify-end gap-1.5">
+            <span className="font-semibold text-xs text-slate-900">
               {formatInvoiceDate(returnInvoice.createdAt)}
-            </div>
-            <div className="text-[10px] text-slate-500 font-normal mt-0.5">
+            </span>
+            <span className="text-[11px] text-slate-500 font-normal">
               {formatInvoiceTime(returnInvoice.createdAt)}
-            </div>
+            </span>
           </div>
         </div>
       </div>

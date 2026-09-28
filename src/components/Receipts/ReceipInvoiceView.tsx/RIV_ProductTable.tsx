@@ -87,7 +87,7 @@ export default function RIV_ProductTable({
               <tr
                 key={item.id || `${startIndex}-${idx}`}
                 data-row="item"
-                className="border border-slate-200/80"
+                className={`border border-slate-200/80 ${(startIndex + idx) % 2 === 1 ? "bg-muted" : ""}`}
                 style={{ breakInside: "avoid" }}
               >
                 <td

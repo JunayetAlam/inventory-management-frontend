@@ -95,7 +95,7 @@ export default function ProfileActivityLogs() {
           <TableBody>
             {isLoading ? (
               Array.from({ length: 4 }).map((_, i) => (
-                <TableRow key={i}>
+                <TableRow key={i} index={i}>
                   <TableCell>
                     <Skeleton className="h-5 w-24 rounded-full" />
                   </TableCell>
@@ -121,8 +121,8 @@ export default function ProfileActivityLogs() {
                 </TableCell>
               </TableRow>
             ) : (
-              logs.map((log) => (
-                <TableRow key={log.id}>
+              logs.map((log, index) => (
+                <TableRow key={log.id} index={index}>
                   <TableCell>{getActionBadge(log.action)}</TableCell>
                   <TableCell>
                     <span className="font-medium text-foreground text-xs">{log.entityType}</span>

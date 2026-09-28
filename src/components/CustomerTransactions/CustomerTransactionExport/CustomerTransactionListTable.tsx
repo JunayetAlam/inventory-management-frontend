@@ -77,7 +77,11 @@ export default function CustomerTransactionListTable({
                 "—";
 
             return (
-              <tr key={tx.id} data-row="item">
+              <tr
+                key={tx.id}
+                data-row="item"
+                className={(startIndex + idx) % 2 === 1 ? "bg-muted" : ""}
+              >
                 <td
                   className={`${tdClass} text-center text-slate-500 font-mono`}
                 >

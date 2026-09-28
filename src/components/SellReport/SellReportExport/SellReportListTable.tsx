@@ -43,7 +43,11 @@ export default function SellReportListTable({
           </tr>
         ) : (
           products.map((row, idx) => (
-            <tr key={row.productId} data-row="item">
+            <tr
+              key={row.productId}
+              data-row="item"
+              className={(startIndex + idx) % 2 === 1 ? "bg-muted" : ""}
+            >
               <td className={`${tdClass} text-center text-slate-500 font-mono w-10`}>
                 {startIndex + idx + 1}
               </td>

@@ -130,7 +130,7 @@ const TableSkeleton = ({
           </TableHeader>
           <TableBody>
             {Array.from({ length: headers.length }).map((_, rowIndex) => (
-              <TableRow key={rowIndex}>
+              <TableRow key={rowIndex} index={rowIndex}>
                 {headers.map((header, colIndex) => (
                   <TableCell key={colIndex}>
                     {getColumnSkeleton(header, colIndex)}

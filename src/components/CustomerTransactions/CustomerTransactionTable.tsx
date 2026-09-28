@@ -536,7 +536,7 @@ export default function CustomerTransactionTable({
             <TableBody>
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
-                  <TableRow key={i}>
+                  <TableRow key={i} index={i}>
                     {Array.from({ length: 8 }).map((_, j) => (
                       <TableCell key={j}>
                         <Skeleton className="h-5 w-full" />
@@ -554,7 +554,7 @@ export default function CustomerTransactionTable({
                   </TableCell>
                 </TableRow>
               ) : (
-                transactions.map((tx) => {
+                transactions.map((tx, index) => {
                   const isReceipt = tx.type === "RECEIPT";
                   const isPayment = tx.type === "PAYMENT";
                   const isReturn = tx.type === "RETURN_INVOICE";
@@ -582,6 +582,7 @@ export default function CustomerTransactionTable({
                   return (
                     <TableRow
                       key={tx.id}
+                      index={index}
                       className="hover:bg-muted/40 transition-colors text-xs"
                     >
                       {/* Date & Time (Hide customer name when customer is selected) */}

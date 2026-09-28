@@ -347,7 +347,7 @@ export default function ReceiptTable() {
           <TableBody>
             {isLoading ? (
               Array.from({ length: 5 }).map((_, idx) => (
-                <TableRow key={idx}>
+                <TableRow key={idx} index={idx}>
                   <TableCell className="min-w-40">
                     <Skeleton className="h-4 w-28" />
                   </TableCell>
@@ -394,7 +394,7 @@ export default function ReceiptTable() {
                 </TableCell>
               </TableRow>
             ) : (
-              receipts.map((receipt) => {
+              receipts.map((receipt, index) => {
                 const isLockedForCashier =
                   !isAdmin && receipt.status === "APPROVED";
                 const hasDue = receipt.dueAmount > 0;
@@ -403,6 +403,7 @@ export default function ReceiptTable() {
                 return (
                   <TableRow
                     key={receipt.id}
+                    index={index}
                     className={cn(
                       isFetching && "opacity-60",
                       receipt.isDeleteRequested &&

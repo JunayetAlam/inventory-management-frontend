@@ -45,7 +45,11 @@ export default function ProductListTable({
           </tr>
         ) : (
           products.map((product, idx) => (
-            <tr key={product.id} data-row="item">
+            <tr
+              key={product.id}
+              data-row="item"
+              className={(startIndex + idx) % 2 === 1 ? "bg-muted" : ""}
+            >
               <td className={`${tdClass} text-center text-slate-500 font-mono`}>
                 {startIndex + idx + 1}
               </td>

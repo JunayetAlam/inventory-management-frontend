@@ -331,7 +331,7 @@ export default function SellReportTable() {
             <TableBody>
               {isLoading ? (
                 Array.from({ length: 6 }).map((_, i) => (
-                  <TableRow key={i}>
+                  <TableRow key={i} index={i}>
                     <TableCell className="text-center">
                       <Skeleton className="h-4 w-5 mx-auto" />
                     </TableCell>
@@ -385,6 +385,7 @@ export default function SellReportTable() {
                   return (
                     <TableRow
                       key={row.productId}
+                      index={index}
                       className={cn(isFetching && "opacity-60")}
                     >
                       <TableCell className="text-center text-xs font-mono text-muted-foreground w-12">

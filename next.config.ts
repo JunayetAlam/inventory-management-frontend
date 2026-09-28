@@ -59,6 +59,16 @@ const nextConfig: NextConfig = {
         hostname: "72.62.246.104",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "api.sanowarelectric.store",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "sanowarelectric.store",
+        pathname: "/**",
+      },
     ],
   },
 };

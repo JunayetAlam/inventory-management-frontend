@@ -15,7 +15,7 @@ export const shopApi = baseApi.injectEndpoints({
       TResponse<TShop>,
       {
         name: string;
-        tagline?: string | null;
+        proprietor?: string | null;
         logo?: string | null;
         phoneNumbers?: string[];
         emails?: string[];

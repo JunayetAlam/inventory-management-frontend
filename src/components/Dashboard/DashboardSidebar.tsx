@@ -219,7 +219,7 @@ export default function DashboardSidebar() {
                   {shop?.name || "Receipt Management"}
                 </p>
                 <p className="truncate text-xs text-muted-foreground">
-                  {shop?.tagline || "Internal shop tool"}
+                  {shop?.proprietor || "Store Management"}
                 </p>
               </>
             )}

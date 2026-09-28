@@ -1,40 +1,80 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Sunrise, Sun, Sunset, Moon } from "lucide-react";
 import { useGetMeQuery } from "@/redux/api/userApi";
 
-interface WelcomeInfo {
+interface WelcomePeriod {
   period: "morning" | "afternoon" | "evening" | "night";
-  message: string;
+  label: string;
+  prefix: string;
+  body: string;
+  highlightText: string;
+  highlightColor: string;
+  badgeBg: string;
+  badgeText: string;
+  badgeBorder: string;
+  iconColor: string;
 }
 
-function getWelcomeInfo(hour: number, name: string): WelcomeInfo {
+function getPeriodConfig(hour: number): WelcomePeriod {
   // 5:00 AM - 11:59 AM
   if (hour >= 5 && hour < 12) {
     return {
       period: "morning",
-      message: `Wishing you a productive morning, ${name}! Ready to streamline today's receipts and sales?`,
+      label: "Morning",
+      prefix: "Good morning",
+      body: "Wishing you a",
+      highlightText: "productive day",
+      highlightColor: "text-amber-600 dark:text-amber-400",
+      badgeBg: "bg-amber-500/12 dark:bg-amber-500/18",
+      badgeText: "text-amber-800 dark:text-amber-300",
+      badgeBorder: "border-amber-500/30 dark:border-amber-400/25",
+      iconColor: "text-amber-500 dark:text-amber-400",
     };
   }
   // 12:00 PM - 4:59 PM
   if (hour >= 12 && hour < 17) {
     return {
       period: "afternoon",
-      message: `Hope your afternoon is going smoothly, ${name}! Keep up the wonderful momentum today.`,
+      label: "Afternoon",
+      prefix: "Good afternoon",
+      body: "Hope your day is",
+      highlightText: "running smoothly",
+      highlightColor: "text-sky-600 dark:text-sky-400",
+      badgeBg: "bg-sky-500/12 dark:bg-sky-500/18",
+      badgeText: "text-sky-800 dark:text-sky-300",
+      badgeBorder: "border-sky-500/30 dark:border-sky-400/25",
+      iconColor: "text-sky-500 dark:text-sky-400",
     };
   }
   // 5:00 PM - 9:59 PM
   if (hour >= 17 && hour < 22) {
     return {
       period: "evening",
-      message: `Wishing you a pleasant evening, ${name}! Let's wrap up today's accounts effortlessly.`,
+      label: "Evening",
+      prefix: "Good evening",
+      body: "Let's wrap up today's work",
+      highlightText: "effortlessly",
+      highlightColor: "text-orange-600 dark:text-orange-400",
+      badgeBg: "bg-orange-500/12 dark:bg-orange-500/18",
+      badgeText: "text-orange-800 dark:text-orange-300",
+      badgeBorder: "border-orange-500/30 dark:border-orange-400/25",
+      iconColor: "text-orange-500 dark:text-orange-400",
     };
   }
   // 10:00 PM - 4:59 AM
   return {
     period: "night",
-    message: `Peaceful night to you, ${name}! Thank you for your continued dedication and commitment.`,
+    label: "Night",
+    prefix: "Peaceful night",
+    body: "Thank you for your",
+    highlightText: "great dedication",
+    highlightColor: "text-indigo-500 dark:text-indigo-400",
+    badgeBg: "bg-indigo-500/12 dark:bg-indigo-500/18",
+    badgeText: "text-indigo-800 dark:text-indigo-300",
+    badgeBorder: "border-indigo-500/30 dark:border-indigo-400/25",
+    iconColor: "text-indigo-500 dark:text-indigo-400",
   };
 }
 
@@ -43,7 +83,9 @@ export default function NavbarWelcomeMarquee() {
   const profile = data?.data;
 
   const [mounted, setMounted] = useState(false);
-  const [currentHour, setCurrentHour] = useState<number>(() => new Date().getHours());
+  const [currentHour, setCurrentHour] = useState<number>(() =>
+    new Date().getHours(),
+  );
 
   useEffect(() => {
     setMounted(true);
@@ -59,57 +101,94 @@ export default function NavbarWelcomeMarquee() {
     profile?.email?.split("@")[0] ||
     "Partner";
 
-  const { period, message } = getWelcomeInfo(currentHour, displayName);
+  const periodConfig = useMemo(
+    () => getPeriodConfig(currentHour),
+    [currentHour],
+  );
 
   const PeriodIcon =
-    period === "morning"
+    periodConfig.period === "morning"
       ? Sunrise
-      : period === "afternoon"
-      ? Sun
-      : period === "evening"
-      ? Sunset
-      : Moon;
-
-  const iconColor =
-    period === "morning"
-      ? "text-amber-500 dark:text-amber-400"
-      : period === "afternoon"
-      ? "text-amber-500 dark:text-amber-400"
-      : period === "evening"
-      ? "text-orange-500 dark:text-orange-400"
-      : "text-indigo-400 dark:text-indigo-300";
+      : periodConfig.period === "afternoon"
+        ? Sun
+        : periodConfig.period === "evening"
+          ? Sunset
+          : Moon;
 
   if (!mounted) {
     return (
-      <div className="flex-1 max-w-xl mx-2 sm:mx-6 h-8 rounded-full bg-muted/20 animate-pulse hidden sm:block" />
+      <div className="flex-1 max-w-lg mx-2 sm:mx-4 h-8 rounded-full bg-muted/20 animate-pulse hidden sm:block" />
     );
   }
 
+  // Concise greeting item with multiple color accents
+  const greetingItem = (
+    <div className="inline-flex items-center gap-2">
+      {/* 1. Time Badge */}
+      <span
+        className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide border shadow-2xs ${periodConfig.badgeBg} ${periodConfig.badgeText} ${periodConfig.badgeBorder}`}
+      >
+        <PeriodIcon className={`size-3.5 shrink-0 ${periodConfig.iconColor}`} />
+        {periodConfig.label}
+      </span>
+
+      {/* 2. Personalized text with gradient name and colored highlight keyword */}
+      <span className="text-xs sm:text-[13px] font-medium text-foreground/85">
+        {periodConfig.prefix},{" "}
+        <span className="font-semibold bg-linear-to-r from-teal-600 via-emerald-600 to-cyan-600 dark:from-teal-300 dark:via-emerald-400 dark:to-cyan-300 bg-clip-text text-transparent">
+          {displayName}
+        </span>
+        ! {periodConfig.body}{" "}
+        <span className={`font-semibold ${periodConfig.highlightColor}`}>
+          {periodConfig.highlightText}
+        </span>
+        .
+      </span>
+    </div>
+  );
+
   return (
     <div
-      className="relative flex-1 min-w-0 max-w-xl lg:max-w-2xl mx-2 sm:mx-6 overflow-hidden rounded-full border border-border/40 bg-muted/20 py-1"
-      title={message}
+      className="relative flex items-center min-w-0 flex-1 max-w-xl lg:max-w-2xl xl:max-w-4xl mx-1 sm:mx-4 rounded-full border border-border/70 bg-background/80 dark:bg-card/60 backdrop-blur-md shadow-2xs overflow-hidden transition-all duration-300 hover:border-teal-500/30 hover:shadow-xs group"
+      title={`${periodConfig.prefix}, ${displayName}!`}
     >
-      {/* Left & Right gradient fade masks */}
-      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-r from-background to-transparent z-10" />
-      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-6 sm:w-10 bg-gradient-to-l from-background to-transparent z-10" />
+      {/* Anchored Live Indicator */}
+      <div className="shrink-0 flex items-center gap-1.5 pl-3 pr-2.5 py-1 z-20 border-r border-border/60 bg-muted/40 dark:bg-muted/20 select-none">
+        <span className="relative flex size-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full size-2 bg-emerald-500"></span>
+        </span>
+        <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground hidden sm:inline-block">
+          Live
+        </span>
+      </div>
 
-      {/* Marquee Track (Double copy for seamless loop) */}
-      <div className="animate-navbar-marquee flex items-center whitespace-nowrap cursor-default select-none">
-        {/* First instance */}
-        <div className="flex items-center gap-2 px-6">
-          <PeriodIcon className={`size-3.5 sm:size-4 shrink-0 ${iconColor}`} />
-          <span className="text-xs sm:text-sm font-medium text-foreground/90 tracking-tight">
-            {message}
-          </span>
-        </div>
+      {/* Marquee Track Container */}
+      <div className="relative flex-1 min-w-0 overflow-hidden py-1.5">
+        {/* Left & Right gradient fade masks */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-6 sm:w-10 bg-linear-to-r from-background via-background/80 to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-14 bg-linear-to-l from-background via-background/80 to-transparent z-10" />
 
-        {/* Second instance for infinite seamless wrap */}
-        <div className="flex items-center gap-2 px-6" aria-hidden="true">
-          <PeriodIcon className={`size-3.5 sm:size-4 shrink-0 ${iconColor}`} />
-          <span className="text-xs sm:text-sm font-medium text-foreground/90 tracking-tight">
-            {message}
-          </span>
+        {/* Marquee Track (Double copy for seamless loop) */}
+        <div className="animate-navbar-marquee flex items-center whitespace-nowrap cursor-default select-none">
+          {/* First instance */}
+          <div className="flex items-center gap-6 px-8 shrink-0">
+            {greetingItem}
+            <span className="text-muted-foreground/35 select-none text-xs">
+              ✦
+            </span>
+          </div>
+
+          {/* Second instance for infinite seamless wrap */}
+          <div
+            className="flex items-center gap-6 px-8 shrink-0"
+            aria-hidden="true"
+          >
+            {greetingItem}
+            <span className="text-muted-foreground/35 select-none text-xs">
+              ✦
+            </span>
+          </div>
         </div>
       </div>
     </div>

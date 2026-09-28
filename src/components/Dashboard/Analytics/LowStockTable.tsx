@@ -75,8 +75,8 @@ export default function LowStockTable() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {products.map((p) => (
-                  <TableRow key={p.id}>
+                {products.map((p, index) => (
+                  <TableRow key={p.id} index={index}>
                     <TableCell className="font-medium">{p.name}</TableCell>
                     <TableCell>
                       <StockBadge stock={p.stock} unit={p.unit} />

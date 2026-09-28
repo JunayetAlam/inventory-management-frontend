@@ -431,7 +431,7 @@ export default function CustomerTable() {
             <TableBody>
               {isLoading ? (
                 Array.from({ length: 6 }).map((_, i) => (
-                  <TableRow key={i}>
+                  <TableRow key={i} index={i}>
                     <TableCell>
                       <div className="flex items-center gap-2.5">
                         <Skeleton className="size-8 rounded-full" />
@@ -478,7 +478,7 @@ export default function CustomerTable() {
                   </TableCell>
                 </TableRow>
               ) : (
-                customers.map((customer) => {
+                customers.map((customer, index) => {
                   const initials = customer.name
                     ? customer.name
                         .split(" ")
@@ -497,6 +497,7 @@ export default function CustomerTable() {
                   return (
                     <TableRow
                       key={customer.id}
+                      index={index}
                       className={cn(
                         "hover:bg-muted/50 transition-colors",
                         isFetching && "opacity-60",

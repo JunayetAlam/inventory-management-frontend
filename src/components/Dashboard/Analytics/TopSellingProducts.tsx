@@ -51,7 +51,7 @@ export default function TopSellingProducts({
             </TableHeader>
             <TableBody>
               {products.map((p, i) => (
-                <TableRow key={p.productId}>
+                <TableRow key={p.productId} index={i}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell className="font-medium">{p.productName}</TableCell>
                   <TableCell className="text-right">{formatQty(p.soldQty)}</TableCell>

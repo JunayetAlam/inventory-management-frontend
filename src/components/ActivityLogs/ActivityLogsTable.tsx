@@ -104,10 +104,19 @@ const ACTIONS_LIST = [
   { label: "Update Return Invoice", value: "UPDATE_RETURN_INVOICE" },
   { label: "Approve Return Invoice", value: "APPROVE_RETURN_INVOICE" },
   { label: "Reject Return Invoice", value: "REJECT_RETURN_INVOICE" },
-  { label: "Request Delete Return Invoice", value: "REQUEST_DELETE_RETURN_INVOICE" },
+  {
+    label: "Request Delete Return Invoice",
+    value: "REQUEST_DELETE_RETURN_INVOICE",
+  },
   { label: "Delete Return Invoice", value: "ADMIN_DELETE_RETURN_INVOICE" },
-  { label: "Confirm Delete Return Invoice", value: "ADMIN_CONFIRM_DELETE_RETURN_INVOICE" },
-  { label: "Reject Delete Return Invoice", value: "ADMIN_REJECT_DELETE_RETURN_INVOICE" },
+  {
+    label: "Confirm Delete Return Invoice",
+    value: "ADMIN_CONFIRM_DELETE_RETURN_INVOICE",
+  },
+  {
+    label: "Reject Delete Return Invoice",
+    value: "ADMIN_REJECT_DELETE_RETURN_INVOICE",
+  },
   { label: "Restore Return Invoice", value: "ADMIN_RESTORE_RETURN_INVOICE" },
 ];
 
@@ -187,12 +196,24 @@ const getActionBadge = (action: string) => {
 const getRoleBadge = (role?: string) => {
   switch (role) {
     case "SUPERADMIN":
-      return <Badge className="bg-purple-600 text-white text-[10px] px-1.5 py-0">SUPERADMIN</Badge>;
+      return (
+        <Badge className="bg-purple-600 text-white text-[10px] px-1.5 py-0">
+          SUPERADMIN
+        </Badge>
+      );
     case "ADMIN":
-      return <Badge className="bg-indigo-600 text-white text-[10px] px-1.5 py-0">ADMIN</Badge>;
+      return (
+        <Badge className="bg-indigo-600 text-white text-[10px] px-1.5 py-0">
+          ADMIN
+        </Badge>
+      );
     case "CASHIER":
     default:
-      return <Badge variant="secondary" className="text-[10px] px-1.5 py-0">CASHIER</Badge>;
+      return (
+        <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+          CASHIER
+        </Badge>
+      );
   }
 };
 
@@ -214,7 +235,9 @@ export default function ActivityLogsTable() {
   const [selectedAction, setSelectedAction] = useState<string>("ALL");
   const [selectedEntity, setSelectedEntity] = useState<string>("ALL");
   const [userComboboxOpen, setUserComboboxOpen] = useState(false);
-  const [detailModalLog, setDetailModalLog] = useState<TActivityLog | null>(null);
+  const [detailModalLog, setDetailModalLog] = useState<TActivityLog | null>(
+    null,
+  );
 
   // Fetch users for searchable user combobox
   const { data: usersData } = useGetAllUsersQuery([
@@ -241,7 +264,11 @@ export default function ActivityLogsTable() {
     queryParams.entityType = selectedEntity;
   }
 
-  const { data: logsResponse, isLoading, isFetching } = useGetAllActivityLogsQuery(queryParams);
+  const {
+    data: logsResponse,
+    isLoading,
+    isFetching,
+  } = useGetAllActivityLogsQuery(queryParams);
   const logs = logsResponse?.data || [];
   const meta = logsResponse?.meta;
 
@@ -327,7 +354,9 @@ export default function ActivityLogsTable() {
                         <Check
                           className={cn(
                             "mr-2 size-4",
-                            selectedUser === user.id ? "opacity-100" : "opacity-0",
+                            selectedUser === user.id
+                              ? "opacity-100"
+                              : "opacity-0",
                           )}
                         />
                         <div className="flex flex-col truncate">
@@ -388,7 +417,10 @@ export default function ActivityLogsTable() {
         </div>
 
         {/* Filter controls & Reset */}
-        {(searchTerm || selectedUser || selectedAction !== "ALL" || selectedEntity !== "ALL") && (
+        {(searchTerm ||
+          selectedUser ||
+          selectedAction !== "ALL" ||
+          selectedEntity !== "ALL") && (
           <div className="flex items-center justify-between pt-2 border-t border-border/60">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Filter className="size-3.5" />
@@ -423,7 +455,7 @@ export default function ActivityLogsTable() {
           <TableBody>
             {isLoading ? (
               Array.from({ length: 8 }).map((_, i) => (
-                <TableRow key={i}>
+                <TableRow key={i} index={i}>
                   <TableCell>
                     <div className="flex items-center gap-2.5">
                       <Skeleton className="size-8 rounded-full" />
@@ -451,11 +483,16 @@ export default function ActivityLogsTable() {
                 </TableRow>
               ))
             ) : logs.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={6} className="py-12 text-center text-muted-foreground">
+              <TableRow index={0}>
+                <TableCell
+                  colSpan={6}
+                  className="py-12 text-center text-muted-foreground"
+                >
                   <div className="flex flex-col items-center justify-center space-y-2">
                     <Activity className="size-8 text-muted-foreground/50" />
-                    <p className="text-base font-medium text-foreground">No activity logs found</p>
+                    <p className="text-base font-medium text-foreground">
+                      No activity logs found
+                    </p>
                     <p className="text-xs text-muted-foreground">
                       Try changing your filters or search terms.
                     </p>
@@ -463,7 +500,7 @@ export default function ActivityLogsTable() {
                 </TableCell>
               </TableRow>
             ) : (
-              logs.map((log) => {
+              logs.map((log, index) => {
                 const user = log.user;
                 const displayName = user
                   ? `${user.firstName} ${user.lastName}`.trim()
@@ -476,13 +513,17 @@ export default function ActivityLogsTable() {
                   <TableRow
                     key={log.id}
                     className={cn(isFetching && "opacity-60")}
+                    index={index}
                   >
                     {/* User Column */}
                     <TableCell>
                       <div className="flex items-center gap-2.5">
                         <Avatar className="size-8 border border-border">
                           {user?.profilePhoto ? (
-                            <AvatarImage src={user.profilePhoto} alt={displayName} />
+                            <AvatarImage
+                              src={user.profilePhoto}
+                              alt={displayName}
+                            />
                           ) : null}
                           <AvatarFallback className="text-xs font-semibold">
                             {initials}
@@ -505,9 +546,7 @@ export default function ActivityLogsTable() {
                     </TableCell>
 
                     {/* Action */}
-                    <TableCell>
-                      {getActionBadge(log.action)}
-                    </TableCell>
+                    <TableCell>{getActionBadge(log.action)}</TableCell>
 
                     {/* Entity */}
                     <TableCell>
@@ -517,8 +556,8 @@ export default function ActivityLogsTable() {
                             ? "RETURN INVOICE"
                             : log.entityType}
                         </span>
-                        {log.entityId && (
-                          log.entityType === "RETURN_INVOICE" ? (
+                        {log.entityId &&
+                          (log.entityType === "RETURN_INVOICE" ? (
                             <Link
                               href={`/return-invoices/${log.entityId}`}
                               className="text-[10px] text-primary hover:underline font-mono truncate max-w-[120px]"
@@ -546,8 +585,7 @@ export default function ActivityLogsTable() {
                             <span className="text-[10px] text-muted-foreground font-mono truncate max-w-[120px]">
                               {log.entityId}
                             </span>
-                          )
-                        )}
+                          ))}
                       </div>
                     </TableCell>
 
@@ -580,7 +618,9 @@ export default function ActivityLogsTable() {
                           Details
                         </Button>
                       ) : (
-                        <span className="text-xs text-muted-foreground/50">—</span>
+                        <span className="text-xs text-muted-foreground/50">
+                          —
+                        </span>
                       )}
                     </TableCell>
                   </TableRow>
@@ -595,7 +635,8 @@ export default function ActivityLogsTable() {
           <div className="flex items-center justify-between border-t border-border px-4 py-3 bg-muted/20">
             <p className="text-xs text-muted-foreground">
               Showing {(meta.page - 1) * meta.limit + 1} to{" "}
-              {Math.min(meta.page * meta.limit, meta.total)} of {meta.total} logs
+              {Math.min(meta.page * meta.limit, meta.total)} of {meta.total}{" "}
+              logs
             </p>
 
             <div className="flex items-center gap-1">
@@ -646,22 +687,36 @@ export default function ActivityLogsTable() {
             <div className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3 p-3 rounded-lg bg-muted/40 border border-border">
                 <div>
-                  <span className="text-muted-foreground block text-[11px]">Action</span>
-                  <span className="font-semibold text-foreground">{detailModalLog.action}</span>
+                  <span className="text-muted-foreground block text-[11px]">
+                    Action
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    {detailModalLog.action}
+                  </span>
                 </div>
                 <div>
-                  <span className="text-muted-foreground block text-[11px]">Entity Type</span>
-                  <span className="font-semibold text-foreground">{detailModalLog.entityType}</span>
+                  <span className="text-muted-foreground block text-[11px]">
+                    Entity Type
+                  </span>
+                  <span className="font-semibold text-foreground">
+                    {detailModalLog.entityType}
+                  </span>
                 </div>
                 {detailModalLog.entityId && (
                   <div className="col-span-2">
-                    <span className="text-muted-foreground block text-[11px]">Entity ID</span>
-                    <span className="font-mono text-foreground select-all">{detailModalLog.entityId}</span>
+                    <span className="text-muted-foreground block text-[11px]">
+                      Entity ID
+                    </span>
+                    <span className="font-mono text-foreground select-all">
+                      {detailModalLog.entityId}
+                    </span>
                   </div>
                 )}
                 {detailModalLog.userAgent && (
                   <div className="col-span-2">
-                    <span className="text-muted-foreground block text-[11px]">User Agent</span>
+                    <span className="text-muted-foreground block text-[11px]">
+                      User Agent
+                    </span>
                     <span className="text-muted-foreground font-mono truncate block">
                       {detailModalLog.userAgent}
                     </span>
@@ -670,7 +725,9 @@ export default function ActivityLogsTable() {
               </div>
 
               <div>
-                <span className="font-semibold text-foreground block mb-1.5">Payload / Details:</span>
+                <span className="font-semibold text-foreground block mb-1.5">
+                  Payload / Details:
+                </span>
                 <pre className="p-3 rounded-lg bg-zinc-950 text-zinc-100 font-mono text-[11px] overflow-x-auto max-h-60 border border-zinc-800">
                   {JSON.stringify(detailModalLog.details, null, 2)}
                 </pre>

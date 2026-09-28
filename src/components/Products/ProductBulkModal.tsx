@@ -352,6 +352,7 @@ export default function ProductBulkModal({
                   return (
                     <TableRow
                       key={row.id}
+                      index={index}
                       className={cn(
                         "align-top",
                         hasErr && "bg-rose-500/5",

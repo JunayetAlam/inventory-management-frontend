@@ -356,7 +356,7 @@ export default function LowStockTable() {
           <TableBody>
             {isLoading ? (
               Array.from({ length: 6 }).map((_, i) => (
-                <TableRow key={i}>
+                <TableRow key={i} index={i}>
                   <TableCell className="text-center">
                     <Skeleton className="h-4 w-5 mx-auto" />
                   </TableCell>
@@ -406,6 +406,7 @@ export default function LowStockTable() {
                 return (
                   <TableRow
                     key={product.id}
+                    index={index}
                     className={cn(
                       isFetching && "opacity-60",
                       isNegative && "bg-rose-500/5 hover:bg-rose-500/10",

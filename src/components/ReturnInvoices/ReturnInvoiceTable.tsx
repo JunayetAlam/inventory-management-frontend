@@ -226,7 +226,7 @@ export default function ReturnInvoiceTable() {
           <TableBody>
             {isLoading ? (
               Array.from({ length: 5 }).map((_, idx) => (
-                <TableRow key={idx}>
+                <TableRow key={idx} index={idx}>
                   {Array.from({ length: 8 }).map((__, c) => (
                     <TableCell key={c}>
                       <Skeleton className="h-4 w-20" />
@@ -249,8 +249,8 @@ export default function ReturnInvoiceTable() {
                 </TableCell>
               </TableRow>
             ) : (
-              rows.map((row) => (
-                <TableRow key={row.id}>
+              rows.map((row, index) => (
+                <TableRow key={row.id} index={index}>
                   <TableCell>
                     <div className="flex flex-col">
                       <Link

@@ -1,5 +1,7 @@
-import { Phone, MapPin, Mail } from "lucide-react";
-import React from "react";
+"use client";
+
+import { Phone, MapPin, Mail, Clock } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 export default function RIV_Footer({
   isLastPage,
@@ -16,6 +18,23 @@ export default function RIV_Footer({
   contactLocations: string;
   contactEmails: string;
 }) {
+  const [printTime, setPrintTime] = useState("");
+
+  useEffect(() => {
+    const d = new Date();
+    const dateFormatted = new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    }).format(d);
+    const timeFormatted = new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    }).format(d);
+    setPrintTime(`${dateFormatted} ${timeFormatted}`);
+  }, []);
+
   return (
     <div className="w-full">
       {isLastPage && (
@@ -55,9 +74,17 @@ export default function RIV_Footer({
           </div>
         )}
 
-        <span className="font-semibold ml-auto shrink-0">
-          Page {pageNo} of {pageCount}
-        </span>
+        <div className="flex items-center gap-3 sm:gap-4 ml-auto shrink-0 font-mono text-[11px]">
+          {printTime && (
+            <span className="text-primary-foreground/80 flex items-center gap-1.5 whitespace-nowrap">
+              <Clock className="size-3 opacity-70 shrink-0" />
+              <span>Printed: {printTime}</span>
+            </span>
+          )}
+          <span className="font-semibold text-primary-foreground whitespace-nowrap">
+            Page {pageNo} of {pageCount}
+          </span>
+        </div>
       </div>
     </div>
   );

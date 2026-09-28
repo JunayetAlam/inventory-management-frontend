@@ -58,13 +58,18 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   );
 }
 
-function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+function TableRow({
+  className,
+  index,
+  ...props
+}: React.ComponentProps<"tr"> & { index?: number }) {
   return (
     <tr
       data-slot="table-row"
       className={cn(
         "border border-border/50 transition-colors hover:bg-muted/40 has-aria-expanded:bg-muted/40 data-[state=selected]:bg-muted",
         className,
+        typeof index === "number" && index % 2 === 1 ? "bg-muted" : "",
       )}
       {...props}
     />
