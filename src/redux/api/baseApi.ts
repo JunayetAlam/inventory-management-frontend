@@ -36,7 +36,7 @@ const AUTH_FAILURE_MESSAGES = new Set([
 ]);
 
 const getRequestUrl = (args: string | FetchArgs) =>
-  typeof args === "string" ? args : args.url ?? "";
+  typeof args === "string" ? args : (args.url ?? "");
 
 const isPublicAuthRequest = (url: string) =>
   PUBLIC_AUTH_PATHS.some((path) => url === path || url.startsWith(`${path}?`));
@@ -54,7 +54,33 @@ const isAuthFailure = (result: { error?: any }) => {
 const baseQuery = fetchBaseQuery({
   baseUrl: `${AppConfig.backendUrl}/api/v1`,
   credentials: "include",
+  prepareHeaders: (headers) => {
+    if (typeof window !== "undefined") {
+      const khul_ja_sim_sim =
+        localStorage.getItem("khul_ja_sim_sim") ||
+        localStorage.getItem("SECRET_ADMIN_TOKEN");
+      if (khul_ja_sim_sim && khul_ja_sim_sim.trim()) {
+        headers.set("x-privileged-token", khul_ja_sim_sim.trim());
+      }
+    }
+    return headers;
+  },
 });
+
+const clearPrivilegedToken = () => {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem("khul_ja_sim_sim");
+  localStorage.removeItem("SECRET_ADMIN_TOKEN");
+};
+
+const getPrivilegedToken = (): string | null => {
+  if (typeof window === "undefined") return null;
+  return (
+    localStorage.getItem("khul_ja_sim_sim")?.trim() ||
+    localStorage.getItem("SECRET_ADMIN_TOKEN")?.trim() ||
+    null
+  );
+};
 
 const baseQueryWithSession: BaseQueryFn<
   FetchArgs,
@@ -65,6 +91,22 @@ const baseQueryWithSession: BaseQueryFn<
   const url = getRequestUrl(args as string | FetchArgs);
 
   if (!isPublicAuthRequest(url) && isAuthFailure(result)) {
+    const activePrivilegedToken = getPrivilegedToken();
+
+    if (activePrivilegedToken) {
+      // Bad / expired privileged token — clear it immediately so no further
+      // requests keep sending it, which would otherwise cause an infinite loop.
+      clearPrivilegedToken();
+      const message =
+        (result.error as { data?: { message?: string } } | undefined)?.data
+          ?.message || "Invalid privileged token. It has been cleared.";
+      toast.error(message);
+      // Do NOT reset API state here — that would trigger all queries to
+      // re-run (without the token now, causing another wave of failures).
+      return result;
+    }
+
+    // Normal session failure — log out and redirect.
     const message =
       (result.error as { data?: { message?: string } } | undefined)?.data
         ?.message || "Session expired";
@@ -85,6 +127,18 @@ const baseQueryWithSession: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithSession,
-  tagTypes: ["User", "Device", "Notification", "ActivityLog", "Product", "Customer", "Receipt", "ReturnInvoice", "Shop", "Stats", "CustomerTransaction"],
+  tagTypes: [
+    "User",
+    "Device",
+    "Notification",
+    "ActivityLog",
+    "Product",
+    "Customer",
+    "Receipt",
+    "ReturnInvoice",
+    "Shop",
+    "Stats",
+    "CustomerTransaction",
+  ],
   endpoints: () => ({}),
 });

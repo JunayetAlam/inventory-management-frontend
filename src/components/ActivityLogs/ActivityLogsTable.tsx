@@ -502,12 +502,24 @@ export default function ActivityLogsTable() {
             ) : (
               logs.map((log, index) => {
                 const user = log.user;
-                const displayName = user
-                  ? `${user.firstName} ${user.lastName}`.trim()
-                  : "System / Guest";
-                const initials = user
-                  ? `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`.toUpperCase()
-                  : "SY";
+                const isPrivilegedActor = Boolean(
+                  log.details &&
+                    typeof log.details === "object" &&
+                    (log.details as Record<string, unknown>)?.actor ===
+                      "SYSTEM_PRIVILEGED_ACCESS",
+                );
+
+                const displayName = isPrivilegedActor
+                  ? "System (Privileged)"
+                  : user
+                    ? `${user.firstName} ${user.lastName}`.trim()
+                    : "System / Guest";
+
+                const initials = isPrivilegedActor
+                  ? "SP"
+                  : user
+                    ? `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`.toUpperCase()
+                    : "SY";
 
                 return (
                   <TableRow
@@ -525,7 +537,13 @@ export default function ActivityLogsTable() {
                               alt={displayName}
                             />
                           ) : null}
-                          <AvatarFallback className="text-xs font-semibold">
+                          <AvatarFallback
+                            className={cn(
+                              "text-xs font-semibold",
+                              isPrivilegedActor &&
+                                "bg-amber-500/15 text-amber-600 dark:text-amber-400",
+                            )}
+                          >
                             {initials}
                           </AvatarFallback>
                         </Avatar>
@@ -534,13 +552,26 @@ export default function ActivityLogsTable() {
                             <span className="font-medium text-foreground text-xs truncate max-w-[140px]">
                               {displayName}
                             </span>
-                            {user?.role && getRoleBadge(user.role)}
+                            {isPrivilegedActor ? (
+                              <Badge
+                                variant="outline"
+                                className="border-amber-500/30 bg-amber-500/10 text-amber-600 dark:text-amber-400 text-[10px] px-1 py-0 font-medium"
+                              >
+                                Privileged
+                              </Badge>
+                            ) : (
+                              user?.role && getRoleBadge(user.role)
+                            )}
                           </div>
-                          {user?.email && (
+                          {user?.email ? (
                             <span className="text-[11px] text-muted-foreground truncate max-w-[140px]">
                               {user.email}
                             </span>
-                          )}
+                          ) : isPrivilegedActor ? (
+                            <span className="text-[11px] text-amber-600/80 dark:text-amber-400/80 font-mono truncate max-w-[140px]">
+                              privileged-access
+                            </span>
+                          ) : null}
                         </div>
                       </div>
                     </TableCell>
