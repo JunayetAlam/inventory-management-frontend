@@ -34,12 +34,14 @@ interface ReturnInvoiceStatusDropdownProps {
   returnInvoice: TReturnInvoice;
   disabled?: boolean;
   className?: string;
+  onStatusUpdated?: (newStatus: "PENDING" | "APPROVED" | "REJECTED") => void;
 }
 
 export default function ReturnInvoiceStatusDropdown({
   returnInvoice,
   disabled = false,
   className,
+  onStatusUpdated,
 }: ReturnInvoiceStatusDropdownProps) {
   const [isAdmin] = useIsAdmin();
   const [updateStatus, { isLoading: isUpdatingStatus }] =
@@ -59,6 +61,7 @@ export default function ReturnInvoiceStatusDropdown({
         `Return ${returnInvoice.returnNumber} status updated to ${newStatus}`,
       );
       setOpenStatusPopover(null);
+      onStatusUpdated?.(newStatus);
     } catch (err) {
       toast.error(errorMessageGenerator(err));
     } finally {
@@ -150,8 +153,11 @@ export default function ReturnInvoiceStatusDropdown({
               key={statusOption}
               open={isPopoverOpenForThis}
               onOpenChange={(isOpen) => {
-                if (isOpen) setOpenStatusPopover(statusOption);
-                else if (!isCurrentUpdating) setOpenStatusPopover(null);
+                if (isOpen) {
+                  setOpenStatusPopover(statusOption);
+                } else if (!isCurrentUpdating) {
+                  setOpenStatusPopover(null);
+                }
               }}
             >
               <PopoverTrigger asChild>
@@ -179,8 +185,16 @@ export default function ReturnInvoiceStatusDropdown({
                 side="right"
                 align="start"
                 sideOffset={8}
-                className="w-72 gap-2.5 p-3.5 rounded-2xl shadow-xl border border-border bg-popover z-50"
+                collisionPadding={16}
+                className="w-72 gap-2.5 p-3.5 rounded-2xl shadow-xl border border-border bg-popover text-popover-foreground z-50"
                 onCloseAutoFocus={(e) => e.preventDefault()}
+                onFocusOutside={(e) => e.preventDefault()}
+                onPointerDownOutside={(e) => {
+                  const target = e.target as HTMLElement | null;
+                  if (target?.closest('[data-slot="dropdown-menu-content"]')) {
+                    e.preventDefault();
+                  }
+                }}
               >
                 <PopoverHeader className="gap-1.5 text-left">
                   <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-semibold text-xs">
@@ -192,8 +206,12 @@ export default function ReturnInvoiceStatusDropdown({
                     <span className="font-mono font-medium text-foreground">
                       {returnInvoice.returnNumber}
                     </span>{" "}
-                    from <strong>{returnInvoice.status}</strong> to{" "}
-                    <strong>{statusOption}</strong>?
+                    from{" "}
+                    <strong className="text-foreground">{returnInvoice.status}</strong> to{" "}
+                    <strong className="text-foreground">{statusOption}</strong>?
+                    <span className="block text-[11px] text-muted-foreground/80 mt-1.5 bg-muted/60 p-1.5 rounded-lg border border-border/40">
+                      💡 <strong>Note:</strong> You can change this status again later at any time.
+                    </span>
                   </PopoverDescription>
                 </PopoverHeader>
                 <div className="flex items-center justify-end gap-2 pt-1">
@@ -201,7 +219,7 @@ export default function ReturnInvoiceStatusDropdown({
                     type="button"
                     size="sm"
                     variant="outline"
-                    className="h-7 px-2.5 text-xs"
+                    className="h-7 px-2.5 text-xs font-medium"
                     onClick={() => setOpenStatusPopover(null)}
                     disabled={isCurrentUpdating}
                   >
@@ -211,18 +229,23 @@ export default function ReturnInvoiceStatusDropdown({
                     type="button"
                     size="sm"
                     className={cn(
-                      "h-7 px-2.5 text-xs font-semibold text-white",
-                      statusOption === "APPROVED" && "bg-emerald-600 hover:bg-emerald-700",
-                      statusOption === "REJECTED" && "bg-destructive hover:bg-destructive/90",
-                      statusOption === "PENDING" && "bg-amber-600 hover:bg-amber-700",
+                      "h-7 px-2.5 text-xs font-medium !text-white text-white shadow-xs cursor-pointer",
+                      statusOption === "APPROVED" &&
+                        "bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800",
+                      statusOption === "REJECTED" &&
+                        "bg-destructive hover:bg-destructive/90 active:bg-destructive/95",
+                      statusOption === "PENDING" &&
+                        "bg-amber-600 hover:bg-amber-700 active:bg-amber-800",
                     )}
                     onClick={() => handleConfirmStatusChange(statusOption)}
                     disabled={isCurrentUpdating}
                   >
                     {isCurrentUpdating ? (
-                      <Loader2 className="size-3 animate-spin" />
+                      <span className="flex items-center gap-1 text-white">
+                        <Loader2 className="size-3 animate-spin text-white" /> Updating...
+                      </span>
                     ) : (
-                      "Confirm"
+                      <span className="text-white font-semibold">Confirm</span>
                     )}
                   </Button>
                 </div>

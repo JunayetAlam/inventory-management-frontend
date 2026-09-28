@@ -13,6 +13,7 @@ import {
   Check,
   X,
   Save,
+  Activity,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -25,6 +26,7 @@ import useIsAdmin from "@/hooks/useIsAdmin";
 import ReceiptForm from "@/components/Receipts/ReceiptForm";
 import ReceiptStatusDropdown from "@/components/Receipts/ReceiptStatusDropdown";
 import ReceiptDeleteModal from "@/components/Receipts/ReceiptDeleteModal";
+import ReceiptActivitySheet from "@/components/Receipts/ReceiptActivitySheet";
 import ConfirmPopup from "@/components/Global/ConfirmPopup";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -38,6 +40,7 @@ export default function ReceiptDetailsPage() {
   const [isAdmin] = useIsAdmin();
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [activitySheetOpen, setActivitySheetOpen] = useState(false);
 
   const { data, isLoading, isError } = useGetReceiptByIdQuery(id, {
     skip: !id,
@@ -155,6 +158,18 @@ export default function ReceiptDetailsPage() {
                 </Link>
               </>
             )}
+
+            {/* Activity Log Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setActivitySheetOpen(true)}
+              className="h-8 gap-1.5 text-xs font-medium cursor-pointer"
+              title="Receipt Activity Log"
+            >
+              <Activity className="size-3.5" />
+              Activity Log
+            </Button>
 
             {/* Edit receipt if allowed */}
             {!receipt.isDeleted && (isAdmin || receipt.status !== "APPROVED") && (
@@ -334,6 +349,12 @@ export default function ReceiptDetailsPage() {
         onOpenChange={setDeleteModalOpen}
         receipt={receipt ?? null}
         onSuccess={() => router.push("/receipts")}
+      />
+
+      <ReceiptActivitySheet
+        open={activitySheetOpen}
+        onOpenChange={setActivitySheetOpen}
+        receipt={receipt ?? null}
       />
     </div>
   );

@@ -113,7 +113,19 @@ export default function RIV_ProductTable({
                   {formatInvoiceMoney(item.sellingPrice)}
                 </td>
                 <td className={`${tdClass} text-right font-mono text-slate-500`}>
-                  {item.discount > 0 ? `${item.discount}%` : "—"}
+                  {item.discounts && item.discounts.length > 0 ? (
+                    item.discounts.length > 1 ? (
+                      <span title={item.discounts.map((d) => `${d}%`).join(", ")}>
+                        {item.discounts.map((d) => `${d}%`).join(", ")}
+                      </span>
+                    ) : (
+                      `${item.discounts[0]}%`
+                    )
+                  ) : item.discount && item.discount > 0 ? (
+                    `${item.discount}%`
+                  ) : (
+                    "—"
+                  )}
                 </td>
                 <td className={`${tdClass} text-right font-mono font-semibold`}>
                   {formatInvoiceMoney(item.totalPrice)}

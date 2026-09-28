@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   Search,
   Filter,
@@ -63,6 +64,7 @@ import { cn } from "@/lib/utils";
 
 const ACTIONS_LIST = [
   { label: "All Actions", value: "ALL" },
+  // User Actions
   { label: "User Login", value: "USER_LOGIN" },
   { label: "User Register", value: "USER_REGISTER" },
   { label: "Verify Email", value: "USER_VERIFY_EMAIL" },
@@ -75,12 +77,38 @@ const ACTIONS_LIST = [
   { label: "Admin Delete User", value: "ADMIN_DELETE_USER" },
   { label: "Admin Reactivate User", value: "ADMIN_REACTIVATE_USER" },
   { label: "Revoke Device", value: "USER_REVOKE_DEVICE" },
+  // Product Actions
   { label: "Create Product", value: "CREATE_PRODUCT" },
   { label: "Update Product", value: "UPDATE_PRODUCT" },
+  { label: "Request Delete Product", value: "REQUEST_DELETE_PRODUCT" },
+  { label: "Delete Product", value: "DELETE_PRODUCT" },
+  { label: "Restore Product", value: "ADMIN_RESTORE_PRODUCT" },
+  // Customer Actions
   { label: "Create Customer", value: "CREATE_CUSTOMER" },
   { label: "Update Customer", value: "UPDATE_CUSTOMER" },
+  { label: "Request Delete Customer", value: "REQUEST_DELETE_CUSTOMER" },
+  { label: "Delete Customer", value: "DELETE_CUSTOMER" },
+  { label: "Restore Customer", value: "ADMIN_RESTORE_CUSTOMER" },
+  // Receipt Actions
   { label: "Create Receipt", value: "CREATE_RECEIPT" },
+  { label: "Update Receipt", value: "UPDATE_RECEIPT" },
+  { label: "Update Receipt Status", value: "UPDATE_RECEIPT_STATUS" },
   { label: "Add Receipt Payment", value: "ADD_RECEIPT_PAYMENT" },
+  { label: "Request Delete Receipt", value: "REQUEST_DELETE_RECEIPT" },
+  { label: "Delete Receipt", value: "ADMIN_DELETE_RECEIPT" },
+  { label: "Confirm Delete Receipt", value: "ADMIN_CONFIRM_DELETE_RECEIPT" },
+  { label: "Reject Delete Receipt", value: "ADMIN_REJECT_DELETE_RECEIPT" },
+  { label: "Restore Receipt", value: "ADMIN_RESTORE_RECEIPT" },
+  // Return Invoice Actions
+  { label: "Create Return Invoice", value: "CREATE_RETURN_INVOICE" },
+  { label: "Update Return Invoice", value: "UPDATE_RETURN_INVOICE" },
+  { label: "Approve Return Invoice", value: "APPROVE_RETURN_INVOICE" },
+  { label: "Reject Return Invoice", value: "REJECT_RETURN_INVOICE" },
+  { label: "Request Delete Return Invoice", value: "REQUEST_DELETE_RETURN_INVOICE" },
+  { label: "Delete Return Invoice", value: "ADMIN_DELETE_RETURN_INVOICE" },
+  { label: "Confirm Delete Return Invoice", value: "ADMIN_CONFIRM_DELETE_RETURN_INVOICE" },
+  { label: "Reject Delete Return Invoice", value: "ADMIN_REJECT_DELETE_RETURN_INVOICE" },
+  { label: "Restore Return Invoice", value: "ADMIN_RESTORE_RETURN_INVOICE" },
 ];
 
 const ENTITIES_LIST = [
@@ -89,33 +117,59 @@ const ENTITIES_LIST = [
   { label: "Product", value: "PRODUCT" },
   { label: "Customer", value: "CUSTOMER" },
   { label: "Receipt", value: "RECEIPT" },
+  { label: "Return Invoice", value: "RETURN_INVOICE" },
   { label: "Receipt Payment", value: "RECEIPT_PAYMENT" },
   { label: "Session", value: "SESSION" },
 ];
 
 const getActionBadge = (action: string) => {
-  if (action.includes("CREATE") || action.includes("REGISTER") || action.includes("ADD")) {
+  if (
+    action.includes("CREATE") ||
+    action.includes("REGISTER") ||
+    action.includes("ADD") ||
+    action.includes("APPROVE")
+  ) {
     return (
       <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 font-medium hover:bg-emerald-500/15">
         {action}
       </Badge>
     );
   }
-  if (action.includes("DELETE") || action.includes("REVOKE") || action.includes("BLOCK")) {
+  if (
+    action.includes("DELETE") ||
+    action.includes("REVOKE") ||
+    action.includes("BLOCK") ||
+    action.includes("REJECT")
+  ) {
     return (
       <Badge className="bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 font-medium hover:bg-rose-500/15">
         {action}
       </Badge>
     );
   }
-  if (action.includes("UPDATE") || action.includes("STATUS") || action.includes("ROLE")) {
+  if (action.includes("RESTORE") || action.includes("REACTIVATE")) {
+    return (
+      <Badge className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20 font-medium hover:bg-purple-500/15">
+        {action}
+      </Badge>
+    );
+  }
+  if (
+    action.includes("UPDATE") ||
+    action.includes("STATUS") ||
+    action.includes("ROLE")
+  ) {
     return (
       <Badge className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 font-medium hover:bg-blue-500/15">
         {action}
       </Badge>
     );
   }
-  if (action.includes("LOGIN") || action.includes("LOGOUT") || action.includes("PASSWORD")) {
+  if (
+    action.includes("LOGIN") ||
+    action.includes("LOGOUT") ||
+    action.includes("PASSWORD")
+  ) {
     return (
       <Badge className="bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20 font-medium hover:bg-violet-500/15">
         {action}
@@ -459,12 +513,40 @@ export default function ActivityLogsTable() {
                     <TableCell>
                       <div className="flex flex-col">
                         <span className="text-xs font-medium text-foreground">
-                          {log.entityType}
+                          {log.entityType === "RETURN_INVOICE"
+                            ? "RETURN INVOICE"
+                            : log.entityType}
                         </span>
                         {log.entityId && (
-                          <span className="text-[10px] text-muted-foreground font-mono truncate max-w-[120px]">
-                            {log.entityId}
-                          </span>
+                          log.entityType === "RETURN_INVOICE" ? (
+                            <Link
+                              href={`/return-invoices/${log.entityId}`}
+                              className="text-[10px] text-primary hover:underline font-mono truncate max-w-[120px]"
+                              title="View Return Invoice"
+                            >
+                              {log.entityId}
+                            </Link>
+                          ) : log.entityType === "RECEIPT" ? (
+                            <Link
+                              href={`/receipts/${log.entityId}`}
+                              className="text-[10px] text-primary hover:underline font-mono truncate max-w-[120px]"
+                              title="View Receipt"
+                            >
+                              {log.entityId}
+                            </Link>
+                          ) : log.entityType === "CUSTOMER" ? (
+                            <Link
+                              href={`/customers/${log.entityId}`}
+                              className="text-[10px] text-primary hover:underline font-mono truncate max-w-[120px]"
+                              title="View Customer"
+                            >
+                              {log.entityId}
+                            </Link>
+                          ) : (
+                            <span className="text-[10px] text-muted-foreground font-mono truncate max-w-[120px]">
+                              {log.entityId}
+                            </span>
+                          )
                         )}
                       </div>
                     </TableCell>

@@ -18,6 +18,7 @@ import {
   AlertTriangle,
   Printer,
   FileText,
+  Activity,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -31,6 +32,7 @@ import { TReceipt } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import ReceiptActivitySheet from "./ReceiptActivitySheet";
 import {
   Select,
   SelectContent,
@@ -99,6 +101,9 @@ export default function ReceiptTable() {
   const [selectedReceiptForDelete, setSelectedReceiptForDelete] =
     useState<TReceipt | null>(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [activitySheetOpen, setActivitySheetOpen] = useState(false);
+  const [selectedReceiptForActivity, setSelectedReceiptForActivity] =
+    useState<TReceipt | null>(null);
 
   // Mutations
   const [confirmDelete, { isLoading: isConfirming }] =
@@ -492,6 +497,19 @@ export default function ReceiptTable() {
                           </Button>
                         </Link>
 
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="size-7"
+                          title="Activity Log"
+                          onClick={() => {
+                            setSelectedReceiptForActivity(receipt);
+                            setActivitySheetOpen(true);
+                          }}
+                        >
+                          <Activity className="size-3.5 text-muted-foreground hover:text-foreground" />
+                        </Button>
+
                         {!receipt.isDeleted && (
                           <>
                             <Link href={`/receipts/${receipt.id}/invoice`}>
@@ -610,6 +628,12 @@ export default function ReceiptTable() {
         open={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
         receipt={selectedReceiptForDelete}
+      />
+
+      <ReceiptActivitySheet
+        open={activitySheetOpen}
+        onOpenChange={setActivitySheetOpen}
+        receipt={selectedReceiptForActivity}
       />
     </div>
   );

@@ -97,12 +97,12 @@ const normalizeProductName = (name: string) => name.trim().toLowerCase();
 
 interface FormItemState extends Omit<
   TReceiptFormItem,
-  "sellingPrice" | "quantity" | "discount"
+  "sellingPrice" | "quantity" | "discount" | "discounts"
 > {
   tempId: string;
   sellingPrice: number | string;
   quantity: number | string;
-  discount: number | string;
+  discounts: (number | string)[];
 }
 
 /** Merge legacy duplicate product rows so edit/save passes uniqueness rules. */
@@ -114,7 +114,8 @@ function mergeLegacyDuplicateItems(
     unit: ProductUnit;
     sellingPrice: number;
     quantity: number;
-    discount: number;
+    discounts?: number[];
+    discount?: number;
     product?: { stock?: number } | null;
   }[],
 ): FormItemState[] {
@@ -123,6 +124,13 @@ function mergeLegacyDuplicateItems(
   const customNameIndex = new Map<string, number>();
 
   rawItems.forEach((it, idx) => {
+    const rawDiscounts =
+      it.discounts && it.discounts.length > 0
+        ? it.discounts
+        : typeof it.discount === "number" && it.discount > 0
+          ? [it.discount]
+          : [""];
+
     const base: FormItemState = {
       tempId: it.id || `item-${idx}`,
       productId: it.productId || null,
@@ -130,7 +138,7 @@ function mergeLegacyDuplicateItems(
       unit: it.unit,
       sellingPrice: Number(it.sellingPrice) || 0,
       quantity: Number(it.quantity) || 1,
-      discount: Number(it.discount) || 0,
+      discounts: rawDiscounts.length > 0 ? rawDiscounts : [""],
       availableStock: it.product?.stock ?? null,
     };
 
@@ -317,7 +325,7 @@ export default function ReceiptForm({
       unit: "PIECE",
       sellingPrice: 0,
       quantity: 1,
-      discount: 0,
+      discounts: [""],
       availableStock: null,
     },
   ]);
@@ -642,7 +650,7 @@ export default function ReceiptForm({
         unit: "PIECE",
         sellingPrice: 0,
         quantity: 1,
-        discount: 0,
+        discounts: [""],
         availableStock: null,
       },
     ]);
@@ -655,6 +663,55 @@ export default function ReceiptForm({
       return;
     }
     setItems((prev) => prev.filter((it) => it.tempId !== tempId));
+  };
+
+  // Add another discount tier to a row (up to 4 max)
+  const handleAddDiscountField = (tempId: string) => {
+    setItems((prev) =>
+      prev.map((it) => {
+        if (it.tempId !== tempId) return it;
+        if (it.discounts.length >= 4) {
+          toast.info("Maximum 4 discounts allowed per product");
+          return it;
+        }
+        return {
+          ...it,
+          discounts: [...it.discounts, ""],
+        };
+      }),
+    );
+  };
+
+  // Remove a discount tier from a row
+  const handleRemoveDiscountField = (tempId: string, discIndex: number) => {
+    setItems((prev) =>
+      prev.map((it) => {
+        if (it.tempId !== tempId) return it;
+        if (it.discounts.length <= 1) {
+          return { ...it, discounts: [""] };
+        }
+        return {
+          ...it,
+          discounts: it.discounts.filter((_, idx) => idx !== discIndex),
+        };
+      }),
+    );
+  };
+
+  // Handle discount change for a specific index
+  const handleDiscountChange = (
+    tempId: string,
+    discIndex: number,
+    value: string,
+  ) => {
+    setItems((prev) =>
+      prev.map((it) => {
+        if (it.tempId !== tempId) return it;
+        const updated = [...it.discounts];
+        updated[discIndex] = value;
+        return { ...it, discounts: updated };
+      }),
+    );
   };
 
   // Multi-Row Aggregated Product Quantities
@@ -676,13 +733,23 @@ export default function ReceiptForm({
     const rows = items.map((it) => {
       const qty = Math.max(0, Number(it.quantity) || 0);
       const price = Math.max(0, Number(it.sellingPrice) || 0);
-      const discPercent = Math.max(0, Math.min(100, Number(it.discount) || 0));
-
       const rowSubtotal = Math.round(qty * price * 100) / 100;
+
+      const activeDiscounts = (it.discounts || [])
+        .map((d) => Math.max(0, Math.min(100, Number(d) || 0)))
+        .filter((d) => d > 0);
+
+      let runningPrice = rowSubtotal;
+      for (const d of activeDiscounts) {
+        runningPrice = Math.round(runningPrice * (1 - d / 100) * 100) / 100;
+      }
+      const rowTotal = Math.round(Math.max(0, runningPrice) * 100) / 100;
       const rowDiscountAmount =
-        Math.round(((rowSubtotal * discPercent) / 100) * 100) / 100;
-      const rowTotal =
-        Math.round(Math.max(0, rowSubtotal - rowDiscountAmount) * 100) / 100;
+        Math.round(Math.max(0, rowSubtotal - rowTotal) * 100) / 100;
+      const effectiveDiscountPercent =
+        rowSubtotal > 0
+          ? Math.round((rowDiscountAmount / rowSubtotal) * 10000) / 100
+          : 0;
 
       sub = Math.round((sub + rowTotal) * 100) / 100;
 
@@ -691,6 +758,8 @@ export default function ReceiptForm({
         rowSubtotal,
         rowDiscountAmount,
         rowTotal,
+        activeDiscounts,
+        effectiveDiscountPercent,
       };
     });
 
@@ -807,7 +876,9 @@ export default function ReceiptForm({
         unit: it.unit,
         sellingPrice: Number(it.sellingPrice),
         quantity: Number(it.quantity),
-        discount: Number(it.discount) || 0,
+        discounts: (it.discounts || [])
+          .map((d) => Number(d) || 0)
+          .filter((d) => d > 0),
       })),
       discount: Number(receiptDiscount) || 0,
       paidAmount: Number(paidAmount) || 0,
@@ -1133,13 +1204,13 @@ export default function ReceiptForm({
             </CardHeader>
             <CardContent className="pt-4 space-y-3">
               {/* Desktop Column Headers for Clean 1-Line Table View */}
-              <div className="hidden md:grid md:grid-cols-[2rem_4fr_1.8fr_1.4fr_2fr_1.4fr_2fr] gap-2 px-3 py-1 text-xs font-semibold text-muted-foreground border-b border-border/40">
+              <div className="hidden md:grid md:grid-cols-[2rem_3.4fr_1.2fr_1.1fr_1.5fr_2.8fr_1.6fr] gap-2 px-3 py-1 text-xs font-semibold text-muted-foreground border-b border-border/40">
                 <div className="text-center">#</div>
                 <div>Product Name *</div>
                 <div>Unit</div>
                 <div className="text-right">Qty *</div>
                 <div className="text-right">Price (৳) *</div>
-                <div className="text-right">Disc (%)</div>
+                <div>Disc (%)</div>
                 <div className="text-right">Total (৳)</div>
               </div>
 
@@ -1234,7 +1305,7 @@ export default function ReceiptForm({
                     </div>
 
                     {/* All Inputs in One Single Line (on md+) */}
-                    <div className="grid grid-cols-1 md:grid-cols-[2rem_4fr_1.8fr_1.4fr_2fr_1.4fr_2fr] gap-2 items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-[2rem_3.4fr_1.2fr_1.1fr_1.5fr_2.8fr_1.6fr] gap-2 items-center">
                       {/* 0. Row index */}
                       <div className="flex items-center gap-2 md:justify-center">
                         <span className="md:hidden text-[11px] font-medium text-muted-foreground">
@@ -1342,28 +1413,93 @@ export default function ReceiptForm({
                         />
                       </div>
 
-                      {/* 5. Discount % */}
+                      {/* 5. Multiple Discounts % */}
                       <div>
-                        <label className="text-[11px] font-medium text-muted-foreground md:hidden block mb-1">
-                          Disc (%)
-                        </label>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          max="100"
-                          placeholder="0"
-                          value={it.discount}
-                          onChange={(e) =>
-                            handleItemChange(
-                              it.tempId,
-                              "discount",
-                              e.target.value,
-                            )
-                          }
-                          disabled={isLocked}
-                          className="text-xs font-mono text-right"
-                        />
+                        <div className="flex items-center justify-between mb-1 md:hidden">
+                          <label className="text-[11px] font-medium text-muted-foreground">
+                            Disc (%)
+                          </label>
+                          {it.activeDiscounts.length > 1 && (
+                            <span className="text-[10px] font-mono text-primary font-medium">
+                              Eff: {it.effectiveDiscountPercent}%
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {it.discounts.map((discVal, dIdx) => (
+                            <div
+                              key={dIdx}
+                              className="relative flex items-center group"
+                            >
+                              <Input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                max="100"
+                                placeholder="0"
+                                value={discVal}
+                                onChange={(e) =>
+                                  handleDiscountChange(
+                                    it.tempId,
+                                    dIdx,
+                                    e.target.value,
+                                  )
+                                }
+                                disabled={isLocked}
+                                className={`h-8 text-xs font-mono text-right ${
+                                  it.discounts.length > 1 ? "w-14 pr-4" : "w-16"
+                                }`}
+                                title={`Discount #${dIdx + 1} (%)`}
+                              />
+                              {!isLocked && it.discounts.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleRemoveDiscountField(it.tempId, dIdx)
+                                  }
+                                  className="absolute right-1 text-muted-foreground hover:text-destructive transition-colors p-0.5 cursor-pointer"
+                                  title="Remove discount tier"
+                                >
+                                  <X className="size-2.5" />
+                                </button>
+                              )}
+                            </div>
+                          ))}
+
+                          {!isLocked && it.discounts.length < 4 && (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="icon"
+                                  onClick={() =>
+                                    handleAddDiscountField(it.tempId)
+                                  }
+                                  className="size-7 rounded-md border-dashed border-border hover:border-primary text-muted-foreground hover:text-primary shrink-0 transition-colors"
+                                  title="Add another discount tier"
+                                >
+                                  <Plus className="size-3" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent side="top" className="text-xs">
+                                Add discount tier ({it.discounts.length}/4)
+                              </TooltipContent>
+                            </Tooltip>
+                          )}
+                        </div>
+
+                        {it.activeDiscounts.length > 1 && (
+                          <div className="hidden md:flex items-center gap-1 mt-0.5">
+                            <span className="text-[10px] font-mono text-primary font-medium">
+                              Eff: {it.effectiveDiscountPercent}%
+                            </span>
+                            <span className="text-[10px] text-muted-foreground font-mono">
+                              (-৳{it.rowDiscountAmount})
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       {/* 6. Total */}

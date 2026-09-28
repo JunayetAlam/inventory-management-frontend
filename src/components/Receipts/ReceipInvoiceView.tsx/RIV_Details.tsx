@@ -1,5 +1,9 @@
+import ShopLogo from "@/components/ShopLogo";
 import { TReceipt, TShop } from "@/types";
-import { formatInvoiceDate, formatInvoiceTime } from "@/utils/formatInvoiceDate";
+import {
+  formatInvoiceDate,
+  formatInvoiceTime,
+} from "@/utils/formatInvoiceDate";
 import Image from "next/image";
 export default function RIV_Details({
   shop,
@@ -22,23 +26,11 @@ export default function RIV_Details({
       <div className="relative flex items-center justify-between border-b-2 border-slate-900 pb-2">
         {" "}
         {/* Left: Logo */}{" "}
-        <div className="flex min-w-[130px] items-center justify-start">
-          {" "}
-          {shop?.logo ? (
-            <Image
-              src={shop.logo}
-              alt={shopName}
-              width={160}
-              height={60}
-              className="max-h-10 w-auto max-w-[130px] object-contain object-left"
-            />
-          ) : (
-            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-slate-900 text-base font-bold text-white">
-              {" "}
-              {shopName.charAt(0).toUpperCase()}{" "}
-            </div>
-          )}{" "}
-        </div>{" "}
+        <ShopLogo
+          url={shop?.logo}
+          alt={shop?.name}
+          className="max-h-16 w-auto object-contain shrink-0"
+        />
         {/* Center: Shop Info */}{" "}
         <div className="absolute left-1/2 top-1/2 w-[48%] -translate-x-1/2 -translate-y-1/2 text-center">
           {" "}
@@ -123,7 +115,9 @@ export default function RIV_Details({
             Date{" "}
           </div>{" "}
           <div className="py-1.5 text-right font-mono text-slate-900 leading-tight">
-            <div className="font-medium">{formatInvoiceDate(receipt.createdAt)}</div>
+            <div className="font-medium">
+              {formatInvoiceDate(receipt.createdAt)}
+            </div>
             <div className="text-[10px] text-slate-500 font-normal mt-0.5">
               {formatInvoiceTime(receipt.createdAt)}
             </div>

@@ -284,8 +284,9 @@ export interface TReceiptItem {
   sellingPrice: number;
   buyingPrice?: number | null;
   quantity: number;
-  discount: number; // percentage (0 - 100)
-  subTotal: number;
+  discounts?: number[];
+  discount?: number; // optional legacy percentage
+  subTotal?: number;
   totalPrice: number;
   alreadyReturned?: number;
   remainingReturnable?: number;
@@ -379,7 +380,8 @@ export interface TReceiptFormItem {
   unit: ProductUnit;
   sellingPrice: number;
   quantity: number;
-  discount: number; // percentage
+  discounts?: (number | string)[];
+  discount?: number; // percentage
   availableStock?: number | null; // for live stock tracking
 }
 
@@ -393,7 +395,8 @@ export interface TReturnInvoiceItem {
   unit: ProductUnit;
   sellingPrice: number;
   quantity: number;
-  discount: number;
+  discounts?: number[];
+  discount?: number;
   totalPrice: number;
   createdAt: string;
   updatedAt: string;
@@ -408,7 +411,8 @@ export interface TReturnInvoiceItem {
     productName: string;
     quantity: number;
     sellingPrice: number;
-    discount: number;
+    discounts?: number[];
+    discount?: number;
     unit: ProductUnit;
   } | null;
 }
@@ -507,7 +511,8 @@ export interface TReturnableReceiptItem {
   productName: string;
   unit: ProductUnit;
   sellingPrice: number;
-  discount: number;
+  discounts?: number[];
+  discount?: number;
   originalQuantity: number;
   alreadyReturned: number;
   remainingReturnable: number;

@@ -12,6 +12,7 @@ import {
   RotateCcw,
   Check,
   X,
+  Activity,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -24,9 +25,11 @@ import useIsAdmin from "@/hooks/useIsAdmin";
 import ReturnInvoiceForm from "@/components/ReturnInvoices/ReturnInvoiceForm";
 import ReturnInvoiceStatusDropdown from "@/components/ReturnInvoices/ReturnInvoiceStatusDropdown";
 import ReturnInvoiceDeleteModal from "@/components/ReturnInvoices/ReturnInvoiceDeleteModal";
+import ReturnInvoiceActivitySheet from "@/components/ReturnInvoices/ReturnInvoiceActivitySheet";
 import ConfirmPopup from "@/components/Global/ConfirmPopup";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 
 export default function ReturnInvoiceDetailsPage() {
@@ -35,6 +38,7 @@ export default function ReturnInvoiceDetailsPage() {
   const id = params?.id as string;
   const [isAdmin] = useIsAdmin();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [activitySheetOpen, setActivitySheetOpen] = useState(false);
 
   const { data, isLoading, isError } = useGetReturnInvoiceByIdQuery(id, {
     skip: !id,
@@ -77,7 +81,7 @@ export default function ReturnInvoiceDetailsPage() {
   }
 
   return (
-    <div className="space-y-6 p-6 max-w-5xl mx-auto">
+    <div className="space-y-6 p-6 max-w-6xl mx-auto relative">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <Button
@@ -90,25 +94,28 @@ export default function ReturnInvoiceDetailsPage() {
             <ArrowLeft className="size-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">
-              Return Invoice
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+              Manage Return Invoices
             </h1>
             <span className="font-mono text-xs text-muted-foreground">
-              {returnInvoice.returnNumber}
+              Return Invoice #{returnInvoice.returnNumber}
             </span>
           </div>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
+          {/* Status Change Dropdown */}
           <ReturnInvoiceStatusDropdown returnInvoice={returnInvoice} />
 
+          {/* View Invoice / Print Invoice */}
           {!returnInvoice.isDeleted && (
             <>
               <Link href={`/return-invoices/${returnInvoice.id}/invoice`}>
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-8 gap-1.5 text-xs"
+                  title="View Invoice"
+                  className="h-8 gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
                 >
                   <FileText className="size-3.5" /> View Invoice
                 </Button>
@@ -119,42 +126,55 @@ export default function ReturnInvoiceDetailsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-8 gap-1.5 text-xs"
+                  title="Print Invoice"
+                  className="h-8 gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
                 >
-                  <Printer className="size-3.5" /> Print
+                  <Printer className="size-3.5" /> Print Invoice
                 </Button>
               </Link>
-              {(isAdmin || returnInvoice.status !== "APPROVED") &&
-                returnInvoice.isLatest !== false &&
-                !returnInvoice.isDeleted && (
-                <Link href={`/return-invoices/${returnInvoice.id}/edit`}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 gap-1.5 text-xs"
-                  >
-                    <Pencil className="size-3.5" /> Edit
-                  </Button>
-                </Link>
-              )}
             </>
           )}
 
-          {isAdmin &&
-          returnInvoice.isDeleteRequested &&
-          !returnInvoice.isDeleted &&
-          returnInvoice.isLatest !== false ? (
-            <div className="flex items-center gap-1.5 border-l pl-1.5 ml-1">
+          {/* Activity Log Button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setActivitySheetOpen(true)}
+            className="h-8 gap-1.5 text-xs font-medium cursor-pointer"
+            title="Return Invoice Activity Log"
+          >
+            <Activity className="size-3.5" />
+            Activity Log
+          </Button>
+
+          {/* Edit return invoice if allowed */}
+          {!returnInvoice.isDeleted &&
+            (isAdmin || returnInvoice.status !== "APPROVED") &&
+            returnInvoice.isLatest !== false && (
+              <Link href={`/return-invoices/${returnInvoice.id}/edit`}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 gap-1.5 text-xs font-medium"
+                >
+                  <Pencil className="size-3.5" /> Edit
+                </Button>
+              </Link>
+            )}
+
+          {/* Deletion & Restoration Actions */}
+          {isAdmin && returnInvoice.isDeleteRequested ? (
+            <div className="flex items-center gap-1.5 border-l border-border pl-1.5 ml-1">
               <ConfirmPopup
-                title="Confirm deletion?"
-                description={`Delete ${returnInvoice.returnNumber}? Only the latest return can be deleted.`}
-                confirmLabel="Confirm"
-                destructive
+                title="Approve Deletion Request?"
+                description={`Confirm deletion of Return Invoice "${returnInvoice.returnNumber}"? Stock will be adjusted.`}
+                confirmLabel="Confirm Delete"
+                destructive={true}
                 loading={isConfirming}
                 onConfirm={async () => {
                   try {
                     await confirmDelete(returnInvoice.id).unwrap();
-                    toast.success("Deleted");
+                    toast.success("Return invoice deletion confirmed");
                     router.push("/return-invoices");
                   } catch (err) {
                     toast.error(errorMessageGenerator(err));
@@ -164,20 +184,21 @@ export default function ReturnInvoiceDetailsPage() {
                 <Button
                   variant="destructive"
                   size="sm"
-                  className="h-8 text-xs gap-1"
+                  className="h-8 px-2.5 text-xs font-medium gap-1"
                 >
                   <Check className="size-3.5" /> Delete
                 </Button>
               </ConfirmPopup>
               <ConfirmPopup
-                title="Reject deletion?"
-                description={`Reject delete request for ${returnInvoice.returnNumber}?`}
+                title="Reject Deletion Request?"
+                description={`Reject deletion request for "${returnInvoice.returnNumber}"?`}
                 confirmLabel="Reject"
+                destructive={false}
                 loading={isRejecting}
                 onConfirm={async () => {
                   try {
                     await rejectDelete(returnInvoice.id).unwrap();
-                    toast.success("Request rejected");
+                    toast.success("Deletion request rejected");
                   } catch (err) {
                     toast.error(errorMessageGenerator(err));
                   }
@@ -186,50 +207,69 @@ export default function ReturnInvoiceDetailsPage() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="h-8 text-xs gap-1"
+                  className="h-8 px-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted gap-1"
                 >
                   <X className="size-3.5" /> Reject
                 </Button>
               </ConfirmPopup>
             </div>
-          ) : returnInvoice.isDeleted && isAdmin && returnInvoice.canRestore !== false ? (
-            <ConfirmPopup
-              title="Restore?"
-              description={`Restore ${returnInvoice.returnNumber}? Not allowed if a newer return already exists.`}
-              confirmLabel="Restore"
-              loading={isRestoring}
-              onConfirm={async () => {
-                try {
-                  await restoreReturn(returnInvoice.id).unwrap();
-                  toast.success("Restored");
-                } catch (err) {
-                  toast.error(errorMessageGenerator(err));
-                }
-              }}
-            >
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 text-xs gap-1"
+          ) : returnInvoice.isDeleted && isAdmin ? (
+            returnInvoice.canRestore !== false ? (
+              <ConfirmPopup
+                title="Restore Return Invoice?"
+                description={`Restore deleted Return "${returnInvoice.returnNumber}"? Stock will be restored again.`}
+                confirmLabel="Restore Return"
+                destructive={false}
+                loading={isRestoring}
+                onConfirm={async () => {
+                  try {
+                    await restoreReturn(returnInvoice.id).unwrap();
+                    toast.success("Return invoice restored successfully");
+                  } catch (err) {
+                    toast.error(errorMessageGenerator(err));
+                  }
+                }}
               >
-                <RotateCcw className="size-3.5" /> Restore
-              </Button>
-            </ConfirmPopup>
-          ) : returnInvoice.isDeleted && isAdmin && returnInvoice.canRestore === false ? (
-            <span className="text-xs text-muted-foreground px-2">
-              Restore locked (newer return exists)
-            </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 px-2.5 text-xs font-medium text-primary border-primary/40 hover:bg-primary/10 gap-1.5"
+                >
+                  <RotateCcw className="size-3.5" /> Restore
+                </Button>
+              </ConfirmPopup>
+            ) : (
+              <span
+                className="text-xs text-muted-foreground italic px-2"
+                title="Cannot restore: a newer return exists on this receipt"
+              >
+                Restore locked (newer return exists)
+              </span>
+            )
           ) : (
-            !returnInvoice.isDeleted &&
-            returnInvoice.isLatest !== false && (
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-8 text-xs gap-1 text-destructive"
-                onClick={() => setDeleteModalOpen(true)}
-              >
-                <Trash2 className="size-3.5" /> Delete
-              </Button>
+            !returnInvoice.isDeleted && (
+              returnInvoice.isDeleteRequested && !isAdmin ? (
+                <Badge
+                  variant="secondary"
+                  className="h-8 px-2.5 text-xs text-amber-600 bg-amber-500/10 cursor-not-allowed"
+                >
+                  Delete Requested
+                </Badge>
+              ) : (
+                (isAdmin || returnInvoice.status !== "APPROVED") &&
+                returnInvoice.isLatest !== false && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    title={isAdmin ? "Delete Return Invoice" : "Request Delete"}
+                    onClick={() => setDeleteModalOpen(true)}
+                    className="h-8 gap-1.5 text-xs font-medium text-destructive border-destructive/30 hover:bg-destructive/10 cursor-pointer"
+                  >
+                    <Trash2 className="size-3.5" />
+                    {isAdmin ? "Delete" : "Request Delete"}
+                  </Button>
+                )
+              )
             )
           )}
         </div>
@@ -244,6 +284,12 @@ export default function ReturnInvoiceDetailsPage() {
         onOpenChange={setDeleteModalOpen}
         returnInvoice={returnInvoice}
         onSuccess={() => router.push("/return-invoices")}
+      />
+
+      <ReturnInvoiceActivitySheet
+        open={activitySheetOpen}
+        onOpenChange={setActivitySheetOpen}
+        returnInvoice={returnInvoice}
       />
     </div>
   );

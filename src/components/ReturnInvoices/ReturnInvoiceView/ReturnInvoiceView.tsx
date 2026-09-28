@@ -61,6 +61,7 @@ function toReceiptItems(returnInvoice: TReturnInvoice): TReceiptItem[] {
     unit: it.unit,
     sellingPrice: it.sellingPrice,
     quantity: it.quantity,
+    discounts: it.discounts ?? (it.discount ? [it.discount] : []),
     discount: it.discount,
     subTotal: it.totalPrice,
     totalPrice: it.totalPrice,

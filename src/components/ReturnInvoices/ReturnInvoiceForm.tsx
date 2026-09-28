@@ -8,6 +8,7 @@ import {
   ArrowLeft,
   Loader2,
   Package,
+  Plus,
   Save,
   X,
 } from "lucide-react";
@@ -17,6 +18,11 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   useCreateReturnInvoiceMutation,
   useGetReturnableItemsByReceiptQuery,
@@ -33,7 +39,7 @@ interface LineState {
   selected: boolean;
   quantity: number;
   sellingPrice: number;
-  discount: number;
+  discounts: (number | string)[];
 }
 
 interface ReturnInvoiceFormProps {
@@ -46,9 +52,30 @@ function round2(n: number) {
   return Math.round(n * 100) / 100;
 }
 
-function lineTotal(qty: number, sellingPrice: number, discount: number) {
+function getEffectiveDiscountPercent(discounts: (number | string)[]): number {
+  const active = (discounts || [])
+    .map((d) => (d === "" || d === null || d === undefined ? 0 : Number(d)))
+    .filter((d) => !isNaN(d) && d > 0 && d <= 100);
+  if (active.length <= 1) return active[0] || 0;
+  let cur = 1;
+  for (const d of active) {
+    cur *= 1 - d / 100;
+  }
+  return Math.round((1 - cur) * 10000) / 100;
+}
+
+function lineTotal(qty: number, sellingPrice: number, discounts?: (number | string)[] | number) {
   const sub = qty * sellingPrice;
-  const disc = (sub * (discount || 0)) / 100;
+  if (Array.isArray(discounts)) {
+    let cur = sub;
+    for (const d of discounts) {
+      if (d === "" || d === null || d === undefined) continue;
+      const p = Math.max(0, Math.min(100, Number(d) || 0));
+      cur = Math.round(cur * (1 - p / 100) * 100) / 100;
+    }
+    return round2(Math.max(0, cur));
+  }
+  const disc = (sub * (discounts || 0)) / 100;
   return round2(Math.max(0, sub - disc));
 }
 
@@ -158,6 +185,13 @@ export default function ReturnInvoiceForm({
         );
         const prevLine = prev[item.receiptItemId];
         const maxQty = item.remainingReturnable;
+
+        const defaultDiscounts = (raw: any): (number | string)[] => {
+          if (Array.isArray(raw) && raw.length > 0) return raw;
+          if (typeof raw === "number" && raw > 0) return [raw];
+          return [""];
+        };
+
         if (existingInitial && isEditing) {
           next[item.receiptItemId] = {
             selected: true,
@@ -166,21 +200,21 @@ export default function ReturnInvoiceForm({
               maxQty || existingInitial.quantity,
             ),
             sellingPrice: existingInitial.sellingPrice,
-            discount: existingInitial.discount,
+            discounts: defaultDiscounts(existingInitial.discounts ?? existingInitial.discount),
           };
         } else if (prevLine) {
           next[item.receiptItemId] = {
             selected: prevLine.selected && maxQty > 0,
             quantity: Math.min(prevLine.quantity || 1, Math.max(maxQty, 0)),
             sellingPrice: prevLine.sellingPrice ?? item.sellingPrice,
-            discount: prevLine.discount ?? item.discount,
+            discounts: prevLine.discounts?.length ? prevLine.discounts : defaultDiscounts(item.discounts ?? item.discount),
           };
         } else {
           next[item.receiptItemId] = {
             selected: false,
             quantity: maxQty > 0 ? 1 : 0,
             sellingPrice: item.sellingPrice,
-            discount: item.discount,
+            discounts: defaultDiscounts(item.discounts ?? item.discount),
           };
         }
       }
@@ -198,12 +232,73 @@ export default function ReturnInvoiceForm({
     refundTouchedRef.current = false;
   }, [receiptId, isEditing, readOnly]);
 
+  const handleAddLineDiscount = (receiptItemId: string) => {
+    setLines((prev) => {
+      const current = prev[receiptItemId];
+      if (!current) return prev;
+      if (current.discounts.length >= 4) {
+        toast.info("Maximum 4 discounts allowed per product");
+        return prev;
+      }
+      return {
+        ...prev,
+        [receiptItemId]: {
+          ...current,
+          discounts: [...current.discounts, ""],
+        },
+      };
+    });
+  };
+
+  const handleRemoveLineDiscount = (receiptItemId: string, discIndex: number) => {
+    setLines((prev) => {
+      const current = prev[receiptItemId];
+      if (!current) return prev;
+      if (current.discounts.length <= 1) {
+        return {
+          ...prev,
+          [receiptItemId]: {
+            ...current,
+            discounts: [""],
+          },
+        };
+      }
+      return {
+        ...prev,
+        [receiptItemId]: {
+          ...current,
+          discounts: current.discounts.filter((_, idx) => idx !== discIndex),
+        },
+      };
+    });
+  };
+
+  const handleLineDiscountChange = (
+    receiptItemId: string,
+    discIndex: number,
+    val: string,
+  ) => {
+    setLines((prev) => {
+      const current = prev[receiptItemId];
+      if (!current) return prev;
+      const updated = [...current.discounts];
+      updated[discIndex] = val;
+      return {
+        ...prev,
+        [receiptItemId]: {
+          ...current,
+          discounts: updated,
+        },
+      };
+    });
+  };
+
   const displayItems: Array<{
     receiptItemId: string;
     productName: string;
     unit: string;
     sellingPrice: number;
-    discount: number;
+    discounts: number[];
     originalQuantity?: number;
     alreadyReturned?: number;
     remainingReturnable?: number;
@@ -211,15 +306,18 @@ export default function ReturnInvoiceForm({
     totalPrice: number;
   }> = useMemo(() => {
     if (readOnly && initialData) {
-      return initialData.items.map((it) => ({
-        receiptItemId: it.receiptItemId,
-        productName: it.productName,
-        unit: it.unit,
-        sellingPrice: it.sellingPrice,
-        discount: it.discount,
-        quantity: it.quantity,
-        totalPrice: it.totalPrice,
-      }));
+      return initialData.items.map((it) => {
+        const itemDiscounts = it.discounts ?? (it.discount ? [it.discount] : []);
+        return {
+          receiptItemId: it.receiptItemId,
+          productName: it.productName,
+          unit: it.unit,
+          sellingPrice: it.sellingPrice,
+          discounts: itemDiscounts,
+          quantity: it.quantity,
+          totalPrice: it.totalPrice,
+        };
+      });
     }
 
     return returnableItems
@@ -228,18 +326,21 @@ export default function ReturnInvoiceForm({
         const line = lines[it.receiptItemId];
         const qty = line?.quantity || 0;
         const sellingPrice = line?.sellingPrice ?? it.sellingPrice;
-        const discountPct = line?.discount ?? it.discount;
+        const rawDiscounts = line?.discounts ?? it.discounts ?? (it.discount ? [it.discount] : []);
+        const activeDiscounts = (rawDiscounts || [])
+          .map((d) => (d === "" || d === null || d === undefined ? 0 : Number(d)))
+          .filter((d) => !isNaN(d) && d > 0);
         return {
           receiptItemId: it.receiptItemId,
           productName: it.productName,
           unit: it.unit,
           sellingPrice,
-          discount: discountPct,
+          discounts: activeDiscounts,
           originalQuantity: it.originalQuantity,
           alreadyReturned: it.alreadyReturned,
           remainingReturnable: it.remainingReturnable,
           quantity: qty,
-          totalPrice: lineTotal(qty, sellingPrice, discountPct),
+          totalPrice: lineTotal(qty, sellingPrice, activeDiscounts),
         };
       });
   }, [readOnly, initialData, returnableItems, lines]);
@@ -307,12 +408,19 @@ export default function ReturnInvoiceForm({
 
     const items = Object.entries(lines)
       .filter(([, v]) => v.selected && v.quantity > 0)
-      .map(([receiptItemId, v]) => ({
-        receiptItemId,
-        quantity: Number(v.quantity),
-        sellingPrice: Math.max(0, Number(v.sellingPrice) || 0),
-        discount: Math.max(0, Math.min(100, Number(v.discount) || 0)),
-      }));
+      .map(([receiptItemId, v]) => {
+        const activeDiscounts = (v.discounts || [])
+          .map((d) => (d === "" || d === null || d === undefined ? 0 : Number(d)))
+          .filter((d) => !isNaN(d) && d > 0 && d <= 100);
+
+        return {
+          receiptItemId,
+          quantity: Number(v.quantity),
+          sellingPrice: Math.max(0, Number(v.sellingPrice) || 0),
+          discounts: activeDiscounts,
+          discount: activeDiscounts[0] ?? 0,
+        };
+      });
 
     if (items.length === 0) {
       toast.error("Select at least one product to return");
@@ -576,7 +684,9 @@ export default function ReturnInvoiceForm({
                         ৳{it.sellingPrice}
                       </td>
                       <td className="py-2 pr-2 text-right font-mono">
-                        {it.discount > 0 ? `${it.discount}%` : "—"}
+                        {it.discounts && it.discounts.length > 0
+                          ? it.discounts.map((d) => `${d}%`).join(", ")
+                          : "—"}
                       </td>
                       <td className="py-2 text-right font-mono font-semibold">
                         ৳{it.totalPrice.toFixed(2)}
@@ -592,7 +702,7 @@ export default function ReturnInvoiceForm({
             </p>
           ) : (
             <div className="space-y-2">
-              <div className="hidden md:grid md:grid-cols-[3.25rem_minmax(0,3.2fr)_1.3fr_1.6fr_1.3fr_1.6fr] gap-2 px-3 py-1 text-xs font-semibold text-muted-foreground border-b border-border/40">
+              <div className="hidden md:grid md:grid-cols-[2.75rem_minmax(0,2.6fr)_1.1fr_1.3fr_2.4fr_1.3fr] gap-2 px-3 py-1 text-xs font-semibold text-muted-foreground border-b border-border/40">
                 <div className="text-center">#</div>
                 <div>Product</div>
                 <div className="text-right">Qty *</div>
@@ -605,14 +715,18 @@ export default function ReturnInvoiceForm({
                   selected: false,
                   quantity: item.remainingReturnable > 0 ? 1 : 0,
                   sellingPrice: item.sellingPrice,
-                  discount: item.discount,
+                  discounts: [""],
                 };
                 const disabled = item.remainingReturnable <= 0;
                 const fieldsDisabled = !line.selected || disabled || readOnly;
+                const activeDiscounts = (line.discounts || [])
+                  .map((d) => (d === "" || d === null || d === undefined ? 0 : Number(d)))
+                  .filter((d) => !isNaN(d) && d > 0 && d <= 100);
+                const effectiveDiscountPct = getEffectiveDiscountPercent(line.discounts);
                 const rowTotal = lineTotal(
                   line.quantity,
                   line.sellingPrice,
-                  line.discount,
+                  activeDiscounts,
                 );
                 const patchLine = (patch: Partial<LineState>) => {
                   setLines((prev) => {
@@ -634,7 +748,7 @@ export default function ReturnInvoiceForm({
                       disabled && "opacity-50",
                     )}
                   >
-                    <div className="grid grid-cols-1 md:grid-cols-[3.25rem_minmax(0,3.2fr)_1.3fr_1.6fr_1.3fr_1.6fr] gap-2 items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-[2.75rem_minmax(0,2.6fr)_1.1fr_1.3fr_2.4fr_1.3fr] gap-2 items-center">
                       <div className="flex items-center gap-1.5 md:justify-center">
                         <input
                           type="checkbox"
@@ -646,7 +760,7 @@ export default function ReturnInvoiceForm({
                               selected: e.target.checked,
                               quantity:
                                 line.quantity > 0
-                                  ? line.quantity
+                                   ? line.quantity
                                   : Math.min(1, item.remainingReturnable),
                             });
                           }}
@@ -715,26 +829,88 @@ export default function ReturnInvoiceForm({
                       </div>
 
                       <div>
-                        <label className="text-[11px] font-medium text-muted-foreground md:hidden block mb-1">
-                          Disc (%)
-                        </label>
-                        <Input
-                          type="number"
-                          min={0}
-                          max={100}
-                          step="0.01"
-                          disabled={fieldsDisabled}
-                          value={line.discount}
-                          onChange={(e) =>
-                            patchLine({
-                              discount: Math.max(
-                                0,
-                                Math.min(100, Number(e.target.value) || 0),
-                              ),
-                            })
-                          }
-                          className="h-8 text-xs font-mono text-right"
-                        />
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="text-[11px] font-medium text-muted-foreground md:hidden block">
+                            Disc (%)
+                          </label>
+                          {activeDiscounts.length > 1 && (
+                            <span className="text-[10px] font-mono text-primary font-medium">
+                              Eff: {effectiveDiscountPct}%
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {line.discounts.map((discVal, dIdx) => (
+                            <div
+                              key={dIdx}
+                              className="relative flex items-center group"
+                            >
+                              <Input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                max="100"
+                                placeholder="0"
+                                value={discVal}
+                                onChange={(e) =>
+                                  handleLineDiscountChange(
+                                    item.receiptItemId,
+                                    dIdx,
+                                    e.target.value,
+                                  )
+                                }
+                                disabled={fieldsDisabled}
+                                className={`h-8 text-xs font-mono text-right ${
+                                  line.discounts.length > 1 ? "w-14 pr-4" : "w-16"
+                                }`}
+                                title={`Discount #${dIdx + 1} (%)`}
+                              />
+                              {!fieldsDisabled && line.discounts.length > 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    handleRemoveLineDiscount(item.receiptItemId, dIdx)
+                                  }
+                                  className="absolute right-1 text-muted-foreground hover:text-destructive transition-colors p-0.5 cursor-pointer"
+                                  title="Remove discount tier"
+                                >
+                                  <X className="size-2.5" />
+                                </button>
+                              )}
+                            </div>
+                          ))}
+
+                          {!fieldsDisabled && line.discounts.length < 4 && (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="icon"
+                                  onClick={() =>
+                                    handleAddLineDiscount(item.receiptItemId)
+                                  }
+                                  className="size-7 rounded-md border-dashed border-border hover:border-primary text-muted-foreground hover:text-primary shrink-0 transition-colors"
+                                  title="Add another discount tier"
+                                >
+                                  <Plus className="size-3" />
+                                </Button>
+                              </TooltipTrigger>
+                              <TooltipContent side="top" className="text-xs">
+                                Add discount tier ({line.discounts.length}/4)
+                              </TooltipContent>
+                            </Tooltip>
+                          )}
+                        </div>
+
+                        {activeDiscounts.length > 1 && (
+                          <div className="hidden md:flex items-center gap-1 mt-0.5">
+                            <span className="text-[10px] font-mono text-primary font-medium">
+                              Eff: {effectiveDiscountPct}%
+                            </span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="text-right">

@@ -30,16 +30,33 @@ import {
 import { TActivityLog } from "@/types";
 
 const getActionBadge = (action: string) => {
-  if (action.includes("CREATE") || action.includes("REGISTER") || action.includes("ADD")) {
+  if (
+    action.includes("CREATE") ||
+    action.includes("REGISTER") ||
+    action.includes("ADD") ||
+    action.includes("APPROVE")
+  ) {
     return (
       <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 text-xs">
         {action}
       </Badge>
     );
   }
-  if (action.includes("DELETE") || action.includes("REVOKE") || action.includes("BLOCK")) {
+  if (
+    action.includes("DELETE") ||
+    action.includes("REVOKE") ||
+    action.includes("BLOCK") ||
+    action.includes("REJECT")
+  ) {
     return (
       <Badge className="bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20 text-xs">
+        {action}
+      </Badge>
+    );
+  }
+  if (action.includes("RESTORE") || action.includes("REACTIVATE")) {
+    return (
+      <Badge className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20 text-xs">
         {action}
       </Badge>
     );
