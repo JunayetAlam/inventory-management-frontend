@@ -2,7 +2,7 @@ import { TInvoiceItem } from "@/types";
 import { formatInvoiceMoney } from "@/utils/formatInvoiceMoney";
 
 const thClass =
-  "h-9 px-2.5 py-2 text-left align-middle text-xs font-semibold uppercase tracking-wider text-slate-500 whitespace-nowrap border-b border-slate-200 bg-slate-50";
+  "h-9 px-2.5 py-2 text-left align-middle text-xs font-bold uppercase tracking-wider text-black dark:text-foreground whitespace-nowrap border-b border-slate-200 bg-slate-50";
 const tdClass =
   "px-2.5 border border-slate-200/80 py-[7px] align-middle whitespace-nowrap text-sm text-slate-900";
 

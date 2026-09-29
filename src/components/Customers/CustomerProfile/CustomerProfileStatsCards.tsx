@@ -51,7 +51,7 @@ export default function CustomerProfileStatsCards({
       description: "Total payments & return credits",
     },
     {
-      label: "Total Balance",
+      label: "Present Due",
       value: formatSignedDue(totalBalance),
       icon: Scale,
       iconBg:

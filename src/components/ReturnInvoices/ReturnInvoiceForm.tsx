@@ -104,7 +104,6 @@ export default function ReturnInvoiceForm({
     initialData ? String(initialData.refundedAmount ?? 0) : "0",
   );
   const [note, setNote] = useState(initialData?.note || "");
-  const refundTouchedRef = useRef(!!isEditing || !!isDetails);
 
   const handleInvoiceSearch = (term: string) => {
     if (invoiceSearchTimer.current) clearTimeout(invoiceSearchTimer.current);
@@ -226,11 +225,6 @@ export default function ReturnInvoiceForm({
     if (preselectedInvoiceId) setInvoiceId(preselectedInvoiceId);
   }, [preselectedInvoiceId]);
 
-  // Reset refund default when switching source invoice on create
-  useEffect(() => {
-    if (isEditing || readOnly) return;
-    refundTouchedRef.current = false;
-  }, [invoiceId, isEditing, readOnly]);
 
   const handleAddLineDiscount = (invoiceItemId: string) => {
     setLines((prev) => {
@@ -353,12 +347,6 @@ export default function ReturnInvoiceForm({
   const discVal = Math.max(0, Number(discount) || 0);
   const totalAmount = round2(Math.max(0, subTotal - discVal));
   const maxRefundable = round2(previousDue + totalAmount);
-
-  // Default refunded amount = this return's net credit (create flow)
-  useEffect(() => {
-    if (readOnly || isEditing || refundTouchedRef.current) return;
-    setRefundedAmount(String(totalAmount));
-  }, [totalAmount, readOnly, isEditing]);
 
   const refunded = Math.min(
     Math.max(0, Number(refundedAmount) || 0),
@@ -656,7 +644,7 @@ export default function ReturnInvoiceForm({
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
                 <thead>
-                  <tr className="border-b text-muted-foreground text-left">
+                  <tr className="border-b text-foreground font-semibold text-left">
                     <th className="py-2 pr-2 w-8">#</th>
                     <th className="py-2 pr-2">Product</th>
                     <th className="py-2 pr-2">Unit</th>
@@ -964,17 +952,9 @@ export default function ReturnInvoiceForm({
                 step="any"
                 value={refundedAmount}
                 disabled={readOnly}
-                onChange={(e) => {
-                  refundTouchedRef.current = true;
-                  setRefundedAmount(e.target.value);
-                }}
+                onChange={(e) => setRefundedAmount(e.target.value)}
                 className="h-8 text-xs font-mono"
               />
-              {!readOnly && !isEditing && (
-                <p className="text-[11px] text-muted-foreground">
-                  Defaults to this return&apos;s net credit.
-                </p>
-              )}
             </div>
             <div className="space-y-1.5">
               <Label className="text-xs">Note</Label>

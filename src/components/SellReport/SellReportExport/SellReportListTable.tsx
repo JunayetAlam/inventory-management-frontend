@@ -2,7 +2,7 @@ import { TProductProfitRow } from "@/types";
 import { formatInvoiceMoney } from "@/utils/formatInvoiceMoney";
 
 const thClass =
-  "h-8 px-3 py-1.5 text-left align-middle text-[11px] font-semibold uppercase tracking-wider text-slate-500 whitespace-nowrap border-b border-slate-200 bg-slate-50";
+  "h-8 px-3 py-1.5 text-left align-middle text-[11px] font-bold uppercase tracking-wider text-black dark:text-foreground whitespace-nowrap border-b border-slate-200 bg-slate-50";
 const tdClass =
   "px-3 border-b border-slate-200/80 py-2 align-middle text-xs text-slate-900";
 

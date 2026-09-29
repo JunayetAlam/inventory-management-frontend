@@ -19,9 +19,11 @@ import {
   TrendingUp,
   Undo2,
   Users,
+  Wrench,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useIsAdmin from "@/hooks/useIsAdmin";
+import useIsPrivileged from "@/hooks/useIsPrivileged";
 import { useGetShopDetailsQuery } from "@/redux/api/shopApi";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -88,6 +90,7 @@ function SidebarItem({
 export default function DashboardSidebar() {
   const pathname = usePathname();
   const [isAdmin] = useIsAdmin();
+  const { isPrivileged } = useIsPrivileged();
   const { data: shopResponse } = useGetShopDetailsQuery();
   const shop = shopResponse?.data;
   const [collapsed, setCollapsed] = useState(false);
@@ -173,6 +176,9 @@ export default function DashboardSidebar() {
       title: "Shop Management",
       items: [
         { name: "Shop Details", href: "/shop-details", icon: Store },
+        ...(isPrivileged
+          ? [{ name: "Maintenance", href: "/privileged/maintenance", icon: Wrench }]
+          : []),
       ],
     },
   ];

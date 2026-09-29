@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { persistor, store } from "../redux/store";
 import { Toaster } from "sonner";
 import { PersistGate } from "redux-persist/integration/react";
+import MaintenanceGuard from "@/components/Global/MaintenanceGuard";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -15,7 +16,7 @@ export function Providers({ children }: ProvidersProps) {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Toaster richColors position="top-center" />
-        {children}
+        <MaintenanceGuard>{children}</MaintenanceGuard>
       </PersistGate>
     </Provider>
   );

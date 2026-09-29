@@ -78,6 +78,21 @@ function getPeriodConfig(hour: number): WelcomePeriod {
   };
 }
 
+const WORD_COLORS = [
+  "text-emerald-600 dark:text-emerald-400",
+  "text-blue-600 dark:text-sky-400",
+  "text-violet-600 dark:text-violet-400",
+  "text-amber-600 dark:text-amber-400",
+  "text-rose-600 dark:text-rose-400",
+  "text-cyan-600 dark:text-cyan-300",
+  "text-indigo-600 dark:text-indigo-400",
+  "text-pink-600 dark:text-pink-400",
+  "text-orange-600 dark:text-orange-400",
+  "text-teal-600 dark:text-teal-400",
+  "text-purple-600 dark:text-purple-400",
+  "text-lime-600 dark:text-lime-400",
+];
+
 export default function NavbarWelcomeMarquee() {
   const { data } = useGetMeQuery(undefined);
   const profile = data?.data;
@@ -106,6 +121,11 @@ export default function NavbarWelcomeMarquee() {
     [currentHour],
   );
 
+  const words = useMemo(() => {
+    const fullText = `${periodConfig.prefix}, ${displayName}! ${periodConfig.body} ${periodConfig.highlightText}.`;
+    return fullText.split(/\s+/).filter(Boolean);
+  }, [periodConfig, displayName]);
+
   const PeriodIcon =
     periodConfig.period === "morning"
       ? Sunrise
@@ -121,28 +141,27 @@ export default function NavbarWelcomeMarquee() {
     );
   }
 
-  // Concise greeting item with multiple color accents
+  // Greeting item with each word in bold and a unique color
   const greetingItem = (
-    <div className="inline-flex items-center gap-2">
+    <div className="inline-flex items-center gap-2.5">
       {/* 1. Time Badge */}
       <span
-        className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide border shadow-2xs ${periodConfig.badgeBg} ${periodConfig.badgeText} ${periodConfig.badgeBorder}`}
+        className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide border shadow-2xs ${periodConfig.badgeBg} ${periodConfig.badgeText} ${periodConfig.badgeBorder}`}
       >
         <PeriodIcon className={`size-3.5 shrink-0 ${periodConfig.iconColor}`} />
         {periodConfig.label}
       </span>
 
-      {/* 2. Personalized text with gradient name and colored highlight keyword */}
-      <span className="text-xs sm:text-[13px] font-medium text-foreground/85">
-        {periodConfig.prefix},{" "}
-        <span className="font-semibold bg-linear-to-r from-teal-600 via-emerald-600 to-cyan-600 dark:from-teal-300 dark:via-emerald-400 dark:to-cyan-300 bg-clip-text text-transparent">
-          {displayName}
-        </span>
-        ! {periodConfig.body}{" "}
-        <span className={`font-semibold ${periodConfig.highlightColor}`}>
-          {periodConfig.highlightText}
-        </span>
-        .
+      {/* 2. Bold personalized text with each word having a distinct color */}
+      <span className="text-xs sm:text-[13px] inline-flex items-center gap-1.5 font-bold">
+        {words.map((word, idx) => (
+          <span
+            key={idx}
+            className={`font-bold tracking-tight ${WORD_COLORS[idx % WORD_COLORS.length]}`}
+          >
+            {word}
+          </span>
+        ))}
       </span>
     </div>
   );

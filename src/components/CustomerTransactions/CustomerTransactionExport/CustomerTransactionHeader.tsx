@@ -175,7 +175,7 @@ export default function CustomerTransactionHeader({
           </div>
         </div>
 
-        {/* Total Balance */}
+        {/* Present Due */}
         <div className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50/70 p-2.5">
           <div
             className={`flex size-8 shrink-0 items-center justify-center rounded-md border ${
@@ -188,7 +188,7 @@ export default function CustomerTransactionHeader({
           </div>
           <div className="min-w-0">
             <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-500 truncate">
-              Total Balance
+              Present Due
             </p>
             <p
               className={`font-mono text-xs sm:text-sm font-bold truncate ${

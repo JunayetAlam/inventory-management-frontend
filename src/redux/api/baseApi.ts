@@ -121,6 +121,23 @@ const baseQueryWithSession: BaseQueryFn<
     }
   }
 
+  // Intercept 503 Maintenance Mode responses for unprivileged users
+  if (result.error?.status === 503) {
+    const errorData = result.error.data as
+      | { data?: { isMaintenance?: boolean } }
+      | undefined;
+    if (errorData?.data?.isMaintenance) {
+      const activePrivilegedToken = getPrivilegedToken();
+      if (
+        !activePrivilegedToken &&
+        typeof window !== "undefined" &&
+        window.location.pathname !== "/maintenance"
+      ) {
+        window.location.href = "/maintenance";
+      }
+    }
+  }
+
   return result;
 };
 
@@ -139,6 +156,7 @@ export const baseApi = createApi({
     "Shop",
     "Stats",
     "CustomerTransaction",
+    "Maintenance",
   ],
   endpoints: () => ({}),
 });

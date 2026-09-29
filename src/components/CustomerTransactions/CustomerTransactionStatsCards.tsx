@@ -45,7 +45,7 @@ export default function CustomerTransactionStatsCards({
       description: "Total cash received & credits",
     },
     {
-      label: "Total Balance",
+      label: "Present Due",
       value: formatSignedDue(totalBalance),
       icon: Scale,
       iconBg:
