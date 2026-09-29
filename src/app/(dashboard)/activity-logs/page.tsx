@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import ActivityLogsTable from "@/components/ActivityLogs/ActivityLogsTable";
 
 export const metadata: Metadata = {
-  title: "Manage Activity Logs | Receipt Management",
+  title: "Manage Activity Logs | Invoice Management",
   description: "View and filter system audit and user activity logs",
 };
 

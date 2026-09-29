@@ -16,21 +16,21 @@ import { Banknote, Pencil, Loader2, Calendar } from "lucide-react";
 import {
   useAddPaymentMutation,
   useUpdatePaymentMutation,
-} from "@/redux/api/receiptApi";
+} from "@/redux/api/invoiceApi";
 import { toast } from "sonner";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
-import { TReceipt, TReceiptPayment } from "@/types";
+import { TInvoice, TInvoicePayment } from "@/types";
 
 interface PaymentModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  receiptId: string;
-  receiptNumber: string;
+  invoiceId: string;
+  invoiceNumber: string;
   totalAmount: number;
   paidAmount: number;
   dueAmount: number;
-  paymentToEdit?: TReceiptPayment | null;
-  onSuccess?: (updatedReceipt: TReceipt) => void;
+  paymentToEdit?: TInvoicePayment | null;
+  onSuccess?: (updatedInvoice: TInvoice) => void;
 }
 
 // Format ISO string or Date to "YYYY-MM-DDTHH:mm" for datetime-local input
@@ -48,8 +48,8 @@ const toDateTimeLocalString = (isoString?: string | Date | null): string => {
 export default function PaymentModal({
   open,
   onOpenChange,
-  receiptId,
-  receiptNumber,
+  invoiceId,
+  invoiceNumber,
   totalAmount,
   paidAmount,
   dueAmount,
@@ -103,31 +103,31 @@ export default function PaymentModal({
     }
 
     try {
-      let resultReceipt: TReceipt | undefined;
+      let resultInvoice: TInvoice | undefined;
 
       if (isEditingPayment && paymentToEdit) {
         const res = await updatePayment({
-          receiptId,
+          invoiceId,
           paymentId: paymentToEdit.id,
           amount: numAmount,
           note: note.trim() || null,
           date: date ? new Date(date).toISOString() : null,
         }).unwrap();
         toast.success(`Payment updated to ৳${numAmount} successfully!`);
-        resultReceipt = res?.data?.receipt;
+        resultInvoice = res?.data?.invoice;
       } else {
         const res = await addPayment({
-          id: receiptId,
+          id: invoiceId,
           amount: numAmount,
           note: note.trim() || null,
           date: date ? new Date(date).toISOString() : null,
         }).unwrap();
         toast.success(`Payment of ৳${numAmount} recorded successfully!`);
-        resultReceipt = res?.data?.receipt;
+        resultInvoice = res?.data?.invoice;
       }
 
-      if (resultReceipt && onSuccess) {
-        onSuccess(resultReceipt);
+      if (resultInvoice && onSuccess) {
+        onSuccess(resultInvoice);
       }
       onOpenChange(false);
     } catch (err) {
@@ -149,11 +149,11 @@ export default function PaymentModal({
           </DialogTitle>
         </DialogHeader>
 
-        {/* Receipt Financial Overview */}
+        {/* Invoice Financial Overview */}
         <div className="rounded-xl border border-border/70 bg-muted/30 p-3.5 space-y-2 text-xs">
           <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Receipt Number:</span>
-            <span className="font-mono font-semibold text-foreground">{receiptNumber}</span>
+            <span className="text-muted-foreground">Invoice Number:</span>
+            <span className="font-mono font-semibold text-foreground">{invoiceNumber}</span>
           </div>
           <div className="flex justify-between items-center border-t border-border/40 pt-2">
             <span className="text-muted-foreground">Total Bill:</span>

@@ -20,7 +20,7 @@ export const productApi = baseApi.injectEndpoints({
         url: "/products/stats",
         method: "GET",
       }),
-      providesTags: ["Product", "Receipt", "ReturnInvoice"],
+      providesTags: ["Product", "Invoice", "ReturnInvoice"],
     }),
 
     getProductProfit: builder.query<
@@ -32,7 +32,7 @@ export const productApi = baseApi.injectEndpoints({
         method: "GET",
         params,
       }),
-      providesTags: ["Product", "Receipt", "ReturnInvoice"],
+      providesTags: ["Product", "Invoice", "ReturnInvoice"],
     }),
 
     getProductById: builder.query<TResponse<TProduct>, string>({

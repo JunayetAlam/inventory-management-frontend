@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function ReceiptStyle() {
+export default function InvoiceStyle() {
   return (
     <style jsx global>{`
       @media print {

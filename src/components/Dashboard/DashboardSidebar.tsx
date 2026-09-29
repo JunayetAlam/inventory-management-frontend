@@ -14,7 +14,7 @@ import {
   Package,
   PanelLeftClose,
   PanelLeftOpen,
-  ReceiptText,
+  ReceiptText as InvoiceText,
   Store,
   TrendingUp,
   Undo2,
@@ -139,7 +139,7 @@ export default function DashboardSidebar() {
           href: "/customer-transactions",
           icon: ArrowLeftRight,
         },
-        { name: "Receipts", href: "/receipts", icon: ReceiptText },
+        { name: "Invoices", href: "/invoices", icon: InvoiceText },
         { name: "Return Invoices", href: "/return-invoices", icon: Undo2 },
       ],
     },
@@ -209,14 +209,14 @@ export default function DashboardSidebar() {
           <Link
             href="/dashboard"
             className={cn("block min-w-0", collapsed && "flex justify-center")}
-            aria-label={shop?.name || "Receipt Management"}
+            aria-label={shop?.name || "Invoice Management"}
           >
             {collapsed ? (
               <Store className="size-5" />
             ) : (
               <>
                 <p className="truncate text-sm font-semibold text-sidebar-foreground">
-                  {shop?.name || "Receipt Management"}
+                  {shop?.name || "Invoice Management"}
                 </p>
                 <p className="truncate text-xs text-muted-foreground">
                   {shop?.proprietor || "Store Management"}

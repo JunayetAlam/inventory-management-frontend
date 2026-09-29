@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Receipt Management",
-  description: "Sign in to manage products, customers, and receipts.",
+  title: "Invoice Management",
+  description: "Sign in to manage products, customers, and invoices.",
 };
 
 export default function AuthLayout({

@@ -2,7 +2,7 @@ import {
   TPreviousPosition,
   TPreviousReturnSummary,
   TResponse,
-  TReturnableReceiptItem,
+  TReturnableInvoiceItem,
   TReturnInvoice,
 } from "@/types";
 import { baseApi } from "./baseApi";
@@ -29,11 +29,11 @@ export const returnInvoiceApi = baseApi.injectEndpoints({
       providesTags: ["ReturnInvoice"],
     }),
 
-    getReturnableItemsByReceipt: builder.query<
+    getReturnableItemsByInvoice: builder.query<
       TResponse<{
-        receipt: {
+        invoice: {
           id: string;
-          receiptNumber: string;
+          invoiceNumber: string;
           customer?: {
             id: string;
             name: string;
@@ -44,21 +44,21 @@ export const returnInvoiceApi = baseApi.injectEndpoints({
           paidAmount: number;
           dueAmount: number;
         };
-        items: TReturnableReceiptItem[];
+        items: TReturnableInvoiceItem[];
         previousReturn: TPreviousReturnSummary | null;
         previousDueAmount: number;
         previousPosition: TPreviousPosition;
       }>,
-      { receiptId: string; excludeReturnInvoiceId?: string }
+      { invoiceId: string; excludeReturnInvoiceId?: string }
     >({
-      query: ({ receiptId, excludeReturnInvoiceId }) => ({
-        url: `/return-invoices/returnable/${receiptId}`,
+      query: ({ invoiceId, excludeReturnInvoiceId }) => ({
+        url: `/return-invoices/returnable/${invoiceId}`,
         method: "GET",
         params: excludeReturnInvoiceId
           ? { excludeReturnInvoiceId }
           : undefined,
       }),
-      providesTags: ["ReturnInvoice", "Receipt"],
+      providesTags: ["ReturnInvoice", "Invoice"],
     }),
 
     createReturnInvoice: builder.mutation<
@@ -72,7 +72,7 @@ export const returnInvoiceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [
         "ReturnInvoice",
-        "Receipt",
+        "Invoice",
         "Product",
         "ActivityLog",
         "Notification",
@@ -90,7 +90,7 @@ export const returnInvoiceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [
         "ReturnInvoice",
-        "Receipt",
+        "Invoice",
         "Product",
         "ActivityLog",
         "Notification",
@@ -120,7 +120,7 @@ export const returnInvoiceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [
         "ReturnInvoice",
-        "Receipt",
+        "Invoice",
         "Product",
         "ActivityLog",
         "Notification",
@@ -137,7 +137,7 @@ export const returnInvoiceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [
         "ReturnInvoice",
-        "Receipt",
+        "Invoice",
         "Product",
         "ActivityLog",
         "Notification",
@@ -162,7 +162,7 @@ export const returnInvoiceApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [
         "ReturnInvoice",
-        "Receipt",
+        "Invoice",
         "Product",
         "ActivityLog",
         "Notification",
@@ -174,7 +174,7 @@ export const returnInvoiceApi = baseApi.injectEndpoints({
 export const {
   useGetAllReturnInvoicesQuery,
   useGetReturnInvoiceByIdQuery,
-  useGetReturnableItemsByReceiptQuery,
+  useGetReturnableItemsByInvoiceQuery,
   useCreateReturnInvoiceMutation,
   useUpdateReturnInvoiceMutation,
   useUpdateReturnInvoiceStatusMutation,

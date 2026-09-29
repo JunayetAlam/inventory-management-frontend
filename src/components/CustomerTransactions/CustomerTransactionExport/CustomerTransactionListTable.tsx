@@ -65,15 +65,15 @@ export default function CustomerTransactionListTable({
           </tr>
         ) : (
           transactions.map((tx, idx) => {
-            const isReceipt = tx.type === "RECEIPT";
+            const isInvoice = tx.type === "INVOICE";
             const isPayment = tx.type === "PAYMENT";
             const isReturn = tx.type === "RETURN_INVOICE";
 
             const invoiceNumber = isReturn
               ? tx.returnInvoice?.returnNumber || tx.referenceNumber || "—"
-              : tx.receipt?.receiptNumber ||
-                tx.payment?.receipt?.receiptNumber ||
-                (isReceipt ? tx.referenceNumber : null) ||
+              : tx.invoice?.invoiceNumber ||
+                tx.payment?.invoice?.invoiceNumber ||
+                (isInvoice ? tx.referenceNumber : null) ||
                 "—";
 
             return (
@@ -103,14 +103,14 @@ export default function CustomerTransactionListTable({
                 <td className={`${tdClass} whitespace-nowrap font-medium`}>
                   <span
                     className={`inline-block px-1.5 py-0.5 rounded text-[9.5px] font-semibold ${
-                      isReceipt
+                      isInvoice
                         ? "bg-blue-50 text-blue-700 border border-blue-200"
                         : isPayment
                           ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
                           : "bg-amber-50 text-amber-700 border border-amber-200"
                     }`}
                   >
-                    {isReceipt ? "Receipt" : isPayment ? "Payment" : "Return"}
+                    {isInvoice ? "Invoice" : isPayment ? "Payment" : "Return"}
                   </span>
                 </td>
                 <td
@@ -141,7 +141,7 @@ export default function CustomerTransactionListTable({
                 <td
                   className={`${tdClass} text-[9.5px] text-slate-700 whitespace-pre-wrap break-words leading-relaxed`}
                 >
-                  {tx.note || tx.payment?.note || tx.receipt?.note || "—"}
+                  {tx.note || tx.payment?.note || tx.invoice?.note || "—"}
                 </td>
                 <td
                   className={`${tdClass} font-mono text-[10.5px] font-semibold text-slate-800 whitespace-nowrap`}

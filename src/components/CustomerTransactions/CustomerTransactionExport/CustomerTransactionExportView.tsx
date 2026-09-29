@@ -1,6 +1,6 @@
 "use client";
 
-import ReceiptStyle from "@/components/Receipts/ReceipInvoiceView.tsx/receipt-style";
+import InvoiceStyle from "@/components/Invoices/InvoiceView.tsx/invoice-style";
 import { Button } from "@/components/ui/button";
 import { useGetShopDetailsQuery } from "@/redux/api/shopApi";
 import { TCustomer, TCustomerTransaction, TShop } from "@/types";
@@ -40,7 +40,7 @@ const FALLBACK_METRICS: ListMetrics = {
 const PROBE_TRANSACTION: TCustomerTransaction = {
   id: "probe-tx",
   customerId: "probe-cust",
-  type: "RECEIPT",
+  type: "INVOICE",
   transactionAmount: 1000,
   cashAmount: 800,
   dueAmount: 200,
@@ -53,9 +53,9 @@ const PROBE_TRANSACTION: TCustomerTransaction = {
     name: "Sample Customer",
     phoneNumber: "01700000000",
   },
-  receipt: {
+  invoice: {
     id: "probe-rec",
-    receiptNumber: "REC-00000001",
+    invoiceNumber: "REC-00000001",
     totalAmount: 1000,
     paidAmount: 800,
     dueAmount: 200,
@@ -367,7 +367,7 @@ export default function CustomerTransactionExportView({
         })}
       </div>
 
-      <ReceiptStyle />
+      <InvoiceStyle />
     </div>
   );
 }

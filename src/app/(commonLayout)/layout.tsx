@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Receipt Management",
-  description: "Internal shop tool for products, customers, and receipts.",
+  title: "Invoice Management",
+  description: "Internal shop tool for products, customers, and invoices.",
 };
 
 export default function CommonLayout({

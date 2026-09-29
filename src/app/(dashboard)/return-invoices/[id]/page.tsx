@@ -241,7 +241,7 @@ export default function ReturnInvoiceDetailsPage() {
             ) : (
               <span
                 className="text-xs text-muted-foreground italic px-2"
-                title="Cannot restore: a newer return exists on this receipt"
+                title="Cannot restore: a newer return exists on this invoice"
               >
                 Restore locked (newer return exists)
               </span>

@@ -1,4 +1,4 @@
-import { TReceiptItem } from "@/types";
+import { TInvoiceItem } from "@/types";
 import { roundInvoiceMoney } from "@/utils/formatInvoiceMoney";
 
 export const INVOICE_CONTENT_FOOTER_GAP = 40;
@@ -7,7 +7,7 @@ export const INVOICE_TABLE_TOP_PADDING = 16;
 
 export type InvoicePage = {
   pageNo: number;
-  items: TReceiptItem[];
+  items: TInvoiceItem[];
   startIndex: number;
   broughtForward: number;
   carriedForward: number;
@@ -18,7 +18,7 @@ export type InvoicePage = {
 };
 
 export type PaginateInvoicePagesInput = {
-  items: TReceiptItem[];
+  items: TInvoiceItem[];
   pageHeight: number;
   compactFooterHeight: number;
   lastFooterHeight: number;
@@ -33,7 +33,7 @@ export type PaginateInvoicePagesInput = {
   extraGap?: number;
 };
 
-export function sumItemTotals(items: TReceiptItem[]): number {
+export function sumItemTotals(items: TInvoiceItem[]): number {
   return roundInvoiceMoney(
     items.reduce((sum, item) => sum + roundInvoiceMoney(item.totalPrice), 0),
   );
@@ -101,7 +101,7 @@ export function paginateInvoicePages(
   let pageNo = 1;
 
   const makePage = (
-    pageItems: TReceiptItem[],
+    pageItems: TInvoiceItem[],
     isLast: boolean,
   ): InvoicePage => {
     const pageItemsTotal = sumItemTotals(pageItems);

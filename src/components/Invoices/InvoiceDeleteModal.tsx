@@ -12,34 +12,34 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Trash2, ShieldAlert } from "lucide-react";
-import { useDeleteReceiptMutation } from "@/redux/api/receiptApi";
+import { useDeleteInvoiceMutation } from "@/redux/api/invoiceApi";
 import useIsAdmin from "@/hooks/useIsAdmin";
-import { TReceipt } from "@/types";
+import { TInvoice } from "@/types";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 
-interface ReceiptDeleteModalProps {
+interface InvoiceDeleteModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  receipt: TReceipt | null;
+  invoice: TInvoice | null;
   onSuccess?: () => void;
 }
 
-export default function ReceiptDeleteModal({
+export default function InvoiceDeleteModal({
   open,
   onOpenChange,
-  receipt,
+  invoice,
   onSuccess,
-}: ReceiptDeleteModalProps) {
+}: InvoiceDeleteModalProps) {
   const [isAdmin] = useIsAdmin();
   const [reason, setReason] = useState("");
-  const [deleteReceipt, { isLoading }] = useDeleteReceiptMutation();
+  const [deleteInvoice, { isLoading }] = useDeleteInvoiceMutation();
 
-  if (!receipt) return null;
+  if (!invoice) return null;
 
   const handleDelete = async () => {
     try {
-      const res = await deleteReceipt({
-        id: receipt.id,
+      const res = await deleteInvoice({
+        id: invoice.id,
         reason: reason.trim() || undefined,
       }).unwrap();
       toast.success(res.message || "Action processed successfully");
@@ -64,13 +64,13 @@ export default function ReceiptDeleteModal({
               )}
             </div>
             <DialogTitle className="text-base font-semibold text-foreground">
-              {isAdmin ? "Confirm Receipt Deletion" : "Request Receipt Deletion"}
+              {isAdmin ? "Confirm Invoice Deletion" : "Request Invoice Deletion"}
             </DialogTitle>
           </div>
           <DialogDescription className="pt-2 text-xs text-muted-foreground leading-relaxed">
             {isAdmin
-              ? `Are you sure you want to delete Receipt "${receipt.receiptNumber}"? This will soft-delete the receipt and automatically restore product stock.`
-              : `You are submitting a deletion request for Receipt "${receipt.receiptNumber}". An administrator will review and confirm this request.`}
+              ? `Are you sure you want to delete Invoice "${invoice.invoiceNumber}"? This will soft-delete the invoice and automatically restore product stock.`
+              : `You are submitting a deletion request for Invoice "${invoice.invoiceNumber}". An administrator will review and confirm this request.`}
           </DialogDescription>
         </DialogHeader>
 
@@ -110,7 +110,7 @@ export default function ReceiptDeleteModal({
               {isLoading
                 ? "Processing..."
                 : isAdmin
-                ? "Delete Receipt"
+                ? "Delete Invoice"
                 : "Submit Deletion Request"}
             </Button>
           </div>

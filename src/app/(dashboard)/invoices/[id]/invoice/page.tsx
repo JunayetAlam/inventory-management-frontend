@@ -1,21 +1,21 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { useGetReceiptByIdQuery } from "@/redux/api/receiptApi";
-import ReceiptInvoiceView from "@/components/Receipts/ReceipInvoiceView.tsx/ReceiptInvoiceView";
+import { useGetInvoiceByIdQuery } from "@/redux/api/invoiceApi";
+import InvoiceView from "@/components/Invoices/InvoiceView.tsx/InvoiceView";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
-export default function ReceiptInvoicePage() {
+export default function InvoiceViewPage() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
 
-  const { data, isLoading, isError } = useGetReceiptByIdQuery(id, {
+  const { data, isLoading, isError } = useGetInvoiceByIdQuery(id, {
     skip: !id,
   });
-  const receipt = data?.data;
+  const invoice = data?.data;
 
   if (isLoading) {
     return (
@@ -28,12 +28,12 @@ export default function ReceiptInvoicePage() {
     );
   }
 
-  if (isError || !receipt) {
+  if (isError || !invoice) {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 py-12 px-4">
         <div className="max-w-md mx-auto p-8 text-center space-y-4 rounded-xl border border-destructive/30 bg-card shadow-sm">
           <p className="text-destructive font-semibold">
-            Receipt not found or failed to load
+            Invoice not found or failed to load
           </p>
           <Button
             variant="outline"
@@ -49,5 +49,5 @@ export default function ReceiptInvoicePage() {
     );
   }
 
-  return <ReceiptInvoiceView receipt={receipt} />;
+  return <InvoiceView invoice={invoice} />;
 }

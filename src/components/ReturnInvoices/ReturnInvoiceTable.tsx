@@ -214,7 +214,7 @@ export default function ReturnInvoiceTable() {
           <TableHeader>
             <TableRow>
               <TableHead>Return #</TableHead>
-              <TableHead>Source Receipt</TableHead>
+              <TableHead>Source Invoice</TableHead>
               <TableHead>Customer</TableHead>
               <TableHead>Items</TableHead>
               <TableHead>Credit</TableHead>
@@ -265,19 +265,19 @@ export default function ReturnInvoiceTable() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    {row.receipt ? (
+                    {row.invoice ? (
                       <Link
-                        href={`/receipts/${row.receiptId}`}
+                        href={`/invoices/${row.invoiceId}`}
                         className="font-mono text-xs hover:underline"
                       >
-                        {row.receipt.receiptNumber}
+                        {row.invoice.invoiceNumber}
                       </Link>
                     ) : (
                       "—"
                     )}
                   </TableCell>
                   <TableCell className="text-xs">
-                    {row.receipt?.customer?.name || "—"}
+                    {row.invoice?.customer?.name || "—"}
                   </TableCell>
                   <TableCell className="text-xs font-mono">
                     {row._count?.items ?? row.items?.length ?? "—"}
@@ -392,7 +392,7 @@ export default function ReturnInvoiceTable() {
                           ) : (
                             <span
                               className="text-[11px] text-muted-foreground italic px-1"
-                              title="Cannot restore: a newer return exists on this receipt"
+                              title="Cannot restore: a newer return exists on this invoice"
                             >
                               Locked
                             </span>

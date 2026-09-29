@@ -19,8 +19,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import useIsAdmin from "@/hooks/useIsAdmin";
-import { useUpdateReceiptStatusMutation } from "@/redux/api/receiptApi";
-import { TReceipt } from "@/types";
+import { useUpdateInvoiceStatusMutation } from "@/redux/api/invoiceApi";
+import { TInvoice } from "@/types";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 import { cn } from "@/lib/utils";
 
@@ -30,22 +30,22 @@ const STATUS_OPTIONS: ("PENDING" | "APPROVED" | "REJECTED")[] = [
   "REJECTED",
 ];
 
-interface ReceiptStatusDropdownProps {
-  receipt: TReceipt;
+interface InvoiceStatusDropdownProps {
+  invoice: TInvoice;
   disabled?: boolean;
   className?: string;
   onStatusUpdated?: (newStatus: "PENDING" | "APPROVED" | "REJECTED") => void;
 }
 
-export default function ReceiptStatusDropdown({
-  receipt,
+export default function InvoiceStatusDropdown({
+  invoice,
   disabled = false,
   className,
   onStatusUpdated,
-}: ReceiptStatusDropdownProps) {
+}: InvoiceStatusDropdownProps) {
   const [isAdmin] = useIsAdmin();
-  const [updateReceiptStatus, { isLoading: isUpdatingStatus }] =
-    useUpdateReceiptStatusMutation();
+  const [updateInvoiceStatus, { isLoading: isUpdatingStatus }] =
+    useUpdateInvoiceStatusMutation();
   const [openStatusPopover, setOpenStatusPopover] = useState<
     "PENDING" | "APPROVED" | "REJECTED" | null
   >(null);
@@ -56,9 +56,9 @@ export default function ReceiptStatusDropdown({
   ) => {
     try {
       setIsUpdating(true);
-      await updateReceiptStatus({ id: receipt.id, status: newStatus }).unwrap();
+      await updateInvoiceStatus({ id: invoice.id, status: newStatus }).unwrap();
       toast.success(
-        `Receipt ${receipt.receiptNumber} status updated to ${newStatus}`
+        `Invoice ${invoice.invoiceNumber} status updated to ${newStatus}`
       );
       setOpenStatusPopover(null);
       onStatusUpdated?.(newStatus);
@@ -69,20 +69,20 @@ export default function ReceiptStatusDropdown({
     }
   };
 
-  if (!isAdmin || receipt.isDeleted) {
+  if (!isAdmin || invoice.isDeleted) {
     return (
       <Badge
         variant="outline"
         className={cn(
-          receipt.status === "APPROVED"
+          invoice.status === "APPROVED"
             ? "bg-emerald-500/15 text-emerald-600 border-emerald-500/30 text-[10px]"
-            : receipt.status === "REJECTED"
+            : invoice.status === "REJECTED"
             ? "bg-destructive/15 text-destructive border-destructive/30 text-[10px]"
             : "bg-amber-500/15 text-amber-600 border-amber-500/30 text-[10px]",
           className
         )}
       >
-        {receipt.status}
+        {invoice.status}
       </Badge>
     );
   }
@@ -98,11 +98,11 @@ export default function ReceiptStatusDropdown({
           disabled={disabled || isCurrentUpdating}
           className={cn(
             "h-7 w-[115px] justify-between text-[11px] font-semibold border rounded-lg px-2.5 shadow-none focus:ring-1 focus:ring-ring transition-colors cursor-pointer",
-            receipt.status === "APPROVED" &&
+            invoice.status === "APPROVED" &&
               "bg-emerald-500/15 text-emerald-600 border-emerald-500/30 dark:text-emerald-400 hover:bg-emerald-500/25",
-            receipt.status === "REJECTED" &&
+            invoice.status === "REJECTED" &&
               "bg-destructive/15 text-destructive border-destructive/30 hover:bg-destructive/25",
-            receipt.status === "PENDING" &&
+            invoice.status === "PENDING" &&
               "bg-amber-500/15 text-amber-600 border-amber-500/30 dark:text-amber-400 hover:bg-amber-500/25",
             className
           )}
@@ -113,7 +113,7 @@ export default function ReceiptStatusDropdown({
             </span>
           ) : (
             <>
-              <span>{receipt.status}</span>
+              <span>{invoice.status}</span>
               <ChevronDown className="size-3 opacity-60 ml-1" />
             </>
           )}
@@ -131,7 +131,7 @@ export default function ReceiptStatusDropdown({
         }}
       >
         {STATUS_OPTIONS.map((statusOption) => {
-          const isCurrent = receipt.status === statusOption;
+          const isCurrent = invoice.status === statusOption;
           if (isCurrent) {
             return (
               <DropdownMenuItem
@@ -204,10 +204,10 @@ export default function ReceiptStatusDropdown({
                   <PopoverDescription className="text-xs text-muted-foreground leading-relaxed">
                     Change status of{" "}
                     <span className="font-mono font-medium text-foreground">
-                      {receipt.receiptNumber}
+                      {invoice.invoiceNumber}
                     </span>{" "}
                     from{" "}
-                    <strong className="text-foreground">{receipt.status}</strong> to{" "}
+                    <strong className="text-foreground">{invoice.status}</strong> to{" "}
                     <strong className="text-foreground">{statusOption}</strong>?
                     <span className="block text-[11px] text-muted-foreground/80 mt-1.5 bg-muted/60 p-1.5 rounded-lg border border-border/40">
                       💡 <strong>Note:</strong> You can change this status again later at any time.

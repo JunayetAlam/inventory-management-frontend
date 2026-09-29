@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 
 function filterTypeLabel(type?: string | null) {
-  if (type === "RECEIPT") return "Receipts / Sales";
+  if (type === "INVOICE") return "Invoices / Sales";
   if (type === "PAYMENT") return "Cash Payments";
   if (type === "RETURN_INVOICE") return "Return Invoices";
   return "All Transactions";

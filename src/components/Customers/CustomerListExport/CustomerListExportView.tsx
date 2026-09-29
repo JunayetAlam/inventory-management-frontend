@@ -6,7 +6,7 @@ import { ArrowLeft, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TCustomer, TShop } from "@/types";
 import { useGetShopDetailsQuery } from "@/redux/api/shopApi";
-import ReceiptStyle from "@/components/Receipts/ReceipInvoiceView.tsx/receipt-style";
+import InvoiceStyle from "@/components/Invoices/InvoiceView.tsx/invoice-style";
 import CustomerListHeader from "./CustomerListHeader";
 import CustomerListContinuationBar from "./CustomerListContinuationBar";
 import CustomerListFooter from "./CustomerListFooter";
@@ -299,7 +299,7 @@ export default function CustomerListExportView({
         ))}
       </div>
 
-      <ReceiptStyle />
+      <InvoiceStyle />
     </div>
   );
 }

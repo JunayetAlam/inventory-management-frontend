@@ -4,17 +4,17 @@ import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Printer, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { TReceipt, TReceiptItem, TReturnInvoice } from "@/types";
+import { TInvoice, TInvoiceItem, TReturnInvoice } from "@/types";
 import { useGetShopDetailsQuery } from "@/redux/api/shopApi";
 import Image from "next/image";
-import RIV_ProductTable from "@/components/Receipts/ReceipInvoiceView.tsx/RIV_ProductTable";
-import ReceiptStyle from "@/components/Receipts/ReceipInvoiceView.tsx/receipt-style";
-import RIV_Footer from "@/components/Receipts/ReceipInvoiceView.tsx/RIV_Footer";
-import RIV_ContinuationBar from "@/components/Receipts/ReceipInvoiceView.tsx/RIV_ContinuationBar";
+import RIV_ProductTable from "@/components/Invoices/InvoiceView.tsx/RIV_ProductTable";
+import InvoiceStyle from "@/components/Invoices/InvoiceView.tsx/invoice-style";
+import RIV_Footer from "@/components/Invoices/InvoiceView.tsx/RIV_Footer";
+import RIV_ContinuationBar from "@/components/Invoices/InvoiceView.tsx/RIV_ContinuationBar";
 import {
   INVOICE_CONTENT_FOOTER_GAP,
   paginateInvoicePages,
-} from "@/components/Receipts/ReceipInvoiceView.tsx/paginateInvoicePages";
+} from "@/components/Invoices/InvoiceView.tsx/paginateInvoicePages";
 import RetIV_Details from "./RetIV_Details";
 import RetIV_Calculation from "./RetIV_Calculation";
 
@@ -52,10 +52,10 @@ function metricsEqual(a: InvoiceMetrics, b: InvoiceMetrics) {
   );
 }
 
-function toReceiptItems(returnInvoice: TReturnInvoice): TReceiptItem[] {
+function toInvoiceItems(returnInvoice: TReturnInvoice): TInvoiceItem[] {
   return (returnInvoice.items || []).map((it) => ({
     id: it.id,
-    receiptId: it.receiptId,
+    invoiceId: it.invoiceId,
     productId: it.productId,
     productName: it.productName,
     unit: it.unit,
@@ -89,15 +89,15 @@ export default function ReturnInvoiceView({
     useGetShopDetailsQuery();
   const shop = shopResponse?.data;
 
-  const items = useMemo(() => toReceiptItems(returnInvoice), [returnInvoice]);
+  const items = useMemo(() => toInvoiceItems(returnInvoice), [returnInvoice]);
 
-  const continuationReceipt = useMemo(
+  const continuationInvoice = useMemo(
     () =>
       ({
         id: returnInvoice.id,
-        receiptNumber: returnInvoice.returnNumber,
+        invoiceNumber: returnInvoice.returnNumber,
         createdAt: returnInvoice.createdAt,
-      }) as TReceipt,
+      }) as TInvoice,
     [returnInvoice],
   );
 
@@ -112,11 +112,11 @@ export default function ReturnInvoiceView({
     : "";
   const contactEmails = shop?.emails?.length ? shop.emails.join(", ") : "";
 
-  const probeItem: TReceiptItem = useMemo(() => {
+  const probeItem: TInvoiceItem = useMemo(() => {
     if (items[0]) return items[0];
     return {
       id: "probe",
-      receiptId: returnInvoice.receiptId,
+      invoiceId: returnInvoice.invoiceId,
       productName: "Measurement",
       unit: "PIECE",
       sellingPrice: 0,
@@ -262,7 +262,7 @@ export default function ReturnInvoiceView({
         <div className="px-10" ref={barProbeRef}>
           <RIV_ContinuationBar
             shopName={shopName}
-            receipt={continuationReceipt}
+            invoice={continuationInvoice}
             pageNo={2}
             pageCount={2}
           />
@@ -321,7 +321,7 @@ export default function ReturnInvoiceView({
                 ) : (
                   <RIV_ContinuationBar
                     shopName={shopName}
-                    receipt={continuationReceipt}
+                    invoice={continuationInvoice}
                     pageNo={page.pageNo}
                     pageCount={pageCount}
                   />
@@ -354,7 +354,7 @@ export default function ReturnInvoiceView({
           );
         })}
       </div>
-      <ReceiptStyle />
+      <InvoiceStyle />
     </div>
   );
 }

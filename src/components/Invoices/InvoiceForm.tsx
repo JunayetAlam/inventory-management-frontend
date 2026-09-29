@@ -17,11 +17,11 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  useCreateReceiptMutation,
-  useUpdateReceiptMutation,
+  useCreateInvoiceMutation,
+  useUpdateInvoiceMutation,
   useApprovePaymentMutation,
   useDeletePaymentMutation,
-} from "@/redux/api/receiptApi";
+} from "@/redux/api/invoiceApi";
 import { useGetAllProductsQuery } from "@/redux/api/productApi";
 import {
   useGetAllCustomersQuery,
@@ -32,11 +32,11 @@ import { useGetMeQuery } from "@/redux/api/userApi";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import {
   ProductUnit,
-  TReceipt,
-  TReceiptFormItem,
+  TInvoice,
+  TInvoiceFormItem,
   TCustomer,
   TProduct,
-  TReceiptPayment,
+  TInvoicePayment,
 } from "@/types";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 import CustomPhoneInput from "@/components/Forms/CustomPhoneInput";
@@ -54,7 +54,7 @@ import {
   X,
   AlertTriangle,
   Lock,
-  Receipt,
+  Receipt as Invoice,
   User,
   Package,
   Save,
@@ -96,7 +96,7 @@ const PRODUCT_UNITS: ProductUnit[] = [
 const normalizeProductName = (name: string) => name.trim().toLowerCase();
 
 interface FormItemState extends Omit<
-  TReceiptFormItem,
+  TInvoiceFormItem,
   "sellingPrice" | "quantity" | "discount" | "discounts"
 > {
   tempId: string;
@@ -172,21 +172,21 @@ function mergeLegacyDuplicateItems(
   return merged;
 }
 
-interface ReceiptFormProps {
-  initialData?: TReceipt;
+interface InvoiceFormProps {
+  initialData?: TInvoice;
   isEditing?: boolean;
   isDetails?: boolean;
   onCancelEdit?: () => void;
   onSaveSuccess?: () => void;
 }
 
-export default function ReceiptForm({
+export default function InvoiceForm({
   initialData,
   isEditing = false,
   isDetails = false,
   onCancelEdit,
   onSaveSuccess,
-}: ReceiptFormProps) {
+}: InvoiceFormProps) {
   const router = useRouter();
 
   // Redux APIs
@@ -197,12 +197,12 @@ export default function ReceiptForm({
   const isLocked = isDetails || (!isAdmin && isApproved);
 
   // Payments State for Edit / Details mode
-  const [payments, setPayments] = useState<TReceiptPayment[]>(
+  const [payments, setPayments] = useState<TInvoicePayment[]>(
     initialData?.payments || [],
   );
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [selectedPaymentToEdit, setSelectedPaymentToEdit] =
-    useState<TReceiptPayment | null>(null);
+    useState<TInvoicePayment | null>(null);
 
   const [approvePayment, { isLoading: isApprovingPayment }] =
     useApprovePaymentMutation();
@@ -214,16 +214,16 @@ export default function ReceiptForm({
     setIsPaymentModalOpen(true);
   };
 
-  const handleOpenEditPayment = (p: TReceiptPayment) => {
+  const handleOpenEditPayment = (p: TInvoicePayment) => {
     setSelectedPaymentToEdit(p);
     setIsPaymentModalOpen(true);
   };
 
-  const handlePaymentSuccess = (updatedReceipt: TReceipt) => {
-    if (updatedReceipt.payments) {
-      setPayments(updatedReceipt.payments);
+  const handlePaymentSuccess = (updatedInvoice: TInvoice) => {
+    if (updatedInvoice.payments) {
+      setPayments(updatedInvoice.payments);
     }
-    setPaidAmount(String(updatedReceipt.paidAmount || 0));
+    setPaidAmount(String(updatedInvoice.paidAmount || 0));
   };
 
   // Always keep payments sorted chronologically so the last payment is at last
@@ -239,12 +239,12 @@ export default function ReceiptForm({
     if (!initialData) return;
     try {
       const res = await approvePayment({
-        receiptId: initialData.id,
+        invoiceId: initialData.id,
         paymentId,
       }).unwrap();
       toast.success("Payment approved successfully!");
-      if (res?.data?.receipt?.payments) {
-        setPayments(res.data.receipt.payments);
+      if (res?.data?.invoice?.payments) {
+        setPayments(res.data.invoice.payments);
       }
     } catch (err) {
       toast.error(errorMessageGenerator(err));
@@ -255,23 +255,23 @@ export default function ReceiptForm({
     if (!initialData) return;
     try {
       const res = await deletePayment({
-        receiptId: initialData.id,
+        invoiceId: initialData.id,
         paymentId,
       }).unwrap();
       toast.success("Payment deleted successfully!");
-      if (res?.data?.receipt) {
-        if (res.data.receipt.payments) {
-          setPayments(res.data.receipt.payments);
+      if (res?.data?.invoice) {
+        if (res.data.invoice.payments) {
+          setPayments(res.data.invoice.payments);
         }
-        setPaidAmount(String(res.data.receipt.paidAmount || 0));
+        setPaidAmount(String(res.data.invoice.paidAmount || 0));
       }
     } catch (err) {
       toast.error(errorMessageGenerator(err));
     }
   };
 
-  const [createReceipt, { isLoading: isCreating }] = useCreateReceiptMutation();
-  const [updateReceipt, { isLoading: isUpdating }] = useUpdateReceiptMutation();
+  const [createInvoice, { isLoading: isCreating }] = useCreateInvoiceMutation();
+  const [updateInvoice, { isLoading: isUpdating }] = useUpdateInvoiceMutation();
 
   const { data: productsResponse, isLoading: isProductsLoading } =
     useGetAllProductsQuery({
@@ -363,7 +363,7 @@ export default function ReceiptForm({
   }, []);
 
   // Overall Financials
-  const [receiptDiscount, setReceiptDiscount] = useState<string>(
+  const [invoiceDiscount, setInvoiceDiscount] = useState<string>(
     initialData ? String(initialData.discount || 0) : "0",
   );
   const [paidAmount, setPaidAmount] = useState<string>(
@@ -375,7 +375,7 @@ export default function ReceiptForm({
   useEffect(() => {
     if (initialData) {
       setSelectedCustomerId(initialData.customerId || null);
-      setReceiptDiscount(String(initialData.discount || 0));
+      setInvoiceDiscount(String(initialData.discount || 0));
       setPaidAmount(String(initialData.paidAmount || 0));
       setNote(initialData.note || "");
 
@@ -522,7 +522,7 @@ export default function ReceiptForm({
     );
     if (existing) {
       toast.info(
-        `"${product.name}" is already on this receipt. Update quantity on that row.`,
+        `"${product.name}" is already on this invoice. Update quantity on that row.`,
       );
       focusExistingItemRow(existing.tempId);
       return;
@@ -554,7 +554,7 @@ export default function ReceiptForm({
       );
       if (existing) {
         toast.info(
-          `"${existing.productName}" is already on this receipt. Update quantity on that row.`,
+          `"${existing.productName}" is already on this invoice. Update quantity on that row.`,
         );
         focusExistingItemRow(existing.tempId);
         return;
@@ -600,7 +600,7 @@ export default function ReceiptForm({
       );
       if (existing) {
         toast.info(
-          `"${existing.productName}" is already on this receipt. Update quantity on that row.`,
+          `"${existing.productName}" is already on this invoice. Update quantity on that row.`,
         );
         focusExistingItemRow(existing.tempId);
         return;
@@ -659,7 +659,7 @@ export default function ReceiptForm({
   // Remove item row
   const handleRemoveItem = (tempId: string) => {
     if (items.length <= 1) {
-      toast.error("At least one item is required in the receipt");
+      toast.error("At least one item is required in the invoice");
       return;
     }
     setItems((prev) => prev.filter((it) => it.tempId !== tempId));
@@ -763,8 +763,8 @@ export default function ReceiptForm({
       };
     });
 
-    const receiptDisc = Math.max(0, Number(receiptDiscount) || 0);
-    const tot = Math.round(Math.max(0, sub - receiptDisc) * 100) / 100;
+    const invoiceDisc = Math.max(0, Number(invoiceDiscount) || 0);
+    const tot = Math.round(Math.max(0, sub - invoiceDisc) * 100) / 100;
     const paid = Math.max(0, Number(paidAmount) || 0);
     const due = Math.round(Math.max(0, tot - paid) * 100) / 100;
 
@@ -774,14 +774,14 @@ export default function ReceiptForm({
       totalAmount: tot,
       dueAmount: due,
     };
-  }, [items, receiptDiscount, paidAmount]);
+  }, [items, invoiceDiscount, paidAmount]);
 
   // Form Submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isLocked) {
-      toast.error("This receipt is locked for editing");
+      toast.error("This invoice is locked for editing");
       return;
     }
 
@@ -843,7 +843,7 @@ export default function ReceiptForm({
         if (seenProductIds.has(it.productId)) {
           const first = items.find((row) => row.productId === it.productId);
           toast.error(
-            "Duplicate product on receipt; each product can only appear once",
+            "Duplicate product on invoice; each product can only appear once",
           );
           if (first) focusExistingItemRow(first.tempId);
           return;
@@ -860,7 +860,7 @@ export default function ReceiptForm({
             normalizeProductName(row.productName) === nameKey,
         );
         toast.error(
-          "Duplicate product on receipt; each product can only appear once",
+          "Duplicate product on invoice; each product can only appear once",
         );
         if (first) focusExistingItemRow(first.tempId);
         return;
@@ -880,29 +880,29 @@ export default function ReceiptForm({
           .map((d) => Number(d) || 0)
           .filter((d) => d > 0),
       })),
-      discount: Number(receiptDiscount) || 0,
+      discount: Number(invoiceDiscount) || 0,
       paidAmount: Number(paidAmount) || 0,
       note: note.trim() || null,
     };
 
     try {
       if (isEditing && initialData) {
-        await updateReceipt({ id: initialData.id, body: payload }).unwrap();
-        toast.success("Receipt updated successfully!");
+        await updateInvoice({ id: initialData.id, body: payload }).unwrap();
+        toast.success("Invoice updated successfully!");
         if (onSaveSuccess) {
           onSaveSuccess();
         } else {
-          router.push(`/receipts/${initialData.id}`);
+          router.push(`/invoices/${initialData.id}`);
         }
       } else {
-        const res: any = await createReceipt(payload).unwrap();
-        toast.success("Receipt created successfully!");
-        const createdReceipt = res?.data?.receipt ?? res?.data;
-        const createdId = createdReceipt?.id as string | undefined;
+        const res: any = await createInvoice(payload).unwrap();
+        toast.success("Invoice created successfully!");
+        const createdInvoice = res?.data?.invoice ?? res?.data;
+        const createdId = createdInvoice?.id as string | undefined;
         if (Array.isArray(res?.data?.warnings)) {
           res.data.warnings.forEach((w: string) => toast.warning(w));
         }
-        router.push(createdId ? `/receipts/${createdId}` : "/receipts");
+        router.push(createdId ? `/invoices/${createdId}` : "/invoices");
       }
     } catch (err) {
       toast.error(errorMessageGenerator(err));
@@ -911,7 +911,7 @@ export default function ReceiptForm({
 
   return (
     <>
-      <form id="receipt-form" onSubmit={handleSubmit} className="space-y-6">
+      <form id="invoice-form" onSubmit={handleSubmit} className="space-y-6">
         {/* Top Header Actions (Sticky bar for quick access in Edit/Create mode) */}
         {!isDetails && (
           <div className="sticky top-2 z-30 flex items-center justify-between gap-3 p-3 -mx-2 rounded-xl bg-background/95 backdrop-blur border border-border shadow-xs">
@@ -936,9 +936,9 @@ export default function ReceiptForm({
                   disabled={isCreating || isUpdating}
                   onClick={() => {
                     if (isEditing && initialData) {
-                      router.push(`/receipts/${initialData.id}`);
+                      router.push(`/invoices/${initialData.id}`);
                     } else {
-                      router.push("/receipts");
+                      router.push("/invoices");
                     }
                   }}
                   className="h-8 px-3 text-xs font-medium cursor-pointer"
@@ -960,7 +960,7 @@ export default function ReceiptForm({
                     <>
                       <Save className="size-3.5" />
                       <span>
-                        {isEditing ? "Update Receipt" : "Create Receipt"}
+                        {isEditing ? "Update Invoice" : "Create Invoice"}
                       </span>
                     </>
                   )}
@@ -1005,15 +1005,15 @@ export default function ReceiptForm({
                         className="max-w-xs text-xs p-2.5"
                       >
                         <p className="font-semibold text-foreground mb-0.5">
-                          {isApproved ? "Approved Receipt" : "Receipt Locked"}
+                          {isApproved ? "Approved Invoice" : "Invoice Locked"}
                         </p>
                         <p className="text-muted-foreground leading-relaxed">
                           {isApproved
-                            ? "This receipt has been approved. Product and billing edits are locked, but installment payments can still be added or updated below."
-                            : "This receipt is in view mode. Product and billing edits are locked."}
+                            ? "This invoice has been approved. Product and billing edits are locked, but installment payments can still be added or updated below."
+                            : "This invoice is in view mode. Product and billing edits are locked."}
                           {isAdmin && (
                             <span className="block mt-1 font-medium text-primary">
-                              As an Admin, you can still edit this receipt using
+                              As an Admin, you can still edit this invoice using
                               the Edit button.
                             </span>
                           )}
@@ -1160,7 +1160,7 @@ export default function ReceiptForm({
             <CardHeader className="pb-3 border-b border-border/60">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Receipt className="size-4 text-primary" /> Receipt Items &
+                  <Invoice className="size-4 text-primary" /> Invoice Items &
                   Billing ({items.length})
                 </CardTitle>
                 {isLocked && (
@@ -1184,15 +1184,15 @@ export default function ReceiptForm({
                       className="max-w-xs text-xs p-2.5"
                     >
                       <p className="font-semibold text-foreground mb-0.5">
-                        {isApproved ? "Approved Receipt" : "Receipt Locked"}
+                        {isApproved ? "Approved Invoice" : "Invoice Locked"}
                       </p>
                       <p className="text-muted-foreground leading-relaxed">
                         {isApproved
-                          ? "This receipt has been approved. Product and billing edits are locked, but installment payments can still be added or updated below."
-                          : "This receipt is in view mode. Product and billing edits are locked."}
+                          ? "This invoice has been approved. Product and billing edits are locked, but installment payments can still be added or updated below."
+                          : "This invoice is in view mode. Product and billing edits are locked."}
                         {isAdmin && (
                           <span className="block mt-1 font-medium text-primary">
-                            As an Admin, you can still edit this receipt using
+                            As an Admin, you can still edit this invoice using
                             the Edit button.
                           </span>
                         )}
@@ -1232,7 +1232,7 @@ export default function ReceiptForm({
                     }}
                     className={`relative rounded-xl border p-2.5 space-y-2 transition-colors ${
                       highlightedTempId === it.tempId
-                        ? "receipt-item-row-highlight border-primary"
+                        ? "invoice-item-row-highlight border-primary"
                         : hasStockWarning
                           ? "border-amber-500/60 bg-amber-500/5 dark:bg-amber-500/10"
                           : "border-border/70 bg-card hover:border-border"
@@ -1282,7 +1282,7 @@ export default function ReceiptForm({
                             it.productName
                               ? `"${it.productName}"`
                               : "this product"
-                          } from the receipt?`}
+                          } from the invoice?`}
                           confirmLabel="Remove"
                           cancelLabel="Cancel"
                           destructive
@@ -1537,24 +1537,24 @@ export default function ReceiptForm({
                   </span>
                 </div>
 
-                {/* Solid Receipt-Level Discount */}
+                {/* Solid Invoice-Level Discount */}
                 <div className="flex items-center justify-between gap-4 pt-2 border-t border-border/60">
                   <Label
-                    htmlFor="receipt-discount"
+                    htmlFor="invoice-discount"
                     className="text-xs text-muted-foreground"
                   >
-                    Receipt Discount (৳)
+                    Invoice Discount (৳)
                   </Label>
                   <div className="w-40 sm:w-52">
                     <Input
-                      id="receipt-discount"
+                      id="invoice-discount"
                       type="number"
                       step="1"
                       min="0"
                       max={subTotal}
                       placeholder="0"
-                      value={receiptDiscount}
-                      onChange={(e) => setReceiptDiscount(e.target.value)}
+                      value={invoiceDiscount}
+                      onChange={(e) => setInvoiceDiscount(e.target.value)}
                       disabled={isLocked}
                       className="font-mono text-xs text-right"
                     />
@@ -1657,7 +1657,7 @@ export default function ReceiptForm({
                                 {!isApprovedPayment && (
                                   <ConfirmPopup
                                     title="Delete Payment"
-                                    description={`Are you sure you want to delete this payment of ৳${p.amount}? The receipt remaining due will be recalculated.`}
+                                    description={`Are you sure you want to delete this payment of ৳${p.amount}? The invoice remaining due will be recalculated.`}
                                     confirmLabel="Delete"
                                     cancelLabel="Cancel"
                                     destructive
@@ -1750,16 +1750,16 @@ export default function ReceiptForm({
                   </span>
                 </div>
 
-                {/* Receipt Note */}
+                {/* Invoice Note */}
                 <div className="space-y-1.5 pt-2 border-t border-border/60">
                   <Label
-                    htmlFor="receipt-note"
+                    htmlFor="invoice-note"
                     className="text-xs text-muted-foreground"
                   >
-                    Receipt Note (Optional)
+                    Invoice Note (Optional)
                   </Label>
                   <Textarea
-                    id="receipt-note"
+                    id="invoice-note"
                     placeholder="e.g. Home delivery requested"
                     rows={2}
                     value={note}
@@ -1780,8 +1780,8 @@ export default function ReceiptForm({
                   <Lock className="size-4 text-primary shrink-0" />
                   <span>
                     {isApproved
-                      ? "This receipt is approved. Product and billing edits are locked, but installment payments can still be added or updated above."
-                      : "Viewing receipt in read-only details mode."}
+                      ? "This invoice is approved. Product and billing edits are locked, but installment payments can still be added or updated above."
+                      : "Viewing invoice in read-only details mode."}
                   </span>
                 </div>
                 <Button
@@ -1804,8 +1804,8 @@ export default function ReceiptForm({
         <PaymentModal
           open={isPaymentModalOpen}
           onOpenChange={setIsPaymentModalOpen}
-          receiptId={initialData.id}
-          receiptNumber={initialData.receiptNumber}
+          invoiceId={initialData.id}
+          invoiceNumber={initialData.invoiceNumber}
           totalAmount={totalAmount}
           paidAmount={Math.max(0, Number(paidAmount) || 0)}
           dueAmount={dueAmount}

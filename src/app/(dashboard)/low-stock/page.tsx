@@ -3,7 +3,7 @@ import LowStockTable from "@/components/LowStock/LowStockTable";
 import LowStockStatsCard from "@/components/LowStock/LowStockStatsCard";
 
 export const metadata: Metadata = {
-  title: "Low Stock Inventory | Receipt Management",
+  title: "Low Stock Inventory | Invoice Management",
   description: "Monitor and restock low inventory products (<= 20 units remaining)",
 };
 

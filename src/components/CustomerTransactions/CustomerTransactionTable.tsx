@@ -64,7 +64,7 @@ import CustomerTransactionStatsCards from "./CustomerTransactionStatsCards";
 import CustomerTransactionDetailModal from "./CustomerTransactionDetailModal";
 import CustomerFilterSelect from "./CustomerFilterSelect";
 
-type TransactionTab = "ALL" | "RECEIPT" | "PAYMENT" | "RETURN_INVOICE";
+type TransactionTab = "ALL" | "INVOICE" | "PAYMENT" | "RETURN_INVOICE";
 
 const SORT_OPTIONS = [
   { label: "Newest First", sortBy: "createdAt", sortOrder: "desc" },
@@ -209,7 +209,7 @@ export default function CustomerTransactionTable({
           {(
             [
               { label: "All Transactions", value: "ALL" },
-              { label: "Receipts / Sales", value: "RECEIPT" },
+              { label: "Invoices / Sales", value: "INVOICE" },
               { label: "Cash Payments", value: "PAYMENT" },
               { label: "Return Invoices", value: "RETURN_INVOICE" },
             ] as const
@@ -555,23 +555,23 @@ export default function CustomerTransactionTable({
                 </TableRow>
               ) : (
                 transactions.map((tx, index) => {
-                  const isReceipt = tx.type === "RECEIPT";
+                  const isInvoice = tx.type === "INVOICE";
                   const isPayment = tx.type === "PAYMENT";
                   const isReturn = tx.type === "RETURN_INVOICE";
 
-                  const receiptId =
-                    tx.receiptId ||
-                    tx.receipt?.id ||
-                    tx.payment?.receiptId ||
-                    tx.payment?.receipt?.id ||
-                    tx.returnInvoice?.receiptId ||
-                    tx.returnInvoice?.receipt?.id;
+                  const invoiceId =
+                    tx.invoiceId ||
+                    tx.invoice?.id ||
+                    tx.payment?.invoiceId ||
+                    tx.payment?.invoice?.id ||
+                    tx.returnInvoice?.invoiceId ||
+                    tx.returnInvoice?.invoice?.id;
 
-                  const receiptNumber =
-                    tx.receipt?.receiptNumber ||
-                    tx.payment?.receipt?.receiptNumber ||
-                    tx.returnInvoice?.receipt?.receiptNumber ||
-                    (isReceipt ? tx.referenceNumber : null);
+                  const invoiceNumber =
+                    tx.invoice?.invoiceNumber ||
+                    tx.payment?.invoice?.invoiceNumber ||
+                    tx.returnInvoice?.invoice?.invoiceNumber ||
+                    (isInvoice ? tx.referenceNumber : null);
 
                   const returnInvoiceId =
                     tx.returnInvoiceId || tx.returnInvoice?.id;
@@ -609,7 +609,7 @@ export default function CustomerTransactionTable({
                           variant="outline"
                           className={cn(
                             "text-[10px] font-semibold uppercase tracking-wider py-0.5",
-                            isReceipt &&
+                            isInvoice &&
                               "border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-300",
                             isPayment &&
                               "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
@@ -617,11 +617,11 @@ export default function CustomerTransactionTable({
                               "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
                           )}
                         >
-                          {isReceipt && <FileText className="mr-1 size-3" />}
+                          {isInvoice && <FileText className="mr-1 size-3" />}
                           {isPayment && <Wallet className="mr-1 size-3" />}
                           {isReturn && <Undo2 className="mr-1 size-3" />}
-                          {isReceipt
-                            ? "Receipt"
+                          {isInvoice
+                            ? "Invoice"
                             : isPayment
                               ? "Payment"
                               : "Return"}
@@ -667,7 +667,7 @@ export default function CustomerTransactionTable({
 
                       {/* Note - show full note without skipping */}
                       <TableCell className="text-muted-foreground whitespace-pre-wrap break-words min-w-[200px] leading-relaxed">
-                        {tx.note || tx.payment?.note || tx.receipt?.note || "—"}
+                        {tx.note || tx.payment?.note || tx.invoice?.note || "—"}
                       </TableCell>
 
                       {/* Invoice */}
@@ -689,18 +689,18 @@ export default function CustomerTransactionTable({
                           ) : (
                             <span className="text-muted-foreground">—</span>
                           )
-                        ) : receiptId && receiptNumber ? (
+                        ) : invoiceId && invoiceNumber ? (
                           <Link
-                            href={`/receipts/${receiptId}/invoice`}
+                            href={`/invoices/${invoiceId}/invoice`}
                             className="group inline-flex items-center gap-1 font-semibold text-primary hover:underline"
-                            title={`View Invoice #${receiptNumber}`}
+                            title={`View Invoice #${invoiceNumber}`}
                           >
-                            <span>{receiptNumber}</span>
+                            <span>{invoiceNumber}</span>
                             <ExternalLink className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                           </Link>
-                        ) : receiptNumber ? (
+                        ) : invoiceNumber ? (
                           <span className="font-semibold text-foreground">
-                            {receiptNumber}
+                            {invoiceNumber}
                           </span>
                         ) : (
                           <span className="text-muted-foreground">—</span>

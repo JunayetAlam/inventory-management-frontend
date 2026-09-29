@@ -1,4 +1,4 @@
-import { TReceiptItem } from "@/types";
+import { TInvoiceItem } from "@/types";
 import { formatInvoiceMoney } from "@/utils/formatInvoiceMoney";
 
 const thClass =
@@ -7,7 +7,7 @@ const tdClass =
   "px-2.5 border border-slate-200/80 py-[7px] align-middle whitespace-nowrap text-sm text-slate-900";
 
 export type RIV_ProductTableProps = {
-  items: TReceiptItem[];
+  items: TInvoiceItem[];
   startIndex?: number;
   broughtForward?: number;
   carriedForward?: number;

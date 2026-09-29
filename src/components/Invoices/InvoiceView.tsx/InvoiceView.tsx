@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 import { Printer, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import { TReceipt, TReceiptItem } from "@/types";
+import { TInvoice, TInvoiceItem } from "@/types";
 import { useGetShopDetailsQuery } from "@/redux/api/shopApi";
 import Image from "next/image";
 import RIV_ProductTable from "./RIV_ProductTable";
 import RIV_Details from "./RIV_Details";
-import ReceiptStyle from "./receipt-style";
+import InvoiceStyle from "./invoice-style";
 import RIV_Footer from "./RIV_Footer";
 import RIV_Calculation from "./RIV_Calculation";
 import RIV_ContinuationBar from "./RIV_ContinuationBar";
@@ -20,8 +20,8 @@ import {
   type InvoicePage,
 } from "./paginateInvoicePages";
 
-interface ReceiptInvoiceViewProps {
-  receipt: TReceipt;
+interface InvoiceViewProps {
+  invoice: TInvoice;
 }
 
 type InvoiceMetrics = {
@@ -54,9 +54,9 @@ function metricsEqual(a: InvoiceMetrics, b: InvoiceMetrics) {
   );
 }
 
-export default function ReceiptInvoiceView({
-  receipt,
-}: ReceiptInvoiceViewProps) {
+export default function InvoiceView({
+  invoice,
+}: InvoiceViewProps) {
   const router = useRouter();
   const rulerRef = useRef<HTMLDivElement>(null);
   const detailsProbeRef = useRef<HTMLDivElement>(null);
@@ -99,11 +99,11 @@ export default function ReceiptInvoiceView({
         ? "contact@rupayonbiddut.com"
         : "";
 
-  const probeItem: TReceiptItem = useMemo(() => {
-    if (receipt.items?.[0]) return receipt.items[0];
+  const probeItem: TInvoiceItem = useMemo(() => {
+    if (invoice.items?.[0]) return invoice.items[0];
     return {
       id: "probe-item",
-      receiptId: receipt.id,
+      invoiceId: invoice.id,
       productName: "Measurement item",
       unit: "PIECE",
       sellingPrice: 0,
@@ -111,10 +111,10 @@ export default function ReceiptInvoiceView({
       discount: 0,
       subTotal: 0,
       totalPrice: 0,
-      createdAt: receipt.createdAt,
-      updatedAt: receipt.createdAt,
+      createdAt: invoice.createdAt,
+      updatedAt: invoice.createdAt,
     };
-  }, [receipt]);
+  }, [invoice]);
 
   useEffect(() => {
     const readMetrics = (): InvoiceMetrics => {
@@ -185,15 +185,15 @@ export default function ReceiptInvoiceView({
     });
 
     return () => observer.disconnect();
-  }, [receipt, shop]);
+  }, [invoice, shop]);
 
   const pages: InvoicePage[] = useMemo(
     () =>
       paginateInvoicePages({
-        items: receipt.items || [],
+        items: invoice.items || [],
         ...metrics,
       }),
-    [receipt.items, metrics],
+    [invoice.items, metrics],
   );
 
   const pageCount = pages.length;
@@ -267,14 +267,14 @@ export default function ReceiptInvoiceView({
         <div ref={rulerRef} style={{ height: "297mm", width: "210mm" }} />
         <div className="px-10">
           <div ref={detailsProbeRef}>
-            <RIV_Details shop={shop} receipt={receipt} />
+            <RIV_Details shop={shop} invoice={invoice} />
           </div>
         </div>
         <div className="px-10">
           <div ref={barProbeRef}>
             <RIV_ContinuationBar
               shopName={shopName}
-              receipt={receipt}
+              invoice={invoice}
               pageNo={2}
               pageCount={2}
             />
@@ -294,7 +294,7 @@ export default function ReceiptInvoiceView({
         </div>
         <div className="px-10">
           <div ref={calcProbeRef}>
-            <RIV_Calculation receipt={receipt} />
+            <RIV_Calculation invoice={invoice} />
           </div>
         </div>
         <div ref={compactFooterProbeRef}>
@@ -336,11 +336,11 @@ export default function ReceiptInvoiceView({
                 }}
               >
                 {page.pageNo === 1 ? (
-                  <RIV_Details shop={shop} receipt={receipt} />
+                  <RIV_Details shop={shop} invoice={invoice} />
                 ) : (
                   <RIV_ContinuationBar
                     shopName={shopName}
-                    receipt={receipt}
+                    invoice={invoice}
                     pageNo={page.pageNo}
                     pageCount={pageCount}
                   />
@@ -359,7 +359,7 @@ export default function ReceiptInvoiceView({
                   />
                 </div>
 
-                {page.showCalculation && <RIV_Calculation receipt={receipt} />}
+                {page.showCalculation && <RIV_Calculation invoice={invoice} />}
               </div>
 
               <div className="absolute left-0 right-0 bottom-0">
@@ -375,7 +375,7 @@ export default function ReceiptInvoiceView({
         })}
       </div>
 
-      <ReceiptStyle />
+      <InvoiceStyle />
     </div>
   );
 }

@@ -56,7 +56,7 @@ function formatQty(value: number) {
   }).format(value);
 }
 
-const TABLE_HEADERS = ["#", "Product", "Sold", "Sell", "Receipts"];
+const TABLE_HEADERS = ["#", "Product", "Sold", "Sell", "Invoices"];
 
 export default function SellReportTable() {
   const router = useRouter();
@@ -325,7 +325,7 @@ export default function SellReportTable() {
                 <TableHead>Product</TableHead>
                 <TableHead className="text-right">Sold</TableHead>
                 <TableHead className="text-right">Sell</TableHead>
-                <TableHead>Receipts</TableHead>
+                <TableHead>Invoices</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -409,19 +409,19 @@ export default function SellReportTable() {
                       </TableCell>
                       <TableCell className="max-w-60">
                         <div className="flex flex-wrap gap-1">
-                          {(row.receipts || []).length === 0 ? (
+                          {(row.invoices || []).length === 0 ? (
                             <span className="text-xs text-muted-foreground">
                               —
                             </span>
                           ) : (
-                            (row.receipts || []).map((r) => (
+                            (row.invoices || []).map((r) => (
                               <Link
                                 key={r.id}
-                                href={`/receipts/${r.id}/invoice`}
+                                href={`/invoices/${r.id}/invoice`}
                                 className="font-mono text-xs text-primary hover:underline"
-                                title={`Open invoice ${r.receiptNumber}`}
+                                title={`Open invoice ${r.invoiceNumber}`}
                               >
-                                {r.receiptNumber} ({formatQty(r.quantity)})
+                                {r.invoiceNumber} ({formatQty(r.quantity)})
                               </Link>
                             ))
                           )}

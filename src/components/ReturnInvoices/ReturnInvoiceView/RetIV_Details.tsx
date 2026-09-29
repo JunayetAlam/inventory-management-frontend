@@ -13,7 +13,7 @@ export default function RetIV_Details({
   shop: TShop | null | undefined;
   returnInvoice: TReturnInvoice;
 }) {
-  const customer = returnInvoice.receipt?.customer;
+  const customer = returnInvoice.invoice?.customer;
 
   const shopName = shop?.name || "Rupayon Biddut";
 
@@ -118,7 +118,7 @@ export default function RetIV_Details({
           </div>
 
           <div className="border-b border-slate-200 py-1.5 text-right font-mono font-semibold text-slate-900">
-            {returnInvoice.receipt?.receiptNumber || "—"}
+            {returnInvoice.invoice?.invoiceNumber || "—"}
           </div>
 
           {/* Previous Return */}

@@ -1,5 +1,5 @@
 /**
- * Converts a numerical currency amount to English words formatted for Taka receipts.
+ * Converts a numerical currency amount to English words formatted for Taka invoices.
  * e.g. 2450.50 -> "Two Thousand Four Hundred Fifty Taka and Fifty Paisa Only"
  */
 export function numberToWords(amount: number): string {

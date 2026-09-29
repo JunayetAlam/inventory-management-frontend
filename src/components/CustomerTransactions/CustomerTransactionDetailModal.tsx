@@ -51,7 +51,7 @@ export default function CustomerTransactionDetailModal({
 }: CustomerTransactionDetailModalProps) {
   if (!transaction) return null;
 
-  const isReceipt = transaction.type === "RECEIPT";
+  const isInvoice = transaction.type === "INVOICE";
   const isPayment = transaction.type === "PAYMENT";
   const isReturn = transaction.type === "RETURN_INVOICE";
 
@@ -61,7 +61,7 @@ export default function CustomerTransactionDetailModal({
         <DialogHeader>
           <div className="flex items-center justify-between gap-2 pr-6">
             <DialogTitle className="text-lg font-bold flex items-center gap-2">
-              {isReceipt && <FileText className="size-5 text-blue-500" />}
+              {isInvoice && <FileText className="size-5 text-blue-500" />}
               {isPayment && <Wallet className="size-5 text-emerald-500" />}
               {isReturn && <Undo2 className="size-5 text-amber-500" />}
               <span>Transaction Details</span>
@@ -69,14 +69,14 @@ export default function CustomerTransactionDetailModal({
             <Badge
               variant="outline"
               className={
-                isReceipt
+                isInvoice
                   ? "border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-300 font-semibold"
                   : isPayment
                   ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 font-semibold"
                   : "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 font-semibold"
               }
             >
-              {isReceipt ? "Receipt / Sale" : isPayment ? "Cash Payment" : "Return Invoice"}
+              {isInvoice ? "Invoice / Sale" : isPayment ? "Cash Payment" : "Return Invoice"}
             </Badge>
           </div>
         </DialogHeader>
@@ -170,13 +170,13 @@ export default function CustomerTransactionDetailModal({
           </div>
 
           {/* Notes */}
-          {(transaction.note || transaction.payment?.note || transaction.receipt?.note) && (
+          {(transaction.note || transaction.payment?.note || transaction.invoice?.note) && (
             <div className="rounded-lg border border-border/60 bg-muted/10 p-3 text-xs space-y-1">
               <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
                 <AlertCircle className="size-3.5" /> Note
               </span>
               <p className="text-foreground whitespace-pre-wrap break-words leading-relaxed">
-                {transaction.note || transaction.payment?.note || transaction.receipt?.note}
+                {transaction.note || transaction.payment?.note || transaction.invoice?.note}
               </p>
             </div>
           )}
@@ -208,15 +208,15 @@ export default function CustomerTransactionDetailModal({
           )}
 
           {!isReturn &&
-            (transaction.receiptId ||
-              transaction.payment?.receiptId ||
-              transaction.receipt?.id) && (
+            (transaction.invoiceId ||
+              transaction.payment?.invoiceId ||
+              transaction.invoice?.id) && (
               <Button asChild variant="outline" size="sm" className="text-xs gap-1.5">
                 <Link
-                  href={`/receipts/${
-                    transaction.receiptId ||
-                    transaction.payment?.receiptId ||
-                    transaction.receipt?.id
+                  href={`/invoices/${
+                    transaction.invoiceId ||
+                    transaction.payment?.invoiceId ||
+                    transaction.invoice?.id
                   }/invoice`}
                 >
                   <ExternalLink className="size-3.5" />

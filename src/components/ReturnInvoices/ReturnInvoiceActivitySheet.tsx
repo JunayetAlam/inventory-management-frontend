@@ -17,7 +17,7 @@ import {
   Calendar,
   Globe,
   RotateCcw,
-  Receipt,
+  Receipt as Invoice,
   User,
   DollarSign,
   AlertCircle,
@@ -127,16 +127,16 @@ export default function ReturnInvoiceActivitySheet({
           {returnInvoice && (
             <div className="mt-4 rounded-lg border border-border/80 bg-background/80 p-3 text-xs space-y-1.5">
               <div className="flex items-center justify-between font-mono">
-                <span className="text-muted-foreground">Source Receipt:</span>
+                <span className="text-muted-foreground">Source Invoice:</span>
                 <span className="font-semibold text-foreground">
-                  {returnInvoice.receipt?.receiptNumber || returnInvoice.receiptId || "—"}
+                  {returnInvoice.invoice?.invoiceNumber || returnInvoice.invoiceId || "—"}
                 </span>
               </div>
-              {returnInvoice.receipt?.customer?.name && (
+              {returnInvoice.invoice?.customer?.name && (
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">Customer:</span>
                   <span className="font-medium text-foreground">
-                    {returnInvoice.receipt.customer.name}
+                    {returnInvoice.invoice.customer.name}
                   </span>
                 </div>
               )}

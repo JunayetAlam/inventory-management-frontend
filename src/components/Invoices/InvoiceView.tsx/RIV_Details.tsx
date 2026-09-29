@@ -1,5 +1,5 @@
 import ShopLogo from "@/components/ShopLogo";
-import { TReceipt, TShop } from "@/types";
+import { TInvoice, TShop } from "@/types";
 import {
   formatInvoiceDate,
   formatInvoiceTime,
@@ -7,15 +7,15 @@ import {
 import Image from "next/image";
 export default function RIV_Details({
   shop,
-  receipt,
+  invoice,
 }: {
   shop: TShop | null | undefined;
-  receipt: TReceipt;
+  invoice: TInvoice;
 }) {
   const shopName = shop?.name || "Rupayon Biddut";
   const customerPhone = [
-    receipt.customer?.countryCode,
-    receipt.customer?.phoneNumber,
+    invoice.customer?.countryCode,
+    invoice.customer?.phoneNumber,
   ]
     .filter(Boolean)
     .join(" ");
@@ -77,12 +77,12 @@ export default function RIV_Details({
           </p>{" "}
           <p className="mt-1 text-sm font-bold leading-none text-slate-900">
             {" "}
-            {receipt.customer?.name || "Valued Customer"}{" "}
+            {invoice.customer?.name || "Valued Customer"}{" "}
           </p>{" "}
           <div className="mt-1 flex flex-wrap gap-x-2 text-xs font-medium leading-none text-slate-600">
             {" "}
-            {receipt.customer?.address && (
-              <span>{receipt.customer.address}</span>
+            {invoice.customer?.address && (
+              <span>{invoice.customer.address}</span>
             )}{" "}
             {customerPhone && (
               <>
@@ -91,11 +91,11 @@ export default function RIV_Details({
                 <span>{customerPhone}</span>{" "}
               </>
             )}{" "}
-            {receipt.customer?.email && (
+            {invoice.customer?.email && (
               <>
                 {" "}
                 <span className="text-slate-300">•</span>{" "}
-                <span>{receipt.customer.email}</span>{" "}
+                <span>{invoice.customer.email}</span>{" "}
               </>
             )}{" "}
           </div>{" "}
@@ -109,7 +109,7 @@ export default function RIV_Details({
           </div>{" "}
           <div className="border-b border-slate-200 py-1.5 text-right font-mono font-bold text-slate-900">
             {" "}
-            {receipt.receiptNumber}{" "}
+            {invoice.invoiceNumber}{" "}
           </div>{" "}
           <div className="py-1.5 font-bold uppercase text-slate-500">
             {" "}
@@ -117,10 +117,10 @@ export default function RIV_Details({
           </div>{" "}
           <div className="py-1.5 text-right font-mono text-slate-900 whitespace-nowrap flex items-center justify-end gap-1.5">
             <span className="font-semibold text-xs text-slate-900">
-              {formatInvoiceDate(receipt.createdAt)}
+              {formatInvoiceDate(invoice.createdAt)}
             </span>
             <span className="text-[11px] text-slate-500 font-normal">
-              {formatInvoiceTime(receipt.createdAt)}
+              {formatInvoiceTime(invoice.createdAt)}
             </span>
           </div>{" "}
         </div>{" "}

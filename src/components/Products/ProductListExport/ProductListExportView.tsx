@@ -6,7 +6,7 @@ import { ArrowLeft, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TProduct, TShop } from "@/types";
 import { useGetShopDetailsQuery } from "@/redux/api/shopApi";
-import ReceiptStyle from "@/components/Receipts/ReceipInvoiceView.tsx/receipt-style";
+import InvoiceStyle from "@/components/Invoices/InvoiceView.tsx/invoice-style";
 import ProductListHeader from "./ProductListHeader";
 import ProductListContinuationBar from "./ProductListContinuationBar";
 import ProductListFooter from "./ProductListFooter";
@@ -298,7 +298,7 @@ export default function ProductListExportView({
         ))}
       </div>
 
-      <ReceiptStyle />
+      <InvoiceStyle />
     </div>
   );
 }

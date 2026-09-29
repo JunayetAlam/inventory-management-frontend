@@ -1,6 +1,6 @@
 import { TReturnInvoice } from "@/types";
 import { formatInvoiceMoney } from "@/utils/formatInvoiceMoney";
-import { derivePositionAfterReturn } from "@/utils/deriveReceiptSettlement";
+import { derivePositionAfterReturn } from "@/utils/deriveInvoiceSettlement";
 import React from "react";
 
 function MoneyRow({

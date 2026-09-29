@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Receipt, TrendingDown, Users } from "lucide-react";
+import { AlertTriangle, Receipt as Invoice, TrendingDown, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatInvoiceMoney } from "@/utils/formatInvoiceMoney";
@@ -18,7 +18,7 @@ export default function DashboardStatCards({
     {
       label: "Total Sale Amount",
       value: formatInvoiceMoney(summary?.totalSales ?? 0),
-      icon: Receipt,
+      icon: Invoice,
       tone: "",
     },
     {

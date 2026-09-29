@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import ShopDetailsForm from "@/components/Shop/ShopDetailsForm";
 
 export const metadata: Metadata = {
-  title: "Manage Shop Details | Receipt Management",
+  title: "Manage Shop Details | Invoice Management",
   description: "Configure store identity, branding logo, contact numbers, and branch locations",
 };
 

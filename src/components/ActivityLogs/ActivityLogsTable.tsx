@@ -89,16 +89,16 @@ const ACTIONS_LIST = [
   { label: "Request Delete Customer", value: "REQUEST_DELETE_CUSTOMER" },
   { label: "Delete Customer", value: "DELETE_CUSTOMER" },
   { label: "Restore Customer", value: "ADMIN_RESTORE_CUSTOMER" },
-  // Receipt Actions
-  { label: "Create Receipt", value: "CREATE_RECEIPT" },
-  { label: "Update Receipt", value: "UPDATE_RECEIPT" },
-  { label: "Update Receipt Status", value: "UPDATE_RECEIPT_STATUS" },
-  { label: "Add Receipt Payment", value: "ADD_RECEIPT_PAYMENT" },
-  { label: "Request Delete Receipt", value: "REQUEST_DELETE_RECEIPT" },
-  { label: "Delete Receipt", value: "ADMIN_DELETE_RECEIPT" },
-  { label: "Confirm Delete Receipt", value: "ADMIN_CONFIRM_DELETE_RECEIPT" },
-  { label: "Reject Delete Receipt", value: "ADMIN_REJECT_DELETE_RECEIPT" },
-  { label: "Restore Receipt", value: "ADMIN_RESTORE_RECEIPT" },
+  // Invoice Actions
+  { label: "Create Invoice", value: "CREATE_INVOICE" },
+  { label: "Update Invoice", value: "UPDATE_INVOICE" },
+  { label: "Update Invoice Status", value: "UPDATE_INVOICE_STATUS" },
+  { label: "Add Invoice Payment", value: "ADD_INVOICE_PAYMENT" },
+  { label: "Request Delete Invoice", value: "REQUEST_DELETE_INVOICE" },
+  { label: "Delete Invoice", value: "ADMIN_DELETE_INVOICE" },
+  { label: "Confirm Delete Invoice", value: "ADMIN_CONFIRM_DELETE_INVOICE" },
+  { label: "Reject Delete Invoice", value: "ADMIN_REJECT_DELETE_INVOICE" },
+  { label: "Restore Invoice", value: "ADMIN_RESTORE_INVOICE" },
   // Return Invoice Actions
   { label: "Create Return Invoice", value: "CREATE_RETURN_INVOICE" },
   { label: "Update Return Invoice", value: "UPDATE_RETURN_INVOICE" },
@@ -125,9 +125,9 @@ const ENTITIES_LIST = [
   { label: "User", value: "USER" },
   { label: "Product", value: "PRODUCT" },
   { label: "Customer", value: "CUSTOMER" },
-  { label: "Receipt", value: "RECEIPT" },
+  { label: "Invoice", value: "INVOICE" },
   { label: "Return Invoice", value: "RETURN_INVOICE" },
-  { label: "Receipt Payment", value: "RECEIPT_PAYMENT" },
+  { label: "Invoice Payment", value: "INVOICE_PAYMENT" },
   { label: "Session", value: "SESSION" },
 ];
 
@@ -596,11 +596,11 @@ export default function ActivityLogsTable() {
                             >
                               {log.entityId}
                             </Link>
-                          ) : log.entityType === "RECEIPT" ? (
+                          ) : log.entityType === "INVOICE" ? (
                             <Link
-                              href={`/receipts/${log.entityId}`}
+                              href={`/invoices/${log.entityId}`}
                               className="text-[10px] text-primary hover:underline font-mono truncate max-w-[120px]"
-                              title="View Receipt"
+                              title="View Invoice"
                             >
                               {log.entityId}
                             </Link>

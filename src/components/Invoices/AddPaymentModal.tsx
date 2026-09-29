@@ -12,21 +12,21 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { useAddPaymentMutation } from "@/redux/api/receiptApi";
-import { TReceipt } from "@/types";
+import { useAddPaymentMutation } from "@/redux/api/invoiceApi";
+import { TInvoice } from "@/types";
 import { Banknote, CheckCircle2 } from "lucide-react";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 
 interface AddPaymentModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  receipt: TReceipt | null;
+  invoice: TInvoice | null;
 }
 
 export default function AddPaymentModal({
   open,
   onOpenChange,
-  receipt,
+  invoice,
 }: AddPaymentModalProps) {
   const [addPayment, { isLoading }] = useAddPaymentMutation();
   const [amount, setAmount] = useState<string>("");
@@ -34,14 +34,14 @@ export default function AddPaymentModal({
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
-    if (receipt) {
-      setAmount(receipt.dueAmount > 0 ? String(receipt.dueAmount) : "");
+    if (invoice) {
+      setAmount(invoice.dueAmount > 0 ? String(invoice.dueAmount) : "");
       setNote("");
       setError("");
     }
-  }, [receipt, open]);
+  }, [invoice, open]);
 
-  if (!receipt) return null;
+  if (!invoice) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,14 +52,14 @@ export default function AddPaymentModal({
       return;
     }
 
-    if (numAmount > receipt.dueAmount) {
-      setError(`Payment amount cannot exceed the remaining due of ৳${receipt.dueAmount}`);
+    if (numAmount > invoice.dueAmount) {
+      setError(`Payment amount cannot exceed the remaining due of ৳${invoice.dueAmount}`);
       return;
     }
 
     try {
       await addPayment({
-        id: receipt.id,
+        id: invoice.id,
         amount: numAmount,
         note: note.trim() || null,
       }).unwrap();
@@ -81,27 +81,27 @@ export default function AddPaymentModal({
           </DialogTitle>
         </DialogHeader>
 
-        {/* Receipt Financial Overview */}
+        {/* Invoice Financial Overview */}
         <div className="rounded-xl border border-border/70 bg-muted/30 p-3.5 space-y-2 text-xs">
           <div className="flex justify-between items-center">
-            <span className="text-muted-foreground">Receipt Number:</span>
-            <span className="font-mono font-semibold text-foreground">{receipt.receiptNumber}</span>
+            <span className="text-muted-foreground">Invoice Number:</span>
+            <span className="font-mono font-semibold text-foreground">{invoice.invoiceNumber}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-muted-foreground">Customer:</span>
-            <span className="font-medium text-foreground">{receipt.customer?.name}</span>
+            <span className="font-medium text-foreground">{invoice.customer?.name}</span>
           </div>
           <div className="flex justify-between items-center border-t border-border/40 pt-2">
             <span className="text-muted-foreground">Total Bill:</span>
-            <span className="font-medium text-foreground">৳{receipt.totalAmount}</span>
+            <span className="font-medium text-foreground">৳{invoice.totalAmount}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-muted-foreground">Already Paid:</span>
-            <span className="font-medium text-emerald-600 dark:text-emerald-400">৳{receipt.paidAmount}</span>
+            <span className="font-medium text-emerald-600 dark:text-emerald-400">৳{invoice.paidAmount}</span>
           </div>
           <div className="flex justify-between items-center text-sm font-semibold border-t border-border/40 pt-2">
             <span className="text-destructive">Remaining Due:</span>
-            <span className="font-mono text-destructive">৳{receipt.dueAmount}</span>
+            <span className="font-mono text-destructive">৳{invoice.dueAmount}</span>
           </div>
         </div>
 
@@ -113,8 +113,8 @@ export default function AddPaymentModal({
               type="number"
               step="0.01"
               min="0.01"
-              max={receipt.dueAmount}
-              placeholder={`e.g. ${receipt.dueAmount}`}
+              max={invoice.dueAmount}
+              placeholder={`e.g. ${invoice.dueAmount}`}
               value={amount}
               onChange={(e) => {
                 setAmount(e.target.value);
@@ -144,7 +144,7 @@ export default function AddPaymentModal({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading || receipt.dueAmount <= 0}>
+            <Button type="submit" disabled={isLoading || invoice.dueAmount <= 0}>
               {isLoading ? (
                 "Recording..."
               ) : (

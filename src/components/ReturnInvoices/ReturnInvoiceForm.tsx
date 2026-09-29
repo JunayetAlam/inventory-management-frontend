@@ -25,15 +25,15 @@ import {
 } from "@/components/ui/tooltip";
 import {
   useCreateReturnInvoiceMutation,
-  useGetReturnableItemsByReceiptQuery,
+  useGetReturnableItemsByInvoiceQuery,
   useUpdateReturnInvoiceMutation,
 } from "@/redux/api/returnInvoiceApi";
-import { useGetAllReceiptsQuery, useGetReceiptByIdQuery } from "@/redux/api/receiptApi";
+import { useGetAllInvoicesQuery, useGetInvoiceByIdQuery } from "@/redux/api/invoiceApi";
 import { TReturnInvoice } from "@/types";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
-import { derivePositionAfterReturn } from "@/utils/deriveReceiptSettlement";
+import { derivePositionAfterReturn } from "@/utils/deriveInvoiceSettlement";
 import { cn } from "@/lib/utils";
-import ReceiptSelect from "./ReceiptSelect";
+import InvoiceSelect from "./InvoiceSelect";
 
 interface LineState {
   selected: boolean;
@@ -86,14 +86,14 @@ export default function ReturnInvoiceForm({
 }: ReturnInvoiceFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const preselectedReceiptId =
-    searchParams.get("receiptId") || initialData?.receiptId || "";
+  const preselectedInvoiceId =
+    searchParams.get("invoiceId") || initialData?.invoiceId || "";
 
   const readOnly = isDetails;
 
-  const [receiptId, setReceiptId] = useState(preselectedReceiptId);
-  const [receiptSearch, setReceiptSearch] = useState("");
-  const receiptSearchTimer = useRef<ReturnType<typeof setTimeout> | null>(
+  const [invoiceId, setInvoiceId] = useState(preselectedInvoiceId);
+  const [invoiceSearch, setInvoiceSearch] = useState("");
+  const invoiceSearchTimer = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
   const [lines, setLines] = useState<Record<string, LineState>>({});
@@ -106,10 +106,10 @@ export default function ReturnInvoiceForm({
   const [note, setNote] = useState(initialData?.note || "");
   const refundTouchedRef = useRef(!!isEditing || !!isDetails);
 
-  const handleReceiptSearch = (term: string) => {
-    if (receiptSearchTimer.current) clearTimeout(receiptSearchTimer.current);
-    receiptSearchTimer.current = setTimeout(() => {
-      setReceiptSearch(term);
+  const handleInvoiceSearch = (term: string) => {
+    if (invoiceSearchTimer.current) clearTimeout(invoiceSearchTimer.current);
+    invoiceSearchTimer.current = setTimeout(() => {
+      setInvoiceSearch(term);
     }, 300);
   };
 
@@ -118,41 +118,41 @@ export default function ReturnInvoiceForm({
   const [updateReturn, { isLoading: isUpdating }] =
     useUpdateReturnInvoiceMutation();
 
-  const { data: receiptsRes, isLoading: isReceiptsLoading } =
-    useGetAllReceiptsQuery(
+  const { data: invoicesRes, isLoading: isInvoicesLoading } =
+    useGetAllInvoicesQuery(
       {
         isDeleted: false,
         limit: 50,
-        ...(receiptSearch.trim()
-          ? { searchTerm: receiptSearch.trim() }
+        ...(invoiceSearch.trim()
+          ? { searchTerm: invoiceSearch.trim() }
           : {}),
       },
-      { skip: !!isEditing || !!isDetails || !!preselectedReceiptId },
+      { skip: !!isEditing || !!isDetails || !!preselectedInvoiceId },
     );
 
-  const { data: selectedReceiptRes } = useGetReceiptByIdQuery(receiptId, {
-    skip: !receiptId || isEditing || isDetails,
+  const { data: selectedInvoiceRes } = useGetInvoiceByIdQuery(invoiceId, {
+    skip: !invoiceId || isEditing || isDetails,
   });
 
   const {
     data: returnableRes,
     isLoading: isReturnableLoading,
     isFetching: isReturnableFetching,
-  } = useGetReturnableItemsByReceiptQuery(
+  } = useGetReturnableItemsByInvoiceQuery(
     {
-      receiptId,
+      invoiceId,
       excludeReturnInvoiceId: isEditing ? initialData?.id : undefined,
     },
-    { skip: !receiptId || readOnly },
+    { skip: !invoiceId || readOnly },
   );
 
   const returnableItems = returnableRes?.data?.items || [];
-  const returnableReceipt = returnableRes?.data?.receipt;
+  const returnableInvoice = returnableRes?.data?.invoice;
   const previousReturn =
     returnableRes?.data?.previousReturn ||
     initialData?.previousReturnInvoice ||
     null;
-  const selectedReceipt = selectedReceiptRes?.data;
+  const selectedInvoice = selectedInvoiceRes?.data;
 
   const previousDue = useMemo(() => {
     if (readOnly || isEditing) {
@@ -181,9 +181,9 @@ export default function ReturnInvoiceForm({
       const next: Record<string, LineState> = {};
       for (const item of returnableItems) {
         const existingInitial = initialData?.items?.find(
-          (it) => it.receiptItemId === item.receiptItemId,
+          (it) => it.invoiceItemId === item.invoiceItemId,
         );
-        const prevLine = prev[item.receiptItemId];
+        const prevLine = prev[item.invoiceItemId];
         const maxQty = item.remainingReturnable;
 
         const defaultDiscounts = (raw: any): (number | string)[] => {
@@ -193,7 +193,7 @@ export default function ReturnInvoiceForm({
         };
 
         if (existingInitial && isEditing) {
-          next[item.receiptItemId] = {
+          next[item.invoiceItemId] = {
             selected: true,
             quantity: Math.min(
               existingInitial.quantity,
@@ -203,14 +203,14 @@ export default function ReturnInvoiceForm({
             discounts: defaultDiscounts(existingInitial.discounts ?? existingInitial.discount),
           };
         } else if (prevLine) {
-          next[item.receiptItemId] = {
+          next[item.invoiceItemId] = {
             selected: prevLine.selected && maxQty > 0,
             quantity: Math.min(prevLine.quantity || 1, Math.max(maxQty, 0)),
             sellingPrice: prevLine.sellingPrice ?? item.sellingPrice,
             discounts: prevLine.discounts?.length ? prevLine.discounts : defaultDiscounts(item.discounts ?? item.discount),
           };
         } else {
-          next[item.receiptItemId] = {
+          next[item.invoiceItemId] = {
             selected: false,
             quantity: maxQty > 0 ? 1 : 0,
             sellingPrice: item.sellingPrice,
@@ -223,18 +223,18 @@ export default function ReturnInvoiceForm({
   }, [returnableItems, readOnly, isEditing, initialData]);
 
   useEffect(() => {
-    if (preselectedReceiptId) setReceiptId(preselectedReceiptId);
-  }, [preselectedReceiptId]);
+    if (preselectedInvoiceId) setInvoiceId(preselectedInvoiceId);
+  }, [preselectedInvoiceId]);
 
-  // Reset refund default when switching source receipt on create
+  // Reset refund default when switching source invoice on create
   useEffect(() => {
     if (isEditing || readOnly) return;
     refundTouchedRef.current = false;
-  }, [receiptId, isEditing, readOnly]);
+  }, [invoiceId, isEditing, readOnly]);
 
-  const handleAddLineDiscount = (receiptItemId: string) => {
+  const handleAddLineDiscount = (invoiceItemId: string) => {
     setLines((prev) => {
-      const current = prev[receiptItemId];
+      const current = prev[invoiceItemId];
       if (!current) return prev;
       if (current.discounts.length >= 4) {
         toast.info("Maximum 4 discounts allowed per product");
@@ -242,7 +242,7 @@ export default function ReturnInvoiceForm({
       }
       return {
         ...prev,
-        [receiptItemId]: {
+        [invoiceItemId]: {
           ...current,
           discounts: [...current.discounts, ""],
         },
@@ -250,14 +250,14 @@ export default function ReturnInvoiceForm({
     });
   };
 
-  const handleRemoveLineDiscount = (receiptItemId: string, discIndex: number) => {
+  const handleRemoveLineDiscount = (invoiceItemId: string, discIndex: number) => {
     setLines((prev) => {
-      const current = prev[receiptItemId];
+      const current = prev[invoiceItemId];
       if (!current) return prev;
       if (current.discounts.length <= 1) {
         return {
           ...prev,
-          [receiptItemId]: {
+          [invoiceItemId]: {
             ...current,
             discounts: [""],
           },
@@ -265,7 +265,7 @@ export default function ReturnInvoiceForm({
       }
       return {
         ...prev,
-        [receiptItemId]: {
+        [invoiceItemId]: {
           ...current,
           discounts: current.discounts.filter((_, idx) => idx !== discIndex),
         },
@@ -274,18 +274,18 @@ export default function ReturnInvoiceForm({
   };
 
   const handleLineDiscountChange = (
-    receiptItemId: string,
+    invoiceItemId: string,
     discIndex: number,
     val: string,
   ) => {
     setLines((prev) => {
-      const current = prev[receiptItemId];
+      const current = prev[invoiceItemId];
       if (!current) return prev;
       const updated = [...current.discounts];
       updated[discIndex] = val;
       return {
         ...prev,
-        [receiptItemId]: {
+        [invoiceItemId]: {
           ...current,
           discounts: updated,
         },
@@ -294,7 +294,7 @@ export default function ReturnInvoiceForm({
   };
 
   const displayItems: Array<{
-    receiptItemId: string;
+    invoiceItemId: string;
     productName: string;
     unit: string;
     sellingPrice: number;
@@ -309,7 +309,7 @@ export default function ReturnInvoiceForm({
       return initialData.items.map((it) => {
         const itemDiscounts = it.discounts ?? (it.discount ? [it.discount] : []);
         return {
-          receiptItemId: it.receiptItemId,
+          invoiceItemId: it.invoiceItemId,
           productName: it.productName,
           unit: it.unit,
           sellingPrice: it.sellingPrice,
@@ -321,9 +321,9 @@ export default function ReturnInvoiceForm({
     }
 
     return returnableItems
-      .filter((it) => lines[it.receiptItemId]?.selected)
+      .filter((it) => lines[it.invoiceItemId]?.selected)
       .map((it) => {
-        const line = lines[it.receiptItemId];
+        const line = lines[it.invoiceItemId];
         const qty = line?.quantity || 0;
         const sellingPrice = line?.sellingPrice ?? it.sellingPrice;
         const rawDiscounts = line?.discounts ?? it.discounts ?? (it.discount ? [it.discount] : []);
@@ -331,7 +331,7 @@ export default function ReturnInvoiceForm({
           .map((d) => (d === "" || d === null || d === undefined ? 0 : Number(d)))
           .filter((d) => !isNaN(d) && d > 0);
         return {
-          receiptItemId: it.receiptItemId,
+          invoiceItemId: it.invoiceItemId,
           productName: it.productName,
           unit: it.unit,
           sellingPrice,
@@ -401,20 +401,20 @@ export default function ReturnInvoiceForm({
     e.preventDefault();
     if (readOnly) return;
 
-    if (!receiptId) {
-      toast.error("Please select a source receipt");
+    if (!invoiceId) {
+      toast.error("Please select a source invoice");
       return;
     }
 
     const items = Object.entries(lines)
       .filter(([, v]) => v.selected && v.quantity > 0)
-      .map(([receiptItemId, v]) => {
+      .map(([invoiceItemId, v]) => {
         const activeDiscounts = (v.discounts || [])
           .map((d) => (d === "" || d === null || d === undefined ? 0 : Number(d)))
           .filter((d) => !isNaN(d) && d > 0 && d <= 100);
 
         return {
-          receiptItemId,
+          invoiceItemId,
           quantity: Number(v.quantity),
           sellingPrice: Math.max(0, Number(v.sellingPrice) || 0),
           discounts: activeDiscounts,
@@ -429,7 +429,7 @@ export default function ReturnInvoiceForm({
 
     for (const item of items) {
       const meta = returnableItems.find(
-        (r) => r.receiptItemId === item.receiptItemId,
+        (r) => r.invoiceItemId === item.invoiceItemId,
       );
       if (!meta) continue;
       if (item.quantity > meta.remainingReturnable) {
@@ -448,7 +448,7 @@ export default function ReturnInvoiceForm({
     }
 
     const payload = {
-      ...(isEditing ? {} : { receiptId }),
+      ...(isEditing ? {} : { invoiceId }),
       items,
       discount: discVal,
       refundedAmount: refunded,
@@ -475,16 +475,16 @@ export default function ReturnInvoiceForm({
     }
   };
 
-  const receiptLabel =
-    returnableReceipt?.receiptNumber ||
-    selectedReceipt?.receiptNumber ||
-    initialData?.receipt?.receiptNumber ||
+  const invoiceLabel =
+    returnableInvoice?.invoiceNumber ||
+    selectedInvoice?.invoiceNumber ||
+    initialData?.invoice?.invoiceNumber ||
     "";
 
   const customerName =
-    returnableReceipt?.customer?.name ||
-    selectedReceipt?.customer?.name ||
-    initialData?.receipt?.customer?.name ||
+    returnableInvoice?.customer?.name ||
+    selectedInvoice?.customer?.name ||
+    initialData?.invoice?.customer?.name ||
     "";
 
   const previousReturnNumber =
@@ -532,21 +532,21 @@ export default function ReturnInvoiceForm({
         </div>
       )}
 
-      {/* Source receipt */}
+      {/* Source invoice */}
       <Card className="shadow-xs">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base">Source Receipt</CardTitle>
+          <CardTitle className="text-base">Source Invoice</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           {readOnly || isEditing ? (
             <div className="text-sm space-y-1">
               <p>
-                <span className="text-muted-foreground">Receipt: </span>
+                <span className="text-muted-foreground">Invoice: </span>
                 <Link
-                  href={`/receipts/${receiptId || initialData?.receiptId}`}
+                  href={`/invoices/${invoiceId || initialData?.invoiceId}`}
                   className="font-mono font-semibold text-primary hover:underline"
                 >
-                  {receiptLabel}
+                  {invoiceLabel}
                 </Link>
               </p>
               {customerName && (
@@ -571,12 +571,12 @@ export default function ReturnInvoiceForm({
                 </p>
               )}
             </div>
-          ) : preselectedReceiptId ? (
+          ) : preselectedInvoiceId ? (
             <div className="text-sm space-y-1">
               <p>
-                <span className="text-muted-foreground">Receipt: </span>
+                <span className="text-muted-foreground">Invoice: </span>
                 <span className="font-mono font-semibold">
-                  {receiptLabel || "…"}
+                  {invoiceLabel || "…"}
                 </span>
               </p>
               {customerName && (
@@ -600,20 +600,20 @@ export default function ReturnInvoiceForm({
             </div>
           ) : (
             <div className="space-y-2">
-              <Label className="text-xs">Select receipt *</Label>
-              <ReceiptSelect
-                receipts={receiptsRes?.data || []}
-                selectedReceiptId={receiptId}
-                selectedReceipt={selectedReceipt}
-                isLoading={isReceiptsLoading}
-                onSelect={(id) => setReceiptId(id)}
+              <Label className="text-xs">Select invoice *</Label>
+              <InvoiceSelect
+                invoices={invoicesRes?.data || []}
+                selectedInvoiceId={invoiceId}
+                selectedInvoice={selectedInvoice}
+                isLoading={isInvoicesLoading}
+                onSelect={(id) => setInvoiceId(id)}
                 onClear={() => {
-                  setReceiptId("");
-                  setReceiptSearch("");
+                  setInvoiceId("");
+                  setInvoiceSearch("");
                 }}
-                onSearch={handleReceiptSearch}
+                onSearch={handleInvoiceSearch}
               />
-              {receiptId && customerName && (
+              {invoiceId && customerName && (
                 <p className="text-xs text-muted-foreground">
                   Customer:{" "}
                   <span className="font-medium text-foreground">
@@ -621,7 +621,7 @@ export default function ReturnInvoiceForm({
                   </span>
                 </p>
               )}
-              {receiptId && previousReturnNumber && (
+              {invoiceId && previousReturnNumber && (
                 <p className="text-xs text-muted-foreground">
                   Previous return{" "}
                   <span className="font-mono font-semibold text-foreground">
@@ -643,9 +643,9 @@ export default function ReturnInvoiceForm({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {!receiptId && !readOnly ? (
+          {!invoiceId && !readOnly ? (
             <p className="text-xs text-muted-foreground py-6 text-center">
-              Select a receipt to load returnable products.
+              Select an invoice to load returnable products.
             </p>
           ) : isReturnableLoading || isReturnableFetching ? (
             <div className="space-y-2 py-4">
@@ -669,7 +669,7 @@ export default function ReturnInvoiceForm({
                 <tbody>
                   {displayItems.map((it, index) => (
                     <tr
-                      key={it.receiptItemId}
+                      key={it.invoiceItemId}
                       className="border-b border-border/50"
                     >
                       <td className="py-2 pr-2 font-mono text-muted-foreground">
@@ -698,7 +698,7 @@ export default function ReturnInvoiceForm({
             </div>
           ) : returnableItems.length === 0 ? (
             <p className="text-xs text-muted-foreground py-6 text-center">
-              No returnable products left on this receipt.
+              No returnable products left on this invoice.
             </p>
           ) : (
             <div className="space-y-2">
@@ -711,7 +711,7 @@ export default function ReturnInvoiceForm({
                 <div className="text-right">Total (৳)</div>
               </div>
               {returnableItems.map((item, index) => {
-                const line = lines[item.receiptItemId] || {
+                const line = lines[item.invoiceItemId] || {
                   selected: false,
                   quantity: item.remainingReturnable > 0 ? 1 : 0,
                   sellingPrice: item.sellingPrice,
@@ -730,16 +730,16 @@ export default function ReturnInvoiceForm({
                 );
                 const patchLine = (patch: Partial<LineState>) => {
                   setLines((prev) => {
-                    const current = prev[item.receiptItemId] || line;
+                    const current = prev[item.invoiceItemId] || line;
                     return {
                       ...prev,
-                      [item.receiptItemId]: { ...current, ...patch },
+                      [item.invoiceItemId]: { ...current, ...patch },
                     };
                   });
                 };
                 return (
                   <div
-                    key={item.receiptItemId}
+                    key={item.invoiceItemId}
                     className={cn(
                       "rounded-xl border p-2.5 space-y-2",
                       line.selected
@@ -855,7 +855,7 @@ export default function ReturnInvoiceForm({
                                 value={discVal}
                                 onChange={(e) =>
                                   handleLineDiscountChange(
-                                    item.receiptItemId,
+                                    item.invoiceItemId,
                                     dIdx,
                                     e.target.value,
                                   )
@@ -870,7 +870,7 @@ export default function ReturnInvoiceForm({
                                 <button
                                   type="button"
                                   onClick={() =>
-                                    handleRemoveLineDiscount(item.receiptItemId, dIdx)
+                                    handleRemoveLineDiscount(item.invoiceItemId, dIdx)
                                   }
                                   className="absolute right-1 text-muted-foreground hover:text-destructive transition-colors p-0.5 cursor-pointer"
                                   title="Remove discount tier"
@@ -889,7 +889,7 @@ export default function ReturnInvoiceForm({
                                   variant="outline"
                                   size="icon"
                                   onClick={() =>
-                                    handleAddLineDiscount(item.receiptItemId)
+                                    handleAddLineDiscount(item.invoiceItemId)
                                   }
                                   className="size-7 rounded-md border-dashed border-border hover:border-primary text-muted-foreground hover:text-primary shrink-0 transition-colors"
                                   title="Add another discount tier"

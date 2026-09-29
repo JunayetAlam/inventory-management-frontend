@@ -330,8 +330,8 @@ input[type="number"] {
   appearance: textfield !important;
 }
 
-/* Receipt form: highlight existing product row when duplicate is selected */
-@keyframes receipt-row-highlight {
+/* Invoice form: highlight existing product row when duplicate is selected */
+@keyframes invoice-row-highlight {
   0%,
   100% {
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 55%, transparent);
@@ -343,9 +343,9 @@ input[type="number"] {
   }
 }
 
-.receipt-item-row-highlight {
+.invoice-item-row-highlight {
   border-color: var(--primary) !important;
-  animation: receipt-row-highlight 0.7s ease-in-out 3;
+  animation: invoice-row-highlight 0.7s ease-in-out 3;
 }
 
 /* Navbar Welcome Marquee Animation */

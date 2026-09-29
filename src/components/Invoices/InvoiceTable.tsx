@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  Receipt,
+  Receipt as Invoice,
   Search,
   Plus,
   X,
@@ -22,17 +22,17 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import {
-  useGetAllReceiptsQuery,
-  useConfirmDeleteReceiptMutation,
-  useRejectDeleteReceiptMutation,
-  useRestoreReceiptMutation,
-} from "@/redux/api/receiptApi";
+  useGetAllInvoicesQuery,
+  useConfirmDeleteInvoiceMutation,
+  useRejectDeleteInvoiceMutation,
+  useRestoreInvoiceMutation,
+} from "@/redux/api/invoiceApi";
 import useIsAdmin from "@/hooks/useIsAdmin";
-import { TReceipt } from "@/types";
+import { TInvoice } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import ReceiptActivitySheet from "./ReceiptActivitySheet";
+import InvoiceActivitySheet from "./InvoiceActivitySheet";
 import {
   Select,
   SelectContent,
@@ -55,8 +55,8 @@ import {
 } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import ConfirmPopup from "../Global/ConfirmPopup";
-import ReceiptDeleteModal from "./ReceiptDeleteModal";
-import ReceiptStatusDropdown from "./ReceiptStatusDropdown";
+import InvoiceDeleteModal from "./InvoiceDeleteModal";
+import InvoiceStatusDropdown from "./InvoiceStatusDropdown";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 import { cn } from "@/lib/utils";
 import {
@@ -86,7 +86,7 @@ const SORT_OPTIONS = [
   { label: "Total: Low to High", sortBy: "totalAmount", sortOrder: "asc" },
 ];
 
-export default function ReceiptTable() {
+export default function InvoiceTable() {
   const [isAdmin] = useIsAdmin();
 
   // Filters & State
@@ -98,20 +98,20 @@ export default function ReceiptTable() {
 
   // Modals
 
-  const [selectedReceiptForDelete, setSelectedReceiptForDelete] =
-    useState<TReceipt | null>(null);
+  const [selectedInvoiceForDelete, setSelectedInvoiceForDelete] =
+    useState<TInvoice | null>(null);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [activitySheetOpen, setActivitySheetOpen] = useState(false);
-  const [selectedReceiptForActivity, setSelectedReceiptForActivity] =
-    useState<TReceipt | null>(null);
+  const [selectedInvoiceForActivity, setSelectedInvoiceForActivity] =
+    useState<TInvoice | null>(null);
 
   // Mutations
   const [confirmDelete, { isLoading: isConfirming }] =
-    useConfirmDeleteReceiptMutation();
+    useConfirmDeleteInvoiceMutation();
   const [rejectDelete, { isLoading: isRejecting }] =
-    useRejectDeleteReceiptMutation();
-  const [restoreReceipt, { isLoading: isRestoring }] =
-    useRestoreReceiptMutation();
+    useRejectDeleteInvoiceMutation();
+  const [restoreInvoice, { isLoading: isRestoring }] =
+    useRestoreInvoiceMutation();
 
   // Query Params
   const queryParams: Record<string, unknown> = {
@@ -145,41 +145,41 @@ export default function ReceiptTable() {
     data: response,
     isLoading,
     isFetching,
-  } = useGetAllReceiptsQuery(queryParams);
-  const receipts = response?.data || [];
+  } = useGetAllInvoicesQuery(queryParams);
+  const invoices = response?.data || [];
   const meta = response?.meta;
 
-  const handleOpenDelete = (r: TReceipt) => {
-    setSelectedReceiptForDelete(r);
+  const handleOpenDelete = (r: TInvoice) => {
+    setSelectedInvoiceForDelete(r);
     setDeleteModalOpen(true);
   };
 
-  const handleAdminConfirmDelete = async (r: TReceipt) => {
+  const handleAdminConfirmDelete = async (r: TInvoice) => {
     try {
       await confirmDelete(r.id).unwrap();
       toast.success(
-        `Receipt ${r.receiptNumber} deletion confirmed. Stock restored.`,
+        `Invoice ${r.invoiceNumber} deletion confirmed. Stock restored.`,
       );
     } catch (err) {
       toast.error(errorMessageGenerator(err));
     }
   };
 
-  const handleAdminRejectDelete = async (r: TReceipt) => {
+  const handleAdminRejectDelete = async (r: TInvoice) => {
     try {
       await rejectDelete(r.id).unwrap();
       toast.success(
-        `Deletion request for Receipt ${r.receiptNumber} rejected.`,
+        `Deletion request for Invoice ${r.invoiceNumber} rejected.`,
       );
     } catch (err) {
       toast.error(errorMessageGenerator(err));
     }
   };
 
-  const handleAdminRestore = async (r: TReceipt) => {
+  const handleAdminRestore = async (r: TInvoice) => {
     try {
-      const res: any = await restoreReceipt(r.id).unwrap();
-      toast.success(`Receipt ${r.receiptNumber} restored successfully.`);
+      const res: any = await restoreInvoice(r.id).unwrap();
+      toast.success(`Invoice ${r.invoiceNumber} restored successfully.`);
       if (res?.data?.warnings && res.data.warnings.length > 0) {
         res.data.warnings.forEach((w: string) => toast.warning(w));
       }
@@ -198,7 +198,7 @@ export default function ReceiptTable() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
-              placeholder="Search by receipt # or customer..."
+              placeholder="Search by invoice # or customer..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -235,12 +235,12 @@ export default function ReceiptTable() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Link href="/receipts/create">
+          <Link href="/invoices/create">
             <Button
               size="sm"
               className="gap-1.5 font-semibold text-xs shadow-xs"
             >
-              <Plus className="size-4" /> Create Receipt
+              <Plus className="size-4" /> Create Invoice
             </Button>
           </Link>
         </div>
@@ -261,7 +261,7 @@ export default function ReceiptTable() {
               : "border-transparent text-muted-foreground hover:text-foreground",
           )}
         >
-          All Receipts
+          All Invoices
         </button>
         <button
           type="button"
@@ -334,7 +334,7 @@ export default function ReceiptTable() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="min-w-40">Receipt Number</TableHead>
+              <TableHead className="min-w-40">Invoice Number</TableHead>
               <TableHead>Customer</TableHead>
               <TableHead>Items</TableHead>
               <TableHead>Total Bill</TableHead>
@@ -374,48 +374,48 @@ export default function ReceiptTable() {
                   </TableCell>
                 </TableRow>
               ))
-            ) : receipts.length === 0 ? (
+            ) : invoices.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={8}
                   className="py-12 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center justify-center space-y-2">
-                    <Receipt className="size-8 text-muted-foreground/40" />
+                    <Invoice className="size-8 text-muted-foreground/40" />
                     <p className="text-base font-medium text-foreground">
-                      No receipts found
+                      No invoices found
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {activeTab === "PENDING_DELETION"
                         ? "No deletion requests pending admin confirmation."
-                        : "Try adjusting your search filters or create a new receipt."}
+                        : "Try adjusting your search filters or create a new invoice."}
                     </p>
                   </div>
                 </TableCell>
               </TableRow>
             ) : (
-              receipts.map((receipt, index) => {
+              invoices.map((invoice, index) => {
                 const isLockedForCashier =
-                  !isAdmin && receipt.status === "APPROVED";
-                const hasDue = receipt.dueAmount > 0;
-                const formattedDate = formatDate(receipt.createdAt);
+                  !isAdmin && invoice.status === "APPROVED";
+                const hasDue = invoice.dueAmount > 0;
+                const formattedDate = formatDate(invoice.createdAt);
 
                 return (
                   <TableRow
-                    key={receipt.id}
+                    key={invoice.id}
                     index={index}
                     className={cn(
                       isFetching && "opacity-60",
-                      receipt.isDeleteRequested &&
+                      invoice.isDeleteRequested &&
                         "bg-rose-500/5 hover:bg-rose-500/10",
-                      receipt.isDeleted && "bg-muted/30 opacity-70",
+                      invoice.isDeleted && "bg-muted/30 opacity-70",
                     )}
                   >
-                    {/* Receipt Number & Date */}
+                    {/* Invoice Number & Date */}
                     <TableCell className="min-w-40 whitespace-nowrap">
                       <div className="flex flex-col min-w-0">
                         <span className="font-mono font-bold text-foreground text-xs">
-                          {receipt.receiptNumber}
+                          {invoice.invoiceNumber}
                         </span>
                         <span className="text-[10px] text-muted-foreground">
                           {formattedDate}
@@ -427,12 +427,12 @@ export default function ReceiptTable() {
                     <TableCell>
                       <div className="flex flex-col min-w-0">
                         <span className="font-semibold text-foreground truncate max-w-[150px]">
-                          {receipt.customer?.name}
+                          {invoice.customer?.name}
                         </span>
                         <span className="text-[11px] text-muted-foreground font-mono flex items-center gap-1">
                           <Phone className="size-3 text-muted-foreground/70" />
-                          {receipt.customer?.countryCode || "+880"}{" "}
-                          {receipt.customer?.phoneNumber}
+                          {invoice.customer?.countryCode || "+880"}{" "}
+                          {invoice.customer?.phoneNumber}
                         </span>
                       </div>
                     </TableCell>
@@ -440,25 +440,25 @@ export default function ReceiptTable() {
                     {/* Items Count */}
                     <TableCell>
                       <span className="font-mono font-medium text-xs">
-                        {receipt._count?.items ?? receipt.items?.length ?? 0}
+                        {invoice._count?.items ?? invoice.items?.length ?? 0}
                       </span>
                     </TableCell>
 
                     {/* Total Amount */}
                     <TableCell className="font-mono font-semibold text-foreground">
-                      ৳{receipt.totalAmount}
+                      ৳{invoice.totalAmount}
                     </TableCell>
 
                     {/* Paid Amount */}
                     <TableCell className="font-mono text-emerald-600 dark:text-emerald-400 font-medium">
-                      ৳{receipt.paidAmount}
+                      ৳{invoice.paidAmount}
                     </TableCell>
 
                     {/* Due Amount */}
                     <TableCell>
                       {hasDue ? (
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-mono font-bold bg-rose-500/10 text-destructive border border-destructive/20">
-                          ৳{receipt.dueAmount}
+                          ৳{invoice.dueAmount}
                         </span>
                       ) : (
                         <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-mono font-medium bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
@@ -470,9 +470,9 @@ export default function ReceiptTable() {
                     {/* Status */}
                     <TableCell>
                       <div className="flex flex-col items-start gap-1">
-                        <ReceiptStatusDropdown receipt={receipt} />
+                        <InvoiceStatusDropdown invoice={invoice} />
 
-                        {receipt.isDeleteRequested && (
+                        {invoice.isDeleteRequested && (
                           <Badge
                             variant="secondary"
                             className="text-[9px] px-1.5 py-0 text-rose-600 bg-rose-500/10 border-rose-500/20"
@@ -486,8 +486,8 @@ export default function ReceiptTable() {
                     {/* Actions */}
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-1.5 flex-wrap sm:flex-nowrap">
-                        {/* Receipt Actions */}
-                        <Link href={`/receipts/${receipt.id}`}>
+                        {/* Invoice Actions */}
+                        <Link href={`/invoices/${invoice.id}`}>
                           <Button
                             variant="outline"
                             size="sm"
@@ -504,16 +504,16 @@ export default function ReceiptTable() {
                           className="size-7"
                           title="Activity Log"
                           onClick={() => {
-                            setSelectedReceiptForActivity(receipt);
+                            setSelectedInvoiceForActivity(invoice);
                             setActivitySheetOpen(true);
                           }}
                         >
                           <Activity className="size-3.5 text-muted-foreground hover:text-foreground" />
                         </Button>
 
-                        {!receipt.isDeleted && (
+                        {!invoice.isDeleted && (
                           <>
-                            <Link href={`/receipts/${receipt.id}/invoice`}>
+                            <Link href={`/invoices/${invoice.id}/invoice`}>
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -523,7 +523,7 @@ export default function ReceiptTable() {
                                 <FileText className="size-3.5" /> View Invoice
                               </Button>
                             </Link>
-                            <Link href={`/receipts/${receipt.id}/invoice?print=1`}>
+                            <Link href={`/invoices/${invoice.id}/invoice?print=1`}>
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -537,29 +537,29 @@ export default function ReceiptTable() {
                         )}
 
                         {/* Admin Restore Button */}
-                        {receipt.isDeleted
+                        {invoice.isDeleted
                           ? isAdmin && (
                               <ConfirmPopup
-                                title="Restore Receipt?"
-                                description={`Restore Receipt "${receipt.receiptNumber}"? Stock will be re-deducted.`}
+                                title="Restore Invoice?"
+                                description={`Restore Invoice "${invoice.invoiceNumber}"? Stock will be re-deducted.`}
                                 confirmLabel="Restore"
                                 destructive={false}
                                 loading={isRestoring}
-                                onConfirm={() => handleAdminRestore(receipt)}
+                                onConfirm={() => handleAdminRestore(invoice)}
                               >
                                 <Button
                                   variant="outline"
                                   size="sm"
                                   className="h-7 px-2.5 text-xs font-medium text-primary border-primary/40 hover:bg-primary/10"
-                                  title="Restore Receipt"
+                                  title="Restore Invoice"
                                 >
                                   Restore
                                 </Button>
                               </ConfirmPopup>
                             )
                           : /* Normal Delete / Request Delete */
-                            !receipt.isDeleted &&
-                            (receipt.isDeleteRequested && !isAdmin ? (
+                            !invoice.isDeleted &&
+                            (invoice.isDeleteRequested && !isAdmin ? (
                               <Badge
                                 variant="secondary"
                                 className="h-7 px-2.5 text-[10px] text-amber-600 bg-amber-500/10 cursor-not-allowed"
@@ -572,9 +572,9 @@ export default function ReceiptTable() {
                                 variant="outline"
                                 size="sm"
                                 title={
-                                  isAdmin ? "Delete Receipt" : "Request Delete"
+                                  isAdmin ? "Delete Invoice" : "Request Delete"
                                 }
-                                onClick={() => handleOpenDelete(receipt)}
+                                onClick={() => handleOpenDelete(invoice)}
                                 className="h-7 px-2.5 text-xs font-medium text-destructive border-destructive/30 hover:bg-destructive/10"
                               >
                                 {isAdmin ? "Delete" : "Request Delete"}
@@ -594,7 +594,7 @@ export default function ReceiptTable() {
           <div className="flex items-center justify-between px-4 py-3 border-t border-border bg-muted/20 text-xs">
             <span className="text-muted-foreground">
               Showing {(page - 1) * limit + 1} to{" "}
-              {Math.min(page * limit, meta.total)} of {meta.total} receipts
+              {Math.min(page * limit, meta.total)} of {meta.total} invoices
             </span>
             <div className="flex items-center gap-2">
               <Button
@@ -625,16 +625,16 @@ export default function ReceiptTable() {
 
       {/* Delete Modal */}
 
-      <ReceiptDeleteModal
+      <InvoiceDeleteModal
         open={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
-        receipt={selectedReceiptForDelete}
+        invoice={selectedInvoiceForDelete}
       />
 
-      <ReceiptActivitySheet
+      <InvoiceActivitySheet
         open={activitySheetOpen}
         onOpenChange={setActivitySheetOpen}
-        receipt={selectedReceiptForActivity}
+        invoice={selectedInvoiceForActivity}
       />
     </div>
   );

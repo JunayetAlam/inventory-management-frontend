@@ -17,23 +17,23 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import {
-  useGetReceiptByIdQuery,
-  useConfirmDeleteReceiptMutation,
-  useRejectDeleteReceiptMutation,
-  useRestoreReceiptMutation,
-} from "@/redux/api/receiptApi";
+  useGetInvoiceByIdQuery,
+  useConfirmDeleteInvoiceMutation,
+  useRejectDeleteInvoiceMutation,
+  useRestoreInvoiceMutation,
+} from "@/redux/api/invoiceApi";
 import useIsAdmin from "@/hooks/useIsAdmin";
-import ReceiptForm from "@/components/Receipts/ReceiptForm";
-import ReceiptStatusDropdown from "@/components/Receipts/ReceiptStatusDropdown";
-import ReceiptDeleteModal from "@/components/Receipts/ReceiptDeleteModal";
-import ReceiptActivitySheet from "@/components/Receipts/ReceiptActivitySheet";
+import InvoiceForm from "@/components/Invoices/InvoiceForm";
+import InvoiceStatusDropdown from "@/components/Invoices/InvoiceStatusDropdown";
+import InvoiceDeleteModal from "@/components/Invoices/InvoiceDeleteModal";
+import InvoiceActivitySheet from "@/components/Invoices/InvoiceActivitySheet";
 import ConfirmPopup from "@/components/Global/ConfirmPopup";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 
-export default function ReceiptDetailsPage() {
+export default function InvoiceDetailsPage() {
   const params = useParams();
   const router = useRouter();
   const id = params?.id as string;
@@ -42,37 +42,37 @@ export default function ReceiptDetailsPage() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [activitySheetOpen, setActivitySheetOpen] = useState(false);
 
-  const { data, isLoading, isError } = useGetReceiptByIdQuery(id, {
+  const { data, isLoading, isError } = useGetInvoiceByIdQuery(id, {
     skip: !id,
   });
-  const receipt = data?.data;
+  const invoice = data?.data;
 
   const [confirmDelete, { isLoading: isConfirming }] =
-    useConfirmDeleteReceiptMutation();
+    useConfirmDeleteInvoiceMutation();
   const [rejectDelete, { isLoading: isRejecting }] =
-    useRejectDeleteReceiptMutation();
-  const [restoreReceipt, { isLoading: isRestoring }] =
-    useRestoreReceiptMutation();
+    useRejectDeleteInvoiceMutation();
+  const [restoreInvoice, { isLoading: isRestoring }] =
+    useRestoreInvoiceMutation();
 
   const handleAdminConfirmDelete = async () => {
-    if (!receipt) return;
+    if (!invoice) return;
     try {
-      await confirmDelete(receipt.id).unwrap();
+      await confirmDelete(invoice.id).unwrap();
       toast.success(
-        `Receipt ${receipt.receiptNumber} deletion confirmed. Stock restored.`
+        `Invoice ${invoice.invoiceNumber} deletion confirmed. Stock restored.`
       );
-      router.push("/receipts");
+      router.push("/invoices");
     } catch (err) {
       toast.error(errorMessageGenerator(err));
     }
   };
 
   const handleAdminRejectDelete = async () => {
-    if (!receipt) return;
+    if (!invoice) return;
     try {
-      await rejectDelete(receipt.id).unwrap();
+      await rejectDelete(invoice.id).unwrap();
       toast.success(
-        `Deletion request for Receipt ${receipt.receiptNumber} rejected.`
+        `Deletion request for Invoice ${invoice.invoiceNumber} rejected.`
       );
     } catch (err) {
       toast.error(errorMessageGenerator(err));
@@ -80,10 +80,10 @@ export default function ReceiptDetailsPage() {
   };
 
   const handleAdminRestore = async () => {
-    if (!receipt) return;
+    if (!invoice) return;
     try {
-      const res: any = await restoreReceipt(receipt.id).unwrap();
-      toast.success(`Receipt ${receipt.receiptNumber} restored successfully.`);
+      const res: any = await restoreInvoice(invoice.id).unwrap();
+      toast.success(`Invoice ${invoice.invoiceNumber} restored successfully.`);
       if (res?.data?.warnings && res.data.warnings.length > 0) {
         res.data.warnings.forEach((w: string) => toast.warning(w));
       }
@@ -108,25 +108,25 @@ export default function ReceiptDetailsPage() {
           </Button>
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
-              Manage Receipts
+              Manage Invoices
             </h1>
-            {receipt && (
+            {invoice && (
               <span className="font-mono text-xs text-muted-foreground">
-                Receipt #{receipt.receiptNumber}
+                Invoice #{invoice.invoiceNumber}
               </span>
             )}
           </div>
         </div>
 
-        {receipt && (
+        {invoice && (
           <div className="flex items-center gap-2 flex-wrap">
             {/* Status Change Dropdown */}
-            <ReceiptStatusDropdown receipt={receipt} />
+            <InvoiceStatusDropdown invoice={invoice} />
 
             {/* View Invoice / Print Invoice */}
-            {!receipt.isDeleted && (
+            {!invoice.isDeleted && (
               <>
-                <Link href={`/receipts/${receipt.id}/invoice`}>
+                <Link href={`/invoices/${invoice.id}/invoice`}>
                   <Button
                     variant="outline"
                     size="sm"
@@ -136,7 +136,7 @@ export default function ReceiptDetailsPage() {
                     <FileText className="size-3.5" /> View Invoice
                   </Button>
                 </Link>
-                <Link href={`/receipts/${receipt.id}/invoice?print=1`}>
+                <Link href={`/invoices/${invoice.id}/invoice?print=1`}>
                   <Button
                     variant="outline"
                     size="sm"
@@ -146,7 +146,7 @@ export default function ReceiptDetailsPage() {
                     <Printer className="size-3.5" /> Print Invoice
                   </Button>
                 </Link>
-                <Link href={`/return-invoices/create?receiptId=${receipt.id}`}>
+                <Link href={`/return-invoices/create?invoiceId=${invoice.id}`}>
                   <Button
                     variant="outline"
                     size="sm"
@@ -165,15 +165,15 @@ export default function ReceiptDetailsPage() {
               size="sm"
               onClick={() => setActivitySheetOpen(true)}
               className="h-8 gap-1.5 text-xs font-medium cursor-pointer"
-              title="Receipt Activity Log"
+              title="Invoice Activity Log"
             >
               <Activity className="size-3.5" />
               Activity Log
             </Button>
 
-            {/* Edit receipt if allowed */}
-            {!receipt.isDeleted && (isAdmin || receipt.status !== "APPROVED") && (
-              <Link href={`/receipts/${receipt.id}/edit`}>
+            {/* Edit invoice if allowed */}
+            {!invoice.isDeleted && (isAdmin || invoice.status !== "APPROVED") && (
+              <Link href={`/invoices/${invoice.id}/edit`}>
                 <Button
                   variant="outline"
                   size="sm"
@@ -185,11 +185,11 @@ export default function ReceiptDetailsPage() {
             )}
 
             {/* Deletion & Restoration Actions */}
-            {isAdmin && receipt.isDeleteRequested ? (
+            {isAdmin && invoice.isDeleteRequested ? (
               <div className="flex items-center gap-1.5 border-l border-border pl-1.5 ml-1">
                 <ConfirmPopup
                   title="Approve Deletion Request?"
-                  description={`Confirm deletion of Receipt "${receipt.receiptNumber}"? Stock will be restored.`}
+                  description={`Confirm deletion of Invoice "${invoice.invoiceNumber}"? Stock will be restored.`}
                   confirmLabel="Confirm Delete"
                   destructive={true}
                   loading={isConfirming}
@@ -205,7 +205,7 @@ export default function ReceiptDetailsPage() {
                 </ConfirmPopup>
                 <ConfirmPopup
                   title="Reject Deletion Request?"
-                  description={`Reject deletion request for "${receipt.receiptNumber}"?`}
+                  description={`Reject deletion request for "${invoice.invoiceNumber}"?`}
                   confirmLabel="Reject"
                   destructive={false}
                   loading={isRejecting}
@@ -220,11 +220,11 @@ export default function ReceiptDetailsPage() {
                   </Button>
                 </ConfirmPopup>
               </div>
-            ) : receipt.isDeleted && isAdmin ? (
+            ) : invoice.isDeleted && isAdmin ? (
               <ConfirmPopup
-                title="Restore Receipt?"
-                description={`Restore deleted Receipt "${receipt.receiptNumber}"? Stock will be re-deducted.`}
-                confirmLabel="Restore Receipt"
+                title="Restore Invoice?"
+                description={`Restore deleted Invoice "${invoice.invoiceNumber}"? Stock will be re-deducted.`}
+                confirmLabel="Restore Invoice"
                 destructive={false}
                 loading={isRestoring}
                 onConfirm={handleAdminRestore}
@@ -238,8 +238,8 @@ export default function ReceiptDetailsPage() {
                 </Button>
               </ConfirmPopup>
             ) : (
-              !receipt.isDeleted && (
-                receipt.isDeleteRequested && !isAdmin ? (
+              !invoice.isDeleted && (
+                invoice.isDeleteRequested && !isAdmin ? (
                   <Badge
                     variant="secondary"
                     className="h-8 px-2.5 text-xs text-amber-600 bg-amber-500/10 cursor-not-allowed"
@@ -250,7 +250,7 @@ export default function ReceiptDetailsPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    title={isAdmin ? "Delete Receipt" : "Request Delete"}
+                    title={isAdmin ? "Delete Invoice" : "Request Delete"}
                     onClick={() => setDeleteModalOpen(true)}
                     className="h-8 gap-1.5 text-xs font-medium text-destructive border-destructive/30 hover:bg-destructive/10 cursor-pointer"
                   >
@@ -269,10 +269,10 @@ export default function ReceiptDetailsPage() {
           <Skeleton className="h-40 w-full rounded-xl" />
           <Skeleton className="h-64 w-full rounded-xl" />
         </div>
-      ) : isError || !receipt ? (
+      ) : isError || !invoice ? (
         <div className="p-8 text-center space-y-4 rounded-xl border border-destructive/30 bg-destructive/5">
           <p className="text-destructive font-semibold">
-            Receipt not found or failed to load
+            Invoice not found or failed to load
           </p>
           <Button
             variant="outline"
@@ -286,22 +286,22 @@ export default function ReceiptDetailsPage() {
         </div>
       ) : (
         <>
-          <ReceiptForm initialData={receipt} isEditing={true} isDetails={true} />
+          <InvoiceForm initialData={invoice} isEditing={true} isDetails={true} />
 
-          {(receipt.returnInvoices || []).filter((r) => !r.isDeleted).length >
+          {(invoice.returnInvoices || []).filter((r) => !r.isDeleted).length >
             0 && (
             <div className="rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-sm font-semibold">Return Invoices</h2>
                 <Link
-                  href={`/return-invoices/create?receiptId=${receipt.id}`}
+                  href={`/return-invoices/create?invoiceId=${invoice.id}`}
                   className="text-xs text-primary hover:underline"
                 >
                   + New return
                 </Link>
               </div>
               <div className="divide-y border rounded-lg overflow-hidden">
-                {(receipt.returnInvoices || [])
+                {(invoice.returnInvoices || [])
                   .filter((r) => !r.isDeleted)
                   .map((ret) => (
                     <div
@@ -344,17 +344,17 @@ export default function ReceiptDetailsPage() {
       )}
 
       {/* Delete / Request Delete Modal */}
-      <ReceiptDeleteModal
+      <InvoiceDeleteModal
         open={deleteModalOpen}
         onOpenChange={setDeleteModalOpen}
-        receipt={receipt ?? null}
-        onSuccess={() => router.push("/receipts")}
+        invoice={invoice ?? null}
+        onSuccess={() => router.push("/invoices")}
       />
 
-      <ReceiptActivitySheet
+      <InvoiceActivitySheet
         open={activitySheetOpen}
         onOpenChange={setActivitySheetOpen}
-        receipt={receipt ?? null}
+        invoice={invoice ?? null}
       />
     </div>
   );

@@ -2,19 +2,19 @@
 
 import { useEffect, useId, useMemo, useState } from "react";
 import Select from "react-select";
-import { TReceipt } from "@/types";
+import { TInvoice } from "@/types";
 
-export interface ReceiptOption {
+export interface InvoiceOption {
   value: string;
   label: string;
-  receipt: TReceipt;
+  invoice: TInvoice;
 }
 
-interface ReceiptSelectProps {
-  receipts: TReceipt[];
-  selectedReceiptId?: string;
-  selectedReceipt?: TReceipt | null;
-  onSelect: (receiptId: string) => void;
+interface InvoiceSelectProps {
+  invoices: TInvoice[];
+  selectedInvoiceId?: string;
+  selectedInvoice?: TInvoice | null;
+  onSelect: (invoiceId: string) => void;
   onClear: () => void;
   onSearch: (term: string) => void;
   isLoading?: boolean;
@@ -22,21 +22,21 @@ interface ReceiptSelectProps {
   placeholder?: string;
 }
 
-function receiptLabel(receipt: TReceipt) {
-  return `${receipt.receiptNumber} · ${receipt.customer?.name || "Unknown"}`;
+function invoiceLabel(invoice: TInvoice) {
+  return `${invoice.invoiceNumber} · ${invoice.customer?.name || "Unknown"}`;
 }
 
-export default function ReceiptSelect({
-  receipts,
-  selectedReceiptId,
-  selectedReceipt,
+export default function InvoiceSelect({
+  invoices,
+  selectedInvoiceId,
+  selectedInvoice,
   onSelect,
   onClear,
   onSearch,
   isLoading = false,
   disabled = false,
-  placeholder = "Search receipt # or customer...",
-}: ReceiptSelectProps) {
+  placeholder = "Search invoice # or customer...",
+}: InvoiceSelectProps) {
   const instanceId = useId();
   const [isMounted, setIsMounted] = useState(false);
 
@@ -44,35 +44,35 @@ export default function ReceiptSelect({
     setIsMounted(true);
   }, []);
 
-  const options: ReceiptOption[] = useMemo(() => {
-    const list = [...receipts];
+  const options: InvoiceOption[] = useMemo(() => {
+    const list = [...invoices];
     if (
-      selectedReceipt &&
-      !list.some((r) => r.id === selectedReceipt.id)
+      selectedInvoice &&
+      !list.some((r) => r.id === selectedInvoice.id)
     ) {
-      list.unshift(selectedReceipt);
+      list.unshift(selectedInvoice);
     }
     return list.map((r) => ({
       value: r.id,
-      label: receiptLabel(r),
-      receipt: r,
+      label: invoiceLabel(r),
+      invoice: r,
     }));
-  }, [receipts, selectedReceipt]);
+  }, [invoices, selectedInvoice]);
 
   const currentValue =
-    options.find((opt) => opt.value === selectedReceiptId) || null;
+    options.find((opt) => opt.value === selectedInvoiceId) || null;
 
   const filterOption = (
-    candidate: { label: string; value: string; data: ReceiptOption },
+    candidate: { label: string; value: string; data: InvoiceOption },
     input: string,
   ) => {
     if (!input || !input.trim()) return true;
     const term = input.trim().toLowerCase();
-    const r = candidate.data.receipt;
+    const r = candidate.data.invoice;
     if (!r) return candidate.label.toLowerCase().includes(term);
 
     return (
-      r.receiptNumber.toLowerCase().includes(term) ||
+      r.invoiceNumber.toLowerCase().includes(term) ||
       (r.customer?.name || "").toLowerCase().includes(term) ||
       (r.customer?.phoneNumber || "").includes(term) ||
       String(r.totalAmount).includes(term)
@@ -81,7 +81,7 @@ export default function ReceiptSelect({
 
   return (
     <div className="w-full">
-      <Select<ReceiptOption, false>
+      <Select<InvoiceOption, false>
         instanceId={instanceId}
         isDisabled={disabled}
         isLoading={isLoading}
@@ -94,8 +94,8 @@ export default function ReceiptSelect({
         menuPosition="fixed"
         noOptionsMessage={({ inputValue }) =>
           inputValue
-            ? `No receipt matching "${inputValue}"`
-            : "No receipts found"
+            ? `No invoice matching "${inputValue}"`
+            : "No invoices found"
         }
         onChange={(option, actionMeta) => {
           if (actionMeta.action === "clear" || !option) {
@@ -113,7 +113,7 @@ export default function ReceiptSelect({
           }
         }}
         formatOptionLabel={(option, { context }) => {
-          const r = option.receipt;
+          const r = option.invoice;
           if (context === "value") {
             return (
               <span className="font-medium text-xs text-foreground truncate block leading-none">
@@ -125,7 +125,7 @@ export default function ReceiptSelect({
           return (
             <div className="flex flex-col py-0.5 text-xs text-left">
               <span className="font-mono font-semibold text-foreground truncate leading-tight">
-                {r.receiptNumber}
+                {r.invoiceNumber}
               </span>
               <span className="text-[11px] text-muted-foreground mt-0.5 truncate">
                 {r.customer?.name || "Unknown"} · ৳{r.totalAmount}

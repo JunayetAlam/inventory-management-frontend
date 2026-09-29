@@ -3,7 +3,7 @@ import ProductTable from "@/components/Products/ProductTable";
 import ProductStatsCards from "@/components/Products/ProductStatsCards";
 
 export const metadata: Metadata = {
-  title: "Manage Products | Receipt Management",
+  title: "Manage Products | Invoice Management",
   description: "Manage product catalog, prices, stocks, and audit history",
 };
 

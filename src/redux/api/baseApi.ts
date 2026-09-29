@@ -134,7 +134,7 @@ export const baseApi = createApi({
     "ActivityLog",
     "Product",
     "Customer",
-    "Receipt",
+    "Invoice",
     "ReturnInvoice",
     "Shop",
     "Stats",

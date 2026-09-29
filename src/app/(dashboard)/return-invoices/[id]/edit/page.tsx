@@ -63,7 +63,7 @@ function EditReturnInvoiceInner() {
     return (
       <div className="text-center space-y-3">
         <p className="font-semibold">
-          Only the latest return invoice on this receipt can be edited
+          Only the latest return invoice on this invoice can be edited
         </p>
         <p className="text-xs text-muted-foreground font-mono">
           {returnInvoice.returnNumber}

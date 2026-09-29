@@ -65,7 +65,7 @@ export default function SignUp() {
         <Container className="max-w-3xl">
             <div className="text-center mb-10">
                 <Title>Create your account</Title>
-                <Subtitle>Create an account to manage products, customers, and receipts.</Subtitle>
+                <Subtitle>Create an account to manage products, customers, and invoices.</Subtitle>
             </div>
 
             <CustomForm onSubmit={handleSubmit} defaultValues={defaultValues} className="rounded-lg border border-border p-6 space-y-6">

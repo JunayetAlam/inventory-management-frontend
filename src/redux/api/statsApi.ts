@@ -8,7 +8,7 @@ import type {
 } from "@/types/dashboard";
 import { baseApi } from "./baseApi";
 
-const dashboardTags = ["Stats", "Receipt", "ReturnInvoice", "Product"] as const;
+const dashboardTags = ["Stats", "Invoice", "ReturnInvoice", "Product"] as const;
 
 export const statsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,7 +17,7 @@ export const statsApi = baseApi.injectEndpoints({
         url: "/stats/customers",
         method: "GET",
       }),
-      providesTags: ["Stats", "Customer", "Receipt", "ReturnInvoice"],
+      providesTags: ["Stats", "Customer", "Invoice", "ReturnInvoice"],
     }),
     getDashboardSummary: builder.query<
       TResponse<TDashboardSummary>,

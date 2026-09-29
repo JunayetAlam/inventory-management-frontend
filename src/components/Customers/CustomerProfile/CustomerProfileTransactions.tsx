@@ -61,7 +61,7 @@ const formatDateTime = (dateStr?: string) => {
   });
 };
 
-type TransactionTab = "ALL" | "RECEIPT" | "PAYMENT" | "RETURN_INVOICE";
+type TransactionTab = "ALL" | "INVOICE" | "PAYMENT" | "RETURN_INVOICE";
 type ViewFormat = "timeline" | "table";
 
 const SORT_OPTIONS = [
@@ -180,7 +180,7 @@ export default function CustomerProfileTransactions({
               {(
                 [
                   { id: "ALL", label: "All" },
-                  { id: "RECEIPT", label: "Receipts" },
+                  { id: "INVOICE", label: "Invoices" },
                   { id: "PAYMENT", label: "Payments" },
                   { id: "RETURN_INVOICE", label: "Returns" },
                 ] as const
@@ -260,7 +260,7 @@ export default function CustomerProfileTransactions({
           <div className="relative flex-1 min-w-[200px] max-w-sm">
             <Search className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground" />
             <Input
-              placeholder="Search note, receipt, return..."
+              placeholder="Search note, invoice, return..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -419,29 +419,29 @@ export default function CustomerProfileTransactions({
           ) : (
             <div className="relative pl-6 space-y-6 before:absolute before:left-3.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-border/70">
               {transactions.map((tx) => {
-                const isReceipt = tx.type === "RECEIPT";
+                const isInvoice = tx.type === "INVOICE";
                 const isPayment = tx.type === "PAYMENT";
                 const isReturn = tx.type === "RETURN_INVOICE";
 
-                const nodeBg = isReceipt
+                const nodeBg = isInvoice
                   ? "bg-blue-500/10 text-blue-600 border-blue-500/30"
                   : isPayment
                   ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/30"
                   : "bg-amber-500/10 text-amber-600 border-amber-500/30";
 
-                const receiptId =
-                  tx.receiptId ||
-                  tx.receipt?.id ||
-                  tx.payment?.receiptId ||
-                  tx.payment?.receipt?.id ||
-                  tx.returnInvoice?.receiptId ||
-                  tx.returnInvoice?.receipt?.id;
+                const invoiceId =
+                  tx.invoiceId ||
+                  tx.invoice?.id ||
+                  tx.payment?.invoiceId ||
+                  tx.payment?.invoice?.id ||
+                  tx.returnInvoice?.invoiceId ||
+                  tx.returnInvoice?.invoice?.id;
 
-                const receiptNumber =
-                  tx.receipt?.receiptNumber ||
-                  tx.payment?.receipt?.receiptNumber ||
-                  tx.returnInvoice?.receipt?.receiptNumber ||
-                  (isReceipt ? tx.referenceNumber : null);
+                const invoiceNumber =
+                  tx.invoice?.invoiceNumber ||
+                  tx.payment?.invoice?.invoiceNumber ||
+                  tx.returnInvoice?.invoice?.invoiceNumber ||
+                  (isInvoice ? tx.referenceNumber : null);
 
                 const returnInvoiceId =
                   tx.returnInvoiceId || tx.returnInvoice?.id;
@@ -458,7 +458,7 @@ export default function CustomerProfileTransactions({
                         nodeBg
                       )}
                     >
-                      {isReceipt && <FileText className="size-3.5" />}
+                      {isInvoice && <FileText className="size-3.5" />}
                       {isPayment && <Wallet className="size-3.5" />}
                       {isReturn && <Undo2 className="size-3.5" />}
                     </div>
@@ -472,7 +472,7 @@ export default function CustomerProfileTransactions({
                             variant="outline"
                             className={cn(
                               "text-[10px] font-semibold uppercase tracking-wider py-0.5",
-                              isReceipt &&
+                              isInvoice &&
                                 "border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-300",
                               isPayment &&
                                 "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
@@ -480,8 +480,8 @@ export default function CustomerProfileTransactions({
                                 "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300"
                             )}
                           >
-                            {isReceipt
-                              ? "Receipt Sale"
+                            {isInvoice
+                              ? "Invoice Sale"
                               : isPayment
                               ? "Cash Payment"
                               : "Product Return"}
@@ -506,22 +506,22 @@ export default function CustomerProfileTransactions({
                                 Return
                               </span>
                             )
-                          ) : receiptId && receiptNumber ? (
+                          ) : invoiceId && invoiceNumber ? (
                             <Link
-                              href={`/receipts/${receiptId}/invoice`}
+                              href={`/invoices/${invoiceId}/invoice`}
                               className="group inline-flex items-center gap-1 font-mono text-xs font-semibold text-primary hover:underline"
-                              title={`View Invoice #${receiptNumber}`}
+                              title={`View Invoice #${invoiceNumber}`}
                             >
-                              <span>{receiptNumber}</span>
+                              <span>{invoiceNumber}</span>
                               <ExternalLink className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                             </Link>
-                          ) : receiptNumber ? (
+                          ) : invoiceNumber ? (
                             <span className="font-mono text-xs font-semibold text-foreground">
-                              {receiptNumber}
+                              {invoiceNumber}
                             </span>
                           ) : (
                             <span className="font-mono text-xs font-semibold text-foreground">
-                              {isReceipt ? "Receipt" : isPayment ? "Payment" : "Return"}
+                              {isInvoice ? "Invoice" : isPayment ? "Payment" : "Return"}
                             </span>
                           )}
                         </div>
@@ -602,13 +602,13 @@ export default function CustomerProfileTransactions({
                       {/* Note or Creator details if available */}
                       {(tx.note ||
                         tx.payment?.note ||
-                        tx.receipt?.note ||
+                        tx.invoice?.note ||
                         tx.createdBy) && (
                         <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground pt-1">
                           <p className="italic text-[11px] truncate max-w-md">
                             {tx.note ||
                               tx.payment?.note ||
-                              tx.receipt?.note ||
+                              tx.invoice?.note ||
                               ""}
                           </p>
                           {tx.createdBy && (
@@ -666,23 +666,23 @@ export default function CustomerProfileTransactions({
                   </TableRow>
                 ) : (
                   transactions.map((tx, index) => {
-                    const isReceipt = tx.type === "RECEIPT";
+                    const isInvoice = tx.type === "INVOICE";
                     const isPayment = tx.type === "PAYMENT";
                     const isReturn = tx.type === "RETURN_INVOICE";
 
-                    const receiptId =
-                      tx.receiptId ||
-                      tx.receipt?.id ||
-                      tx.payment?.receiptId ||
-                      tx.payment?.receipt?.id ||
-                      tx.returnInvoice?.receiptId ||
-                      tx.returnInvoice?.receipt?.id;
+                    const invoiceId =
+                      tx.invoiceId ||
+                      tx.invoice?.id ||
+                      tx.payment?.invoiceId ||
+                      tx.payment?.invoice?.id ||
+                      tx.returnInvoice?.invoiceId ||
+                      tx.returnInvoice?.invoice?.id;
 
-                    const receiptNumber =
-                      tx.receipt?.receiptNumber ||
-                      tx.payment?.receipt?.receiptNumber ||
-                      tx.returnInvoice?.receipt?.receiptNumber ||
-                      (isReceipt ? tx.referenceNumber : null);
+                    const invoiceNumber =
+                      tx.invoice?.invoiceNumber ||
+                      tx.payment?.invoice?.invoiceNumber ||
+                      tx.returnInvoice?.invoice?.invoiceNumber ||
+                      (isInvoice ? tx.referenceNumber : null);
 
                     const returnInvoiceId =
                       tx.returnInvoiceId || tx.returnInvoice?.id;
@@ -710,7 +710,7 @@ export default function CustomerProfileTransactions({
                             variant="outline"
                             className={cn(
                               "text-[10px] font-semibold uppercase tracking-wider py-0.5",
-                              isReceipt &&
+                              isInvoice &&
                                 "border-blue-500/30 bg-blue-500/10 text-blue-700 dark:text-blue-300",
                               isPayment &&
                                 "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
@@ -718,11 +718,11 @@ export default function CustomerProfileTransactions({
                                 "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300"
                             )}
                           >
-                            {isReceipt && <FileText className="mr-1 size-3" />}
+                            {isInvoice && <FileText className="mr-1 size-3" />}
                             {isPayment && <Wallet className="mr-1 size-3" />}
                             {isReturn && <Undo2 className="mr-1 size-3" />}
-                            {isReceipt
-                              ? "Receipt"
+                            {isInvoice
+                              ? "Invoice"
                               : isPayment
                               ? "Payment"
                               : "Return"}
@@ -770,7 +770,7 @@ export default function CustomerProfileTransactions({
                         <TableCell className="text-muted-foreground whitespace-pre-wrap break-words min-w-[200px] leading-relaxed">
                           {tx.note ||
                             tx.payment?.note ||
-                            tx.receipt?.note ||
+                            tx.invoice?.note ||
                             "—"}
                         </TableCell>
 
@@ -793,18 +793,18 @@ export default function CustomerProfileTransactions({
                             ) : (
                               <span className="text-muted-foreground">—</span>
                             )
-                          ) : receiptId && receiptNumber ? (
+                          ) : invoiceId && invoiceNumber ? (
                             <Link
-                              href={`/receipts/${receiptId}/invoice`}
+                              href={`/invoices/${invoiceId}/invoice`}
                               className="group inline-flex items-center gap-1 font-semibold text-primary hover:underline"
-                              title={`View Invoice #${receiptNumber}`}
+                              title={`View Invoice #${invoiceNumber}`}
                             >
-                              <span>{receiptNumber}</span>
+                              <span>{invoiceNumber}</span>
                               <ExternalLink className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                             </Link>
-                          ) : receiptNumber ? (
+                          ) : invoiceNumber ? (
                             <span className="font-semibold text-foreground">
-                              {receiptNumber}
+                              {invoiceNumber}
                             </span>
                           ) : (
                             <span className="text-muted-foreground">—</span>

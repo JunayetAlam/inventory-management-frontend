@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import CustomerTransactionTable from "@/components/CustomerTransactions/CustomerTransactionTable";
 
 export const metadata: Metadata = {
-  title: "Manage Customer Transactions | Receipt Management",
+  title: "Manage Customer Transactions | Invoice Management",
   description: "View and manage all customer transactions, payments, and return invoices",
 };
 

@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import SellReportTable from "@/components/SellReport/SellReportTable";
 
 export const metadata: Metadata = {
-  title: "Sell Report | Receipt Management",
-  description: "Per-product sold quantity, sell amount, and receipts report",
+  title: "Sell Report | Invoice Management",
+  description: "Per-product sold quantity, sell amount, and invoices report",
 };
 
 export default function SellReportPage() {

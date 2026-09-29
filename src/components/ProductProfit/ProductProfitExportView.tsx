@@ -10,7 +10,7 @@ import {
   TShop,
 } from "@/types";
 import { useGetShopDetailsQuery } from "@/redux/api/shopApi";
-import ReceiptStyle from "@/components/Receipts/ReceipInvoiceView.tsx/receipt-style";
+import InvoiceStyle from "@/components/Invoices/InvoiceView.tsx/invoice-style";
 import ProductProfitListHeader from "./ProductProfitExport/ProductProfitListHeader";
 import ProductProfitListContinuationBar from "./ProductProfitExport/ProductProfitListContinuationBar";
 import ProductProfitListFooter from "./ProductProfitExport/ProductProfitListFooter";
@@ -53,7 +53,7 @@ const PROBE_PRODUCT: TProductProfitRow = {
   avgSale: 100,
   profit: 200,
   profitPercent: 20,
-  receipts: [],
+  invoices: [],
 };
 
 const PROBE_SUMMARY: TProductProfitSummary = {
@@ -317,7 +317,7 @@ export default function ProductProfitExportView({
         ))}
       </div>
 
-      <ReceiptStyle />
+      <InvoiceStyle />
     </div>
   );
 }

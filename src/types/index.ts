@@ -178,9 +178,9 @@ export type ProductProfitSortField =
   | "avgPurchase"
   | "avgSale";
 
-export interface TProductProfitReceiptRef {
+export interface TProductProfitInvoiceRef {
   id: string;
-  receiptNumber: string;
+  invoiceNumber: string;
   quantity: number;
 }
 
@@ -199,7 +199,7 @@ export interface TProductProfitRow {
   avgSale: number | null;
   profit: number;
   profitPercent: number | null;
-  receipts: TProductProfitReceiptRef[];
+  invoices: TProductProfitInvoiceRef[];
 }
 
 export interface TProductProfitSummary {
@@ -273,11 +273,11 @@ export type TResponse<T> = {
 
 export type TResponseRedux<T> = TResponse<T> & BaseQueryApi;
 
-export type ReceiptStatus = "PENDING" | "APPROVED" | "REJECTED";
+export type InvoiceStatus = "PENDING" | "APPROVED" | "REJECTED";
 
-export interface TReceiptItem {
+export interface TInvoiceItem {
   id: string;
-  receiptId: string;
+  invoiceId: string;
   productId?: string | null;
   productName: string;
   unit: ProductUnit;
@@ -300,9 +300,9 @@ export interface TReceiptItem {
   } | null;
 }
 
-export interface TReceiptPayment {
+export interface TInvoicePayment {
   id: string;
-  receiptId: string;
+  invoiceId: string;
   amount: number;
   note?: string | null;
   status?: "PENDING" | "APPROVED" | "REJECTED";
@@ -322,9 +322,9 @@ export interface TReceiptPayment {
   approvedAt?: string | null;
 }
 
-export interface TReceipt {
+export interface TInvoice {
   id: string;
-  receiptNumber: string;
+  invoiceNumber: string;
   customerId: string;
   customer: {
     id: string;
@@ -335,11 +335,11 @@ export interface TReceipt {
     address?: string | null;
   };
   subTotal: number;
-  discount: number; // solid receipt-level discount
+  discount: number; // solid invoice-level discount
   totalAmount: number;
   paidAmount: number;
   dueAmount: number;
-  status: ReceiptStatus;
+  status: InvoiceStatus;
   note?: string | null;
   isDeleted: boolean;
   isDeleteRequested: boolean;
@@ -351,8 +351,8 @@ export interface TReceipt {
     lastName: string;
     email?: string;
   } | null;
-  items: TReceiptItem[];
-  payments: TReceiptPayment[];
+  items: TInvoiceItem[];
+  payments: TInvoicePayment[];
   returnInvoices?: TReturnInvoice[];
   _count?: {
     items: number;
@@ -374,7 +374,7 @@ export interface TReceipt {
   updatedAt: string;
 }
 
-export interface TReceiptFormItem {
+export interface TInvoiceFormItem {
   productId?: string | null;
   productName: string;
   unit: ProductUnit;
@@ -388,8 +388,8 @@ export interface TReceiptFormItem {
 export interface TReturnInvoiceItem {
   id: string;
   returnInvoiceId: string;
-  receiptId: string;
-  receiptItemId: string;
+  invoiceId: string;
+  invoiceItemId: string;
   productId?: string | null;
   productName: string;
   unit: ProductUnit;
@@ -406,7 +406,7 @@ export interface TReturnInvoiceItem {
     stock: number;
     unit: ProductUnit;
   } | null;
-  receiptItem?: {
+  invoiceItem?: {
     id: string;
     productName: string;
     quantity: number;
@@ -444,12 +444,12 @@ export interface TPreviousReturnSummary extends TReturnInvoiceMoney {
 export interface TReturnInvoice extends TReturnInvoiceMoney {
   id: string;
   returnNumber: string;
-  receiptId: string;
+  invoiceId: string;
   previousReturnInvoiceId?: string | null;
   previousReturnInvoice?: TPreviousReturnSummary | null;
-  receipt?: {
+  invoice?: {
     id: string;
-    receiptNumber: string;
+    invoiceNumber: string;
     customerId?: string;
     totalAmount?: number;
     paidAmount?: number;
@@ -465,7 +465,7 @@ export interface TReturnInvoice extends TReturnInvoiceMoney {
   } | null;
   discount: number;
   refundedAmount: number;
-  status: ReceiptStatus;
+  status: InvoiceStatus;
   note?: string | null;
   isDeleted: boolean;
   isDeleteRequested: boolean;
@@ -477,7 +477,7 @@ export interface TReturnInvoice extends TReturnInvoiceMoney {
     lastName: string;
     email?: string;
   } | null;
-  /** True when this is the latest active return on its receipt (LIFO tip). */
+  /** True when this is the latest active return on its invoice (LIFO tip). */
   isLatest?: boolean;
   /** True when a soft-deleted return can be restored (no newer active exists). */
   canRestore?: boolean;
@@ -505,8 +505,8 @@ export interface TReturnInvoice extends TReturnInvoiceMoney {
   updatedAt: string;
 }
 
-export interface TReturnableReceiptItem {
-  receiptItemId: string;
+export interface TReturnableInvoiceItem {
+  invoiceItemId: string;
   productId?: string | null;
   productName: string;
   unit: ProductUnit;
@@ -550,13 +550,13 @@ export interface TShop {
   updatedAt: string;
 }
 
-export type TCustomerTransactionType = "RECEIPT" | "PAYMENT" | "RETURN_INVOICE";
+export type TCustomerTransactionType = "INVOICE" | "PAYMENT" | "RETURN_INVOICE";
 
 export interface TCustomerTransaction {
   id: string;
   customerId: string;
   type: TCustomerTransactionType;
-  receiptId?: string | null;
+  invoiceId?: string | null;
   paymentId?: string | null;
   returnInvoiceId?: string | null;
   note?: string | null;
@@ -578,26 +578,26 @@ export interface TCustomerTransaction {
     email?: string | null;
     image?: string | null;
   };
-  receipt?: {
+  invoice?: {
     id: string;
-    receiptNumber: string;
+    invoiceNumber: string;
     totalAmount: number;
     paidAmount: number;
     dueAmount: number;
-    status: ReceiptStatus;
+    status: InvoiceStatus;
     note?: string | null;
     createdAt: string;
   } | null;
   payment?: {
     id: string;
-    receiptId?: string | null;
-    receipt?: {
+    invoiceId?: string | null;
+    invoice?: {
       id: string;
-      receiptNumber: string;
+      invoiceNumber: string;
     } | null;
     amount: number;
     note?: string | null;
-    status: ReceiptStatus;
+    status: InvoiceStatus;
     createdAt: string;
     createdBy?: {
       id: string;
@@ -608,14 +608,14 @@ export interface TCustomerTransaction {
   returnInvoice?: {
     id: string;
     returnNumber: string;
-    receiptId?: string | null;
-    receipt?: {
+    invoiceId?: string | null;
+    invoice?: {
       id: string;
-      receiptNumber: string;
+      invoiceNumber: string;
     } | null;
     refundedAmount: number;
     discount: number;
-    status: ReceiptStatus;
+    status: InvoiceStatus;
     note?: string | null;
     createdAt: string;
   } | null;

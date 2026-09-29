@@ -82,7 +82,7 @@ const TABLE_HEADERS = [
   "Cost",
   "Profit/Loss",
   "Profit/Loss %",
-  "Receipts",
+  "Invoices",
 ];
 
 export default function ProductProfitTable() {
@@ -371,7 +371,7 @@ export default function ProductProfitTable() {
                 <TableHead className="text-right">Cost</TableHead>
                 <TableHead className="text-right">Profit/Loss</TableHead>
                 <TableHead className="text-right">Profit/Loss %</TableHead>
-                <TableHead>Receipts</TableHead>
+                <TableHead>Invoices</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -500,19 +500,19 @@ export default function ProductProfitTable() {
                       </TableCell>
                       <TableCell className="max-w-60">
                         <div className="flex flex-wrap gap-1">
-                          {(row.receipts || []).length === 0 ? (
+                          {(row.invoices || []).length === 0 ? (
                             <span className="text-xs text-muted-foreground">
                               —
                             </span>
                           ) : (
-                            (row.receipts || []).map((r) => (
+                            (row.invoices || []).map((r) => (
                               <Link
                                 key={r.id}
-                                href={`/receipts/${r.id}/invoice`}
+                                href={`/invoices/${r.id}/invoice`}
                                 className="font-mono text-xs text-primary hover:underline"
-                                title={`Open invoice ${r.receiptNumber}`}
+                                title={`Open invoice ${r.invoiceNumber}`}
                               >
-                                {r.receiptNumber} ({formatQty(r.quantity)})
+                                {r.invoiceNumber} ({formatQty(r.quantity)})
                               </Link>
                             ))
                           )}

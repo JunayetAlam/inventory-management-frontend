@@ -11,70 +11,70 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetAllActivityLogsQuery } from "@/redux/api/activityLogApi";
-import { TReceipt } from "@/types";
+import { TInvoice } from "@/types";
 import {
   Activity,
   Calendar,
   Globe,
-  Receipt,
+  Receipt as Invoice,
   User,
   Phone,
   DollarSign,
 } from "lucide-react";
 
-interface ReceiptActivitySheetProps {
+interface InvoiceActivitySheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  receipt: TReceipt | null;
+  invoice: TInvoice | null;
 }
 
 const getActionBadge = (action: string) => {
   switch (action) {
-    case "CREATE_RECEIPT":
+    case "CREATE_INVOICE":
       return (
         <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20">
-          Created Receipt
+          Created Invoice
         </Badge>
       );
-    case "UPDATE_RECEIPT":
+    case "UPDATE_INVOICE":
       return (
         <Badge className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20">
-          Updated Receipt
+          Updated Invoice
         </Badge>
       );
-    case "UPDATE_RECEIPT_STATUS":
-    case "APPROVE_RECEIPT":
+    case "UPDATE_INVOICE_STATUS":
+    case "APPROVE_INVOICE":
       return (
         <Badge className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20">
-          Approved Receipt
+          Approved Invoice
         </Badge>
       );
-    case "ADD_RECEIPT_PAYMENT":
+    case "ADD_INVOICE_PAYMENT":
       return (
         <Badge className="bg-teal-500/10 text-teal-600 dark:text-teal-400 border-teal-500/20">
           Payment Added
         </Badge>
       );
-    case "REQUEST_DELETE_RECEIPT":
+    case "REQUEST_DELETE_INVOICE":
       return (
         <Badge className="bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20">
           Deletion Requested
         </Badge>
       );
-    case "ADMIN_CONFIRM_DELETE_RECEIPT":
-    case "ADMIN_DELETE_RECEIPT":
+    case "ADMIN_CONFIRM_DELETE_INVOICE":
+    case "ADMIN_DELETE_INVOICE":
       return (
         <Badge className="bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20">
           Deleted
         </Badge>
       );
-    case "ADMIN_REJECT_DELETE_RECEIPT":
+    case "ADMIN_REJECT_DELETE_INVOICE":
       return (
         <Badge className="bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20">
           Deletion Rejected
         </Badge>
       );
-    case "ADMIN_RESTORE_RECEIPT":
+    case "ADMIN_RESTORE_INVOICE":
       return (
         <Badge className="bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20">
           Restored (Undo)
@@ -85,20 +85,20 @@ const getActionBadge = (action: string) => {
   }
 };
 
-export default function ReceiptActivitySheet({
+export default function InvoiceActivitySheet({
   open,
   onOpenChange,
-  receipt,
-}: ReceiptActivitySheetProps) {
+  invoice,
+}: InvoiceActivitySheetProps) {
   const { data, isLoading } = useGetAllActivityLogsQuery(
-    receipt
+    invoice
       ? {
-          entityType: "RECEIPT",
-          entityId: receipt.id,
+          entityType: "INVOICE",
+          entityId: invoice.id,
           limit: 50,
         }
       : undefined,
-    { skip: !open || !receipt },
+    { skip: !open || !invoice },
   );
 
   const logs = data?.data || [];
@@ -111,73 +111,73 @@ export default function ReceiptActivitySheet({
           <SheetHeader>
             <div className="flex items-center gap-2">
               <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Receipt className="size-5" />
+                <Invoice className="size-5" />
               </div>
               <div>
                 <SheetTitle className="text-base font-semibold">
-                  Receipt Activity Log
+                  Invoice Activity Log
                 </SheetTitle>
                 <SheetDescription className="text-xs truncate max-w-xs font-mono">
-                  {receipt?.receiptNumber || "Receipt Audit Trail"}
+                  {invoice?.invoiceNumber || "Invoice Audit Trail"}
                 </SheetDescription>
               </div>
             </div>
           </SheetHeader>
 
-          {receipt && (
+          {invoice && (
             <div className="mt-4 rounded-lg border border-border/80 bg-background/80 p-3 text-xs space-y-1.5">
-              {receipt.customer?.name && (
+              {invoice.customer?.name && (
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">Customer:</span>
                   <span className="font-semibold text-foreground">
-                    {receipt.customer.name}
+                    {invoice.customer.name}
                   </span>
                 </div>
               )}
-              {receipt.customer?.phoneNumber && (
+              {invoice.customer?.phoneNumber && (
                 <div className="flex items-center justify-between font-mono">
                   <span className="text-muted-foreground">Phone:</span>
                   <span className="text-foreground">
-                    {receipt.customer.countryCode || "+880"} {receipt.customer.phoneNumber}
+                    {invoice.customer.countryCode || "+880"} {invoice.customer.phoneNumber}
                   </span>
                 </div>
               )}
               <div className="flex items-center justify-between font-mono">
                 <span className="text-muted-foreground">Total Bill:</span>
                 <span className="font-semibold text-foreground">
-                  ৳{Number(receipt.totalAmount || 0).toFixed(2)}
+                  ৳{Number(invoice.totalAmount || 0).toFixed(2)}
                 </span>
               </div>
               <div className="flex items-center justify-between font-mono">
                 <span className="text-muted-foreground">Paid:</span>
                 <span className="font-medium text-emerald-600">
-                  ৳{Number(receipt.paidAmount || 0).toFixed(2)}
+                  ৳{Number(invoice.paidAmount || 0).toFixed(2)}
                 </span>
               </div>
               <div className="flex items-center justify-between font-mono">
                 <span className="text-muted-foreground">Due:</span>
                 <span
                   className={
-                    receipt.dueAmount > 0
+                    invoice.dueAmount > 0
                       ? "font-semibold text-rose-600"
                       : "text-muted-foreground"
                   }
                 >
-                  ৳{Number(receipt.dueAmount || 0).toFixed(2)}
+                  ৳{Number(invoice.dueAmount || 0).toFixed(2)}
                 </span>
               </div>
-              {receipt.status && (
+              {invoice.status && (
                 <div className="flex items-center justify-between pt-1 border-t border-border/50">
                   <span className="text-muted-foreground">Status:</span>
                   <Badge
                     variant="outline"
                     className={
-                      receipt.status === "APPROVED"
+                      invoice.status === "APPROVED"
                         ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20 text-[10px]"
                         : "bg-amber-500/10 text-amber-600 border-amber-500/20 text-[10px]"
                     }
                   >
-                    {receipt.status}
+                    {invoice.status}
                   </Badge>
                 </div>
               )}
@@ -204,7 +204,7 @@ export default function ReceiptActivitySheet({
               <Activity className="size-10 mb-2 opacity-30" />
               <p className="text-sm font-medium text-foreground">No logs recorded</p>
               <p className="text-xs text-muted-foreground mt-0.5">
-                No activity has been logged for this receipt yet.
+                No activity has been logged for this invoice yet.
               </p>
             </div>
           ) : (

@@ -1,5 +1,5 @@
-export type ReceiptSettlement = {
-  receiptTotal: number;
+export type InvoiceSettlement = {
+  invoiceTotal: number;
   paidAmount: number;
   creditsBefore: number;
   thisCredit: number;
@@ -23,16 +23,16 @@ function round2(n: number) {
   return Math.round(n * 100) / 100;
 }
 
-/** Mirror of backend deriveReceiptSettlement for live create/edit previews. */
-export function deriveReceiptSettlement(args: {
-  receiptTotal: number;
+/** Mirror of backend deriveInvoiceSettlement for live create/edit previews. */
+export function deriveInvoiceSettlement(args: {
+  invoiceTotal: number;
   paidAmount: number;
   creditsBefore?: number;
   thisCredit?: number;
   refundedBefore?: number;
   thisRefunded?: number;
-}): ReceiptSettlement {
-  const receiptTotal = round2(Math.max(0, Number(args.receiptTotal) || 0));
+}): InvoiceSettlement {
+  const invoiceTotal = round2(Math.max(0, Number(args.invoiceTotal) || 0));
   const paidAmount = round2(Math.max(0, Number(args.paidAmount) || 0));
   const creditsBefore = round2(Math.max(0, Number(args.creditsBefore) || 0));
   const thisCredit = round2(Math.max(0, Number(args.thisCredit) || 0));
@@ -40,13 +40,13 @@ export function deriveReceiptSettlement(args: {
   const thisRefunded = round2(Math.max(0, Number(args.thisRefunded) || 0));
   const totalCredits = round2(creditsBefore + thisCredit);
   const totalRefunded = round2(refundedBefore + thisRefunded);
-  const netSaleAfterReturns = round2(Math.max(0, receiptTotal - totalCredits));
+  const netSaleAfterReturns = round2(Math.max(0, invoiceTotal - totalCredits));
   const netPaid = round2(Math.max(0, paidAmount - totalRefunded));
   const netDue = round2(Math.max(0, netSaleAfterReturns - netPaid));
   const netRefundable = round2(Math.max(0, netPaid - netSaleAfterReturns));
 
   return {
-    receiptTotal,
+    invoiceTotal,
     paidAmount,
     creditsBefore,
     thisCredit,

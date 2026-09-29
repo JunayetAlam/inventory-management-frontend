@@ -284,7 +284,7 @@ export default function ShopDetailsForm() {
                 Shop Logo & Identity
               </CardTitle>
               <CardDescription className="text-xs">
-                Upload your store brand logo shown on receipts and reports.
+                Upload your store brand logo shown on invoices and reports.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -364,7 +364,7 @@ export default function ShopDetailsForm() {
               <div className="rounded-lg border border-border p-3.5 bg-card/60 space-y-1.5">
                 <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
                   <Sparkles className="size-3 text-amber-500" />
-                  Receipt Preview
+                  Invoice Preview
                 </div>
                 <div className="border border-dashed border-border/80 rounded p-2.5 bg-background text-center space-y-0.5">
                   <p className="font-bold text-sm tracking-wide text-foreground">

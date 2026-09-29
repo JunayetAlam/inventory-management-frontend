@@ -1,14 +1,14 @@
-import { TReceipt } from "@/types";
+import { TInvoice } from "@/types";
 import { formatInvoiceDate } from "@/utils/formatInvoiceDate";
 
 export default function RIV_ContinuationBar({
   shopName,
-  receipt,
+  invoice,
   pageNo,
   pageCount,
 }: {
   shopName: string;
-  receipt: TReceipt;
+  invoice: TInvoice;
   pageNo: number;
   pageCount: number;
 }) {
@@ -18,10 +18,10 @@ export default function RIV_ContinuationBar({
         {shopName}
       </span>
       <span className="font-mono font-semibold text-slate-900">
-        {receipt.receiptNumber}
+        {invoice.invoiceNumber}
       </span>
       <span className="font-mono text-slate-600">
-        {formatInvoiceDate(receipt.createdAt)}
+        {formatInvoiceDate(invoice.createdAt)}
       </span>
       <span className="font-medium text-slate-800">
         Page {pageNo} of {pageCount}

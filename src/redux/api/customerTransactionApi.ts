@@ -12,7 +12,7 @@ export const customerTransactionApi = baseApi.injectEndpoints({
         method: "GET",
         params,
       }),
-      providesTags: ["CustomerTransaction", "Receipt", "Customer"],
+      providesTags: ["CustomerTransaction", "Invoice", "Customer"],
     }),
 
     getCustomerTransactionStats: builder.query<
@@ -24,7 +24,7 @@ export const customerTransactionApi = baseApi.injectEndpoints({
         method: "GET",
         params,
       }),
-      providesTags: ["CustomerTransaction", "Receipt", "Customer"],
+      providesTags: ["CustomerTransaction", "Invoice", "Customer"],
     }),
 
     syncCustomerTransactions: builder.mutation<TResponse<{ count: number }>, void>({
