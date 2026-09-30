@@ -34,14 +34,8 @@ import {
   parseProductCSV,
 } from "@/utils/csvParser";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
-import {
-  AlertCircle,
-  Download,
-  FileSpreadsheet,
-  Plus,
-  Trash2,
-  UploadCloud,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { AlertCircleIcon, Download01Icon, Xls01Icon, Add01Icon, Delete02Icon, CloudUploadIcon } from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
 
 const PRODUCT_UNITS: { label: string; value: ProductUnit }[] = [
@@ -246,7 +240,7 @@ export default function ProductBulkModal({
           <DialogHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex items-center gap-2.5">
               <div className="flex size-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                <FileSpreadsheet className="size-5" />
+                <HugeiconsIcon icon={Xls01Icon} strokeWidth={2} className="size-5" />
               </div>
               <div>
                 <DialogTitle className="text-base font-semibold">
@@ -276,7 +270,7 @@ export default function ProductBulkModal({
                 onClick={() => fileInputRef.current?.click()}
                 className="h-8 gap-1.5 text-xs"
               >
-                <UploadCloud className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+                <HugeiconsIcon icon={CloudUploadIcon} strokeWidth={2} className="size-3.5 text-emerald-600 dark:text-emerald-400" />
                 Import CSV
               </Button>
 
@@ -288,7 +282,7 @@ export default function ProductBulkModal({
                 className="h-8 gap-1.5 text-xs text-muted-foreground hover:text-foreground"
                 title="Download CSV format template"
               >
-                <Download className="size-3.5" />
+                <HugeiconsIcon icon={Download01Icon} strokeWidth={2} className="size-3.5" />
                 Sample CSV
               </Button>
 
@@ -299,7 +293,7 @@ export default function ProductBulkModal({
                 onClick={handleAddRow}
                 className="h-8 gap-1 text-xs font-medium"
               >
-                <Plus className="size-3.5" />
+                <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-3.5" />
                 Add Row
               </Button>
 
@@ -320,7 +314,7 @@ export default function ProductBulkModal({
           {/* Duplicate warning alert banner */}
           {hasDuplicateNames && (
             <div className="mt-3 flex items-center gap-2 rounded-md bg-rose-500/10 border border-rose-500/20 px-3 py-2 text-xs text-rose-600 dark:text-rose-400">
-              <AlertCircle className="size-4 shrink-0" />
+              <HugeiconsIcon icon={AlertCircleIcon} strokeWidth={2} className="size-4 shrink-0" />
               <span>
                 Duplicate product names detected in the list! Please ensure all
                 product names in this batch are unique.
@@ -520,7 +514,7 @@ export default function ProductBulkModal({
                           className="size-7 text-muted-foreground hover:text-destructive"
                           title="Remove row"
                         >
-                          <Trash2 className="size-3.5" />
+                          <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-3.5" />
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -544,7 +538,7 @@ export default function ProductBulkModal({
               onClick={handleAddRow}
               className="h-7 text-xs gap-1"
             >
-              <Plus className="size-3" />
+              <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-3" />
               Add Another Row
             </Button>
           </div>

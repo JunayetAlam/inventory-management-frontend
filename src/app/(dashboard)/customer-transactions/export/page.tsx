@@ -2,7 +2,8 @@
 
 import { Suspense, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft02Icon } from "@hugeicons/core-free-icons";
 import { useGetAllCustomerTransactionsQuery } from "@/redux/api/customerTransactionApi";
 import { useGetAllCustomersQuery } from "@/redux/api/customerApi";
 import CustomerTransactionExportView from "@/components/CustomerTransactions/CustomerTransactionExport/CustomerTransactionExportView";
@@ -102,7 +103,7 @@ function CustomerTransactionExportPageInner() {
             onClick={() => router.back()}
             className="gap-2 cursor-pointer"
           >
-            <ArrowLeft className="size-4" />
+            <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
             <span className="hidden sm:inline">Go Back</span>
           </Button>
         </div>

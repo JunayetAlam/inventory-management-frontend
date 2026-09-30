@@ -3,7 +3,8 @@
 import { Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft02Icon } from "@hugeicons/core-free-icons";
 import { useGetProductProfitQuery } from "@/redux/api/productApi";
 import ProductProfitExportView from "@/components/ProductProfit/ProductProfitExportView";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -84,7 +85,7 @@ function ProductProfitLossExportPageInner() {
             onClick={() => router.back()}
             className="gap-2 cursor-pointer"
           >
-            <ArrowLeft className="size-4" />
+            <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
             <span className="hidden sm:inline">Go Back</span>
           </Button>
         </div>

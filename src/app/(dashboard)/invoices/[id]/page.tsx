@@ -3,18 +3,8 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  FileText,
-  Printer,
-  Pencil,
-  Trash2,
-  RotateCcw,
-  Check,
-  X,
-  Save,
-  Activity,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft02Icon, File02Icon, PrinterIcon, PencilEdit02Icon, Delete02Icon, RotateLeft01Icon, Tick02Icon, Cancel01Icon, Activity01Icon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import {
   useGetInvoiceByIdQuery,
@@ -104,7 +94,7 @@ export default function InvoiceDetailsPage() {
             title="Go Back"
             onClick={() => router.back()}
           >
-            <ArrowLeft className="size-4" />
+            <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
           </Button>
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
@@ -133,7 +123,7 @@ export default function InvoiceDetailsPage() {
                     title="View Invoice"
                     className="h-8 gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
                   >
-                    <FileText className="size-3.5" /> View Invoice
+                    <HugeiconsIcon icon={File02Icon} strokeWidth={2} className="size-3.5" /> View Invoice
                   </Button>
                 </Link>
                 <Link href={`/invoices/${invoice.id}/invoice?print=1`}>
@@ -143,7 +133,7 @@ export default function InvoiceDetailsPage() {
                     title="Print Invoice"
                     className="h-8 gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground"
                   >
-                    <Printer className="size-3.5" /> Print Invoice
+                    <HugeiconsIcon icon={PrinterIcon} strokeWidth={2} className="size-3.5" /> Print Invoice
                   </Button>
                 </Link>
                 <Link href={`/return-invoices/create?invoiceId=${invoice.id}`}>
@@ -153,7 +143,7 @@ export default function InvoiceDetailsPage() {
                     title="Create Return Invoice"
                     className="h-8 gap-1.5 text-xs font-medium"
                   >
-                    <RotateCcw className="size-3.5" /> Create Return
+                    <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="size-3.5" /> Create Return
                   </Button>
                 </Link>
               </>
@@ -167,7 +157,7 @@ export default function InvoiceDetailsPage() {
               className="h-8 gap-1.5 text-xs font-medium cursor-pointer"
               title="Invoice Activity Log"
             >
-              <Activity className="size-3.5" />
+              <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-3.5" />
               Activity Log
             </Button>
 
@@ -179,7 +169,7 @@ export default function InvoiceDetailsPage() {
                   size="sm"
                   className="h-8 gap-1.5 text-xs font-medium"
                 >
-                  <Pencil className="size-3.5" /> Edit
+                  <HugeiconsIcon icon={PencilEdit02Icon} strokeWidth={2} className="size-3.5" /> Edit
                 </Button>
               </Link>
             )}
@@ -200,7 +190,7 @@ export default function InvoiceDetailsPage() {
                     size="sm"
                     className="h-8 px-2.5 text-xs font-medium gap-1"
                   >
-                    <Check className="size-3.5" /> Delete
+                    <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="size-3.5" /> Delete
                   </Button>
                 </ConfirmPopup>
                 <ConfirmPopup
@@ -216,7 +206,7 @@ export default function InvoiceDetailsPage() {
                     size="sm"
                     className="h-8 px-2.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted gap-1"
                   >
-                    <X className="size-3.5" /> Reject
+                    <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-3.5" /> Reject
                   </Button>
                 </ConfirmPopup>
               </div>
@@ -234,7 +224,7 @@ export default function InvoiceDetailsPage() {
                   size="sm"
                   className="h-8 px-2.5 text-xs font-medium text-primary border-primary/40 hover:bg-primary/10 gap-1.5"
                 >
-                  <RotateCcw className="size-3.5" /> Restore
+                  <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="size-3.5" /> Restore
                 </Button>
               </ConfirmPopup>
             ) : (
@@ -254,7 +244,7 @@ export default function InvoiceDetailsPage() {
                     onClick={() => setDeleteModalOpen(true)}
                     className="h-8 gap-1.5 text-xs font-medium text-destructive border-destructive/30 hover:bg-destructive/10 cursor-pointer"
                   >
-                    <Trash2 className="size-3.5" />
+                    <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-3.5" />
                     {isAdmin ? "Delete" : "Request Delete"}
                   </Button>
                 )
@@ -280,7 +270,7 @@ export default function InvoiceDetailsPage() {
             onClick={() => router.back()}
             className="gap-2 cursor-pointer"
           >
-            <ArrowLeft className="size-4" />
+            <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
             <span className="hidden sm:inline">Go Back</span>
           </Button>
         </div>

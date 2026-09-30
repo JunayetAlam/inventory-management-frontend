@@ -15,7 +15,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Check, ChevronsUpDown, X } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Tick02Icon, UnfoldMoreIcon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import Image, { StaticImageData } from "next/image";
 import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -199,7 +200,7 @@ export default function CustomComboBoxMultiple({
                                 toggleSelect(item.value);
                               }}
                             >
-                              <X className="z-10 h-3 w-3 cursor-pointer" />
+                              <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="z-10 h-3 w-3 cursor-pointer" />
                             </div>
                           )}
                         </div>
@@ -209,7 +210,7 @@ export default function CustomComboBoxMultiple({
                     <span>{placeholder}</span>
                   )}
 
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  <HugeiconsIcon icon={UnfoldMoreIcon} strokeWidth={2} className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
 
@@ -253,7 +254,7 @@ export default function CustomComboBoxMultiple({
                                       : "opacity-50",
                                   )}
                                 >
-                                  {isSelected && <Check className="h-3 w-3" />}
+                                  {isSelected && <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="h-3 w-3" />}
                                 </div>
 
                                 {option.image && (

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { MoreVertical } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { MoreVerticalIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -94,7 +95,7 @@ export default function ChartMonthRangeFilter({
           )}
           aria-label="Filter month range"
         >
-          <MoreVertical className="size-4" />
+          <HugeiconsIcon icon={MoreVerticalIcon} strokeWidth={2} className="size-4" />
           {isFiltered && (
             <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-primary" />
           )}

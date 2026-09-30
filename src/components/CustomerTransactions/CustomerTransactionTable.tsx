@@ -2,24 +2,8 @@
 
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  Search,
-  Filter,
-  RotateCcw,
-  Calendar,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  FileDown,
-  FileText,
-  Wallet,
-  Undo2,
-  ExternalLink,
-  Mail,
-  MapPin,
-  Phone,
-  X,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Search01Icon, FilterIcon, RotateLeft01Icon, Calendar03Icon, ArrowLeft01Icon, ArrowRight01Icon, ViewIcon, FileDownloadIcon, File02Icon, Wallet01Icon, Undo02Icon, LinkSquare02Icon, Mail01Icon, Location01Icon, Call02Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const formatDateTime = (dateStr?: string) => {
@@ -243,7 +227,7 @@ export default function CustomerTransactionTable({
             className="h-9 gap-1.5 text-xs font-semibold"
           >
             <Link href={exportHref}>
-              <FileDown className="size-4" />
+              <HugeiconsIcon icon={FileDownloadIcon} strokeWidth={2} className="size-4" />
               Export List
             </Link>
           </Button>
@@ -255,7 +239,7 @@ export default function CustomerTransactionTable({
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-12">
           {/* Text Search */}
           <div className="relative lg:col-span-4">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
               placeholder="Search by customer, phone, reference, or note..."
               value={searchTerm}
@@ -337,7 +321,7 @@ export default function CustomerTransactionTable({
         {isFiltersActive && (
           <div className="flex items-center justify-between pt-2 border-t border-border/60">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Filter className="size-3.5" />
+              <HugeiconsIcon icon={FilterIcon} strokeWidth={2} className="size-3.5" />
               <span>Filters active</span>
             </div>
             <Button
@@ -346,7 +330,7 @@ export default function CustomerTransactionTable({
               onClick={handleResetFilters}
               className="h-7 text-xs text-muted-foreground hover:text-foreground"
             >
-              <RotateCcw className="mr-1.5 size-3.5" />
+              <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="mr-1.5 size-3.5" />
               Reset filters
             </Button>
           </div>
@@ -391,7 +375,7 @@ export default function CustomerTransactionTable({
                 disabled={page <= 1 || isFetching}
                 className="h-8 px-2.5 text-xs"
               >
-                <ChevronLeft className="mr-1 size-3.5" />
+                <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="mr-1 size-3.5" />
                 Previous
               </Button>
 
@@ -407,7 +391,7 @@ export default function CustomerTransactionTable({
                 className="h-8 px-2.5 text-xs"
               >
                 Next
-                <ChevronRight className="ml-1 size-3.5" />
+                <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="ml-1 size-3.5" />
               </Button>
             </div>
           )}
@@ -445,7 +429,7 @@ export default function CustomerTransactionTable({
 
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1">
-                      <Phone className="size-3 text-muted-foreground/70 shrink-0" />
+                      <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="size-3 text-muted-foreground/70 shrink-0" />
                       <span>
                         {selectedCustomer.countryCode || "+880"}{" "}
                         {selectedCustomer.phoneNumber}
@@ -453,13 +437,13 @@ export default function CustomerTransactionTable({
                     </span>
                     {selectedCustomer.email && (
                       <span className="flex items-center gap-1">
-                        <Mail className="size-3 text-muted-foreground/70 shrink-0" />
+                        <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="size-3 text-muted-foreground/70 shrink-0" />
                         <span>{selectedCustomer.email}</span>
                       </span>
                     )}
                     {selectedCustomer.address && (
                       <span className="flex items-center gap-1 truncate max-w-xs">
-                        <MapPin className="size-3 text-muted-foreground/70 shrink-0" />
+                        <HugeiconsIcon icon={Location01Icon} strokeWidth={2} className="size-3 text-muted-foreground/70 shrink-0" />
                         <span className="truncate">{selectedCustomer.address}</span>
                       </span>
                     )}
@@ -494,7 +478,7 @@ export default function CustomerTransactionTable({
                     className="h-8 gap-1.5 text-xs font-semibold"
                   >
                     <Link href={`/customers/${selectedCustomer.id}`}>
-                      <ExternalLink className="size-3" />
+                      <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3" />
                       View Profile
                     </Link>
                   </Button>
@@ -508,7 +492,7 @@ export default function CustomerTransactionTable({
                     className="h-8 px-2 text-xs text-muted-foreground hover:text-foreground"
                     title="Clear Customer Filter"
                   >
-                    <X className="size-3.5" />
+                    <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-3.5" />
                   </Button>
                 </div>
               </div>
@@ -589,7 +573,7 @@ export default function CustomerTransactionTable({
                       <TableCell className="py-2.5">
                         <div className="space-y-0.5">
                           <div className="flex items-center gap-1.5 font-mono text-muted-foreground whitespace-nowrap">
-                            <Calendar className="size-3 text-muted-foreground/70 shrink-0" />
+                            <HugeiconsIcon icon={Calendar03Icon} strokeWidth={2} className="size-3 text-muted-foreground/70 shrink-0" />
                             <span>{formatDateTime(tx.createdAt)}</span>
                           </div>
                           {!selectedCustomer && (
@@ -617,9 +601,9 @@ export default function CustomerTransactionTable({
                               "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
                           )}
                         >
-                          {isInvoice && <FileText className="mr-1 size-3" />}
-                          {isPayment && <Wallet className="mr-1 size-3" />}
-                          {isReturn && <Undo2 className="mr-1 size-3" />}
+                          {isInvoice && <HugeiconsIcon icon={File02Icon} strokeWidth={2} className="mr-1 size-3" />}
+                          {isPayment && <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="mr-1 size-3" />}
+                          {isReturn && <HugeiconsIcon icon={Undo02Icon} strokeWidth={2} className="mr-1 size-3" />}
                           {isInvoice
                             ? "Invoice"
                             : isPayment
@@ -680,7 +664,7 @@ export default function CustomerTransactionTable({
                               title={`View Return Invoice #${returnNumber}`}
                             >
                               <span>{returnNumber}</span>
-                              <ExternalLink className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                              <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                             </Link>
                           ) : returnNumber ? (
                             <span className="font-semibold text-foreground">
@@ -696,7 +680,7 @@ export default function CustomerTransactionTable({
                             title={`View Invoice #${invoiceNumber}`}
                           >
                             <span>{invoiceNumber}</span>
-                            <ExternalLink className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                            <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                           </Link>
                         ) : invoiceNumber ? (
                           <span className="font-semibold text-foreground">
@@ -716,7 +700,7 @@ export default function CustomerTransactionTable({
                           className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground"
                           title="View Details"
                         >
-                          <Eye className="size-3.5" />
+                          <HugeiconsIcon icon={ViewIcon} strokeWidth={2} className="size-3.5" />
                         </Button>
                       </TableCell>
                     </TableRow>

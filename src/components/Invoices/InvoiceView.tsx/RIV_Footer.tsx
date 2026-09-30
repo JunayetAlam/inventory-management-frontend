@@ -1,6 +1,7 @@
 "use client";
 
-import { Phone, MapPin, Mail, Clock } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Call02Icon, Location01Icon, Mail01Icon, Clock01Icon } from "@hugeicons/core-free-icons";
 import React, { useEffect, useState } from "react";
 
 export default function RIV_Footer({
@@ -55,21 +56,21 @@ export default function RIV_Footer({
       <div className="bg-primary text-primary-foreground py-3.5 px-9 flex flex-wrap justify-between items-center gap-3 text-xs font-medium">
         {contactPhones && (
           <div className="flex items-center gap-2">
-            <Phone className="size-3.5 text-primary-foreground/90 shrink-0" />
+            <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="size-3.5 text-primary-foreground/90 shrink-0" />
             <span>{contactPhones}</span>
           </div>
         )}
 
         {contactLocations && (
           <div className="flex items-center gap-2">
-            <MapPin className="size-3.5 text-primary-foreground/90 shrink-0" />
+            <HugeiconsIcon icon={Location01Icon} strokeWidth={2} className="size-3.5 text-primary-foreground/90 shrink-0" />
             <span>{contactLocations}</span>
           </div>
         )}
 
         {contactEmails && (
           <div className="flex items-center gap-2">
-            <Mail className="size-3.5 text-primary-foreground/90 shrink-0" />
+            <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="size-3.5 text-primary-foreground/90 shrink-0" />
             <span>{contactEmails}</span>
           </div>
         )}
@@ -77,7 +78,7 @@ export default function RIV_Footer({
         <div className="flex items-center gap-3 sm:gap-4 ml-auto shrink-0 font-mono text-[11px]">
           {printTime && (
             <span className="text-primary-foreground/80 flex items-center gap-1.5 whitespace-nowrap">
-              <Clock className="size-3 opacity-70 shrink-0" />
+              <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-3 opacity-70 shrink-0" />
               <span>Printed: {printTime}</span>
             </span>
           )}

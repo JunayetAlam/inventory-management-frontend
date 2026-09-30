@@ -4,7 +4,8 @@ import {
   formatInvoiceMoney,
   formatSignedDue,
 } from "@/utils/formatInvoiceMoney";
-import { ArrowLeftRight, Clock, Wallet, Scale } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowDataTransferHorizontalIcon, Clock01Icon, Wallet01Icon, BalanceScaleIcon } from "@hugeicons/core-free-icons";
 
 export default function CustomerTransactionHeader({
   shop,
@@ -133,7 +134,7 @@ export default function CustomerTransactionHeader({
         {/* Total Transactions */}
         <div className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50/70 p-2.5">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-blue-50 text-blue-600 border border-blue-100">
-            <ArrowLeftRight className="size-4" />
+            <HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} strokeWidth={2} className="size-4" />
           </div>
           <div className="min-w-0">
             <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-500 truncate">
@@ -148,7 +149,7 @@ export default function CustomerTransactionHeader({
         {/* Total Due */}
         <div className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50/70 p-2.5">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-amber-50 text-amber-600 border border-amber-100">
-            <Clock className="size-4" />
+            <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-4" />
           </div>
           <div className="min-w-0">
             <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-500 truncate">
@@ -163,7 +164,7 @@ export default function CustomerTransactionHeader({
         {/* Total Cash / Payment */}
         <div className="flex items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50/70 p-2.5">
           <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-emerald-50 text-emerald-600 border border-emerald-100">
-            <Wallet className="size-4" />
+            <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="size-4" />
           </div>
           <div className="min-w-0">
             <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-500 truncate">
@@ -184,7 +185,7 @@ export default function CustomerTransactionHeader({
                 : "bg-purple-50 text-purple-600 border-purple-100"
             }`}
           >
-            <Scale className="size-4" />
+            <HugeiconsIcon icon={BalanceScaleIcon} strokeWidth={2} className="size-4" />
           </div>
           <div className="min-w-0">
             <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-500 truncate">

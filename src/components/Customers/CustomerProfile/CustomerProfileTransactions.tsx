@@ -2,24 +2,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import {
-  Calendar,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  FileText,
-  Wallet,
-  Undo2,
-  Search,
-  RotateCcw,
-  Clock,
-  Table as TableIcon,
-  GitCommitVertical,
-  ArrowUpRight,
-  ArrowDownLeft,
-  ExternalLink,
-  FileDown,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Calendar03Icon, ArrowLeft01Icon, ArrowRight01Icon, ViewIcon, File02Icon, Wallet01Icon, Undo02Icon, Search01Icon, RotateLeft01Icon, Clock01Icon, Table01Icon, GitCommitIcon, LinkSquare02Icon, FileDownloadIcon } from "@hugeicons/core-free-icons";
 import { useGetAllCustomerTransactionsQuery } from "@/redux/api/customerTransactionApi";
 import { TCustomerTransaction } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -216,7 +200,7 @@ export default function CustomerProfileTransactions({
               title="Export Customer Transactions"
             >
               <Link href={exportHref}>
-                <FileDown className="size-3.5" />
+                <HugeiconsIcon icon={FileDownloadIcon} strokeWidth={2} className="size-3.5" />
                 <span>Export</span>
               </Link>
             </Button>
@@ -233,7 +217,7 @@ export default function CustomerProfileTransactions({
                 )}
                 title="Timeline View"
               >
-                <GitCommitVertical className="size-3.5" />
+                <HugeiconsIcon icon={GitCommitIcon} strokeWidth={2} className="size-3.5" />
                 <span>Timeline</span>
               </button>
               <button
@@ -247,7 +231,7 @@ export default function CustomerProfileTransactions({
                 )}
                 title="Table View"
               >
-                <TableIcon className="size-3.5" />
+                <HugeiconsIcon icon={Table01Icon} strokeWidth={2} className="size-3.5" />
                 <span>Table</span>
               </button>
             </div>
@@ -258,7 +242,7 @@ export default function CustomerProfileTransactions({
         <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border/50">
           {/* Search Input */}
           <div className="relative flex-1 min-w-[200px] max-w-sm">
-            <Search className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground" />
+            <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground" />
             <Input
               placeholder="Search note, invoice, return..."
               value={searchTerm}
@@ -328,7 +312,7 @@ export default function CustomerProfileTransactions({
               className="h-8 px-2 text-xs text-muted-foreground hover:text-foreground cursor-pointer"
               title="Reset all filters"
             >
-              <RotateCcw className="size-3 mr-1" />
+              <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="size-3 mr-1" />
               Reset
             </Button>
           )}
@@ -367,7 +351,7 @@ export default function CustomerProfileTransactions({
                 disabled={page <= 1 || isFetching}
                 className="h-7 px-2 text-xs cursor-pointer"
               >
-                <ChevronLeft className="mr-1 size-3" />
+                <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="mr-1 size-3" />
                 Previous
               </Button>
 
@@ -383,7 +367,7 @@ export default function CustomerProfileTransactions({
                 className="h-7 px-2 text-xs cursor-pointer"
               >
                 Next
-                <ChevronRight className="ml-1 size-3" />
+                <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="ml-1 size-3" />
               </Button>
             </div>
           )}
@@ -408,7 +392,7 @@ export default function CustomerProfileTransactions({
             </div>
           ) : transactions.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center text-muted-foreground">
-              <Clock className="size-10 mb-2 opacity-30 text-muted-foreground" />
+              <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-10 mb-2 opacity-30 text-muted-foreground" />
               <p className="text-sm font-semibold text-foreground">
                 No transactions found
               </p>
@@ -458,9 +442,9 @@ export default function CustomerProfileTransactions({
                         nodeBg
                       )}
                     >
-                      {isInvoice && <FileText className="size-3.5" />}
-                      {isPayment && <Wallet className="size-3.5" />}
-                      {isReturn && <Undo2 className="size-3.5" />}
+                      {isInvoice && <HugeiconsIcon icon={File02Icon} strokeWidth={2} className="size-3.5" />}
+                      {isPayment && <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="size-3.5" />}
+                      {isReturn && <HugeiconsIcon icon={Undo02Icon} strokeWidth={2} className="size-3.5" />}
                     </div>
 
                     {/* Timeline Item Card */}
@@ -495,7 +479,7 @@ export default function CustomerProfileTransactions({
                                 title={`View Return Invoice #${returnNumber}`}
                               >
                                 <span>{returnNumber}</span>
-                                <ExternalLink className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                                <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                               </Link>
                             ) : returnNumber ? (
                               <span className="font-mono text-xs font-semibold text-foreground">
@@ -513,7 +497,7 @@ export default function CustomerProfileTransactions({
                               title={`View Invoice #${invoiceNumber}`}
                             >
                               <span>{invoiceNumber}</span>
-                              <ExternalLink className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                              <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                             </Link>
                           ) : invoiceNumber ? (
                             <span className="font-mono text-xs font-semibold text-foreground">
@@ -527,7 +511,7 @@ export default function CustomerProfileTransactions({
                         </div>
 
                         <div className="flex items-center gap-2 text-xs text-muted-foreground font-mono">
-                          <Calendar className="size-3 text-muted-foreground/70" />
+                          <HugeiconsIcon icon={Calendar03Icon} strokeWidth={2} className="size-3 text-muted-foreground/70" />
                           <span>{formatDateTime(tx.createdAt)}</span>
                         </div>
                       </div>
@@ -593,7 +577,7 @@ export default function CustomerProfileTransactions({
                             onClick={() => handleOpenDetail(tx)}
                             className="h-7 px-2.5 text-xs gap-1 cursor-pointer"
                           >
-                            <Eye className="size-3" />
+                            <HugeiconsIcon icon={ViewIcon} strokeWidth={2} className="size-3" />
                             Details
                           </Button>
                         </div>
@@ -699,7 +683,7 @@ export default function CustomerProfileTransactions({
                         {/* Date & Time (Without customer name underneath) */}
                         <TableCell className="py-2.5">
                           <div className="flex items-center gap-1.5 font-mono text-muted-foreground whitespace-nowrap">
-                            <Calendar className="size-3 text-muted-foreground/70 shrink-0" />
+                            <HugeiconsIcon icon={Calendar03Icon} strokeWidth={2} className="size-3 text-muted-foreground/70 shrink-0" />
                             <span>{formatDateTime(tx.createdAt)}</span>
                           </div>
                         </TableCell>
@@ -718,9 +702,9 @@ export default function CustomerProfileTransactions({
                                 "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300"
                             )}
                           >
-                            {isInvoice && <FileText className="mr-1 size-3" />}
-                            {isPayment && <Wallet className="mr-1 size-3" />}
-                            {isReturn && <Undo2 className="mr-1 size-3" />}
+                            {isInvoice && <HugeiconsIcon icon={File02Icon} strokeWidth={2} className="mr-1 size-3" />}
+                            {isPayment && <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="mr-1 size-3" />}
+                            {isReturn && <HugeiconsIcon icon={Undo02Icon} strokeWidth={2} className="mr-1 size-3" />}
                             {isInvoice
                               ? "Invoice"
                               : isPayment
@@ -784,7 +768,7 @@ export default function CustomerProfileTransactions({
                                 title={`View Return Invoice #${returnNumber}`}
                               >
                                 <span>{returnNumber}</span>
-                                <ExternalLink className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                                <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                               </Link>
                             ) : returnNumber ? (
                               <span className="font-semibold text-foreground">
@@ -800,7 +784,7 @@ export default function CustomerProfileTransactions({
                               title={`View Invoice #${invoiceNumber}`}
                             >
                               <span>{invoiceNumber}</span>
-                              <ExternalLink className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                              <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
                             </Link>
                           ) : invoiceNumber ? (
                             <span className="font-semibold text-foreground">
@@ -820,7 +804,7 @@ export default function CustomerProfileTransactions({
                             className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground cursor-pointer"
                             title="View Details"
                           >
-                            <Eye className="size-3.5" />
+                            <HugeiconsIcon icon={ViewIcon} strokeWidth={2} className="size-3.5" />
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -870,7 +854,7 @@ export default function CustomerProfileTransactions({
               disabled={page <= 1 || isFetching}
               className="h-8 px-2.5 text-xs cursor-pointer"
             >
-              <ChevronLeft className="mr-1 size-3.5" />
+              <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="mr-1 size-3.5" />
               Previous
             </Button>
 
@@ -886,7 +870,7 @@ export default function CustomerProfileTransactions({
               className="h-8 px-2.5 text-xs cursor-pointer"
             >
               Next
-              <ChevronRight className="ml-1 size-3.5" />
+              <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="ml-1 size-3.5" />
             </Button>
           </div>
         </div>

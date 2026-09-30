@@ -19,14 +19,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Activity,
-  Calendar,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  Globe,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Activity01Icon, Calendar03Icon, ArrowLeft01Icon, ArrowRight01Icon, ViewIcon, Globe02Icon } from "@hugeicons/core-free-icons";
 import { TActivityLog } from "@/types";
 
 const getActionBadge = (action: string) => {
@@ -116,7 +110,7 @@ export default function ProfileActivityLogs() {
             ) : logs.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="py-8 text-center text-muted-foreground">
-                  <Activity className="size-6 mx-auto mb-1.5 opacity-40" />
+                  <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-6 mx-auto mb-1.5 opacity-40" />
                   <p className="text-sm">No activity records found.</p>
                 </TableCell>
               </TableRow>
@@ -134,13 +128,13 @@ export default function ProfileActivityLogs() {
                   </TableCell>
                   <TableCell>
                     <span className="inline-flex items-center gap-1 text-xs text-muted-foreground font-mono">
-                      <Globe className="size-3" />
+                      <HugeiconsIcon icon={Globe02Icon} strokeWidth={2} className="size-3" />
                       {log.ipAddress || "—"}
                     </span>
                   </TableCell>
                   <TableCell>
                     <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
-                      <Calendar className="size-3 text-muted-foreground/70" />
+                      <HugeiconsIcon icon={Calendar03Icon} strokeWidth={2} className="size-3 text-muted-foreground/70" />
                       {new Date(log.createdAt).toLocaleString("en-US", {
                         dateStyle: "medium",
                         timeStyle: "short",
@@ -155,7 +149,7 @@ export default function ProfileActivityLogs() {
                         onClick={() => setDetailModalLog(log)}
                         className="h-7 text-xs px-2"
                       >
-                        <Eye className="mr-1 size-3.5" />
+                        <HugeiconsIcon icon={ViewIcon} strokeWidth={2} className="mr-1 size-3.5" />
                         View
                       </Button>
                     ) : (
@@ -183,7 +177,7 @@ export default function ProfileActivityLogs() {
               disabled={page <= 1}
               className="h-7 px-2 text-xs"
             >
-              <ChevronLeft className="size-3.5" />
+              <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="size-3.5" />
             </Button>
             <Button
               variant="outline"
@@ -192,7 +186,7 @@ export default function ProfileActivityLogs() {
               disabled={page >= meta.totalPage}
               className="h-7 px-2 text-xs"
             >
-              <ChevronRight className="size-3.5" />
+              <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="size-3.5" />
             </Button>
           </div>
         </div>
@@ -206,7 +200,7 @@ export default function ProfileActivityLogs() {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="text-base flex items-center gap-2">
-              <Activity className="size-4 text-primary" />
+              <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-4 text-primary" />
               Activity Details
             </DialogTitle>
           </DialogHeader>

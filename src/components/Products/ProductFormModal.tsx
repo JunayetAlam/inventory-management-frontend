@@ -24,7 +24,8 @@ import {
   useUpdateProductMutation,
 } from "@/redux/api/productApi";
 import { ProductUnit, TProduct } from "@/types";
-import { Package, FileSpreadsheet } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { PackageIcon, Xls01Icon } from "@hugeicons/core-free-icons";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 
 const PRODUCT_UNITS: { label: string; value: ProductUnit }[] = [
@@ -142,7 +143,7 @@ export default function ProductFormModal({
       <DialogContent className="max-w-md p-6">
         <DialogHeader className="flex flex-row items-center justify-between space-y-0">
           <DialogTitle className="flex items-center gap-2 text-lg">
-            <Package className="size-5 text-primary" />
+            <HugeiconsIcon icon={PackageIcon} strokeWidth={2} className="size-5 text-primary" />
             {isEditing ? "Edit Product" : "Add New Product"}
           </DialogTitle>
           {!isEditing && onOpenBulk && (
@@ -156,7 +157,7 @@ export default function ProductFormModal({
               }}
               className="h-7 text-xs text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 gap-1.5"
             >
-              <FileSpreadsheet className="size-3.5 text-emerald-600 dark:text-emerald-400" />
+              <HugeiconsIcon icon={Xls01Icon} strokeWidth={2} className="size-3.5 text-emerald-600 dark:text-emerald-400" />
               Bulk / CSV Import
             </Button>
           )}

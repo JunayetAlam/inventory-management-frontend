@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertTriangle, PackageX } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Alert02Icon, PackageRemoveIcon } from "@hugeicons/core-free-icons";
 import { useGetProductStatsQuery } from "@/redux/api/productApi";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -20,9 +21,9 @@ export default function LowStockStatsCard({
         <CardContent className="flex items-center gap-4">
           <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
             {lowStockCount === 0 ? (
-              <PackageX className="size-5" />
+              <HugeiconsIcon icon={PackageRemoveIcon} strokeWidth={2} className="size-5" />
             ) : (
-              <AlertTriangle className="size-5" />
+              <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-5" />
             )}
           </div>
           <div className="min-w-0">

@@ -2,20 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  Search,
-  Plus,
-  ChevronLeft,
-  ChevronRight,
-  Clock,
-  ShieldCheck,
-  ShieldAlert,
-  Archive,
-  Printer,
-  FileText,
-  Undo2,
-  Activity,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Search01Icon, Add01Icon, ArrowLeft01Icon, ArrowRight01Icon, Clock01Icon, SecurityCheckIcon, SecurityWarningIcon, Archive01Icon, PrinterIcon, File02Icon, Undo02Icon, Activity01Icon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import {
   useGetAllReturnInvoicesQuery,
@@ -123,22 +111,22 @@ export default function ReturnInvoiceTable() {
     {
       key: "PENDING",
       label: "Pending",
-      icon: <Clock className="size-3 text-amber-600" />,
+      icon: <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-3 text-amber-600" />,
     },
     {
       key: "APPROVED",
       label: "Approved",
-      icon: <ShieldCheck className="size-3 text-emerald-600" />,
+      icon: <HugeiconsIcon icon={SecurityCheckIcon} strokeWidth={2} className="size-3 text-emerald-600" />,
     },
     {
       key: "PENDING_DELETION",
       label: "Deletion Requests",
-      icon: <ShieldAlert className="size-3 text-rose-600" />,
+      icon: <HugeiconsIcon icon={SecurityWarningIcon} strokeWidth={2} className="size-3 text-rose-600" />,
     },
     {
       key: "ARCHIVED",
       label: "Archived",
-      icon: <Archive className="size-3" />,
+      icon: <HugeiconsIcon icon={Archive01Icon} strokeWidth={2} className="size-3" />,
     },
   ];
 
@@ -147,7 +135,7 @@ export default function ReturnInvoiceTable() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex flex-1 items-center gap-2 max-w-md">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
               placeholder="Search by return #..."
               value={searchTerm}
@@ -182,7 +170,7 @@ export default function ReturnInvoiceTable() {
         </div>
         <Link href="/return-invoices/create">
           <Button size="sm" className="gap-1.5 font-semibold text-xs shadow-xs">
-            <Plus className="size-4" /> Create Return Invoice
+            <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-4" /> Create Return Invoice
           </Button>
         </Link>
       </div>
@@ -241,7 +229,7 @@ export default function ReturnInvoiceTable() {
                   className="py-12 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center gap-2">
-                    <Undo2 className="size-8 text-muted-foreground/40" />
+                    <HugeiconsIcon icon={Undo02Icon} strokeWidth={2} className="size-8 text-muted-foreground/40" />
                     <p className="text-base font-medium text-foreground">
                       No return invoices found
                     </p>
@@ -331,7 +319,7 @@ export default function ReturnInvoiceTable() {
                           setActivitySheetOpen(true);
                         }}
                       >
-                        <Activity className="size-3.5 text-muted-foreground hover:text-foreground" />
+                        <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-3.5 text-muted-foreground hover:text-foreground" />
                       </Button>
 
                       {!row.isDeleted && (
@@ -343,7 +331,7 @@ export default function ReturnInvoiceTable() {
                               title="View Invoice"
                               className="h-7 px-2 text-xs font-medium text-muted-foreground hover:text-foreground gap-1"
                             >
-                              <FileText className="size-3.5" /> View Invoice
+                              <HugeiconsIcon icon={File02Icon} strokeWidth={2} className="size-3.5" /> View Invoice
                             </Button>
                           </Link>
                           <Link
@@ -355,7 +343,7 @@ export default function ReturnInvoiceTable() {
                               title="Print Invoice"
                               className="h-7 px-2 text-xs font-medium text-muted-foreground hover:text-foreground gap-1"
                             >
-                              <Printer className="size-3.5" /> Print Invoice
+                              <HugeiconsIcon icon={PrinterIcon} strokeWidth={2} className="size-3.5" /> Print Invoice
                             </Button>
                           </Link>
                         </>
@@ -515,7 +503,7 @@ export default function ReturnInvoiceTable() {
             disabled={page <= 1}
             onClick={() => setPage((p) => Math.max(1, p - 1))}
           >
-            <ChevronLeft className="size-4" />
+            <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="size-4" />
           </Button>
           <span className="text-muted-foreground">
             Page {page} of {totalPages}
@@ -527,7 +515,7 @@ export default function ReturnInvoiceTable() {
             disabled={page >= totalPages}
             onClick={() => setPage((p) => p + 1)}
           >
-            <ChevronRight className="size-4" />
+            <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="size-4" />
           </Button>
         </div>
       </div>

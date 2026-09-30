@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Eye, EyeClosed, Edit3, X, Check } from "lucide-react"
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ViewIcon, ViewOffSlashIcon, PencilEdit01Icon, Cancel01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button"
 import CustomForm from "../Forms/CustomForm"
 import CustomInput from "../Forms/CustomInput"
@@ -73,7 +74,7 @@ export default function ProfilePassword() {
             className="text-primary border-primary hover:bg-primary/10"
             disabled={isLoading}
           >
-            <Edit3 className="w-4 h-4 mr-2" /> Change Password
+            <HugeiconsIcon icon={PencilEdit01Icon} strokeWidth={2} className="w-4 h-4 mr-2" /> Change Password
           </Button>
         ) : (
           <div className="flex gap-2">
@@ -85,14 +86,14 @@ export default function ProfilePassword() {
               className="text-gray-600"
               disabled={isLoading}
             >
-              <X className="w-4 h-4 mr-2" /> Cancel
+              <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="w-4 h-4 mr-2" /> Cancel
             </Button>
             <Button
               size="sm"
               className="bg-primary hover:bg-primary/90 text-white"
               disabled={isLoading}
             >
-              {isLoading ? "Updating..." : <><Check className="w-4 h-4 mr-2" /> Update Password</>}
+              {isLoading ? "Updating..." : <><HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="w-4 h-4 mr-2" /> Update Password</>}
             </Button>
           </div>
         )}
@@ -108,7 +109,7 @@ export default function ProfilePassword() {
             type={showCurrentPassword ? "text" : "password"}
             name="oldPassword"
             label="Current Password"
-            RightIcon={showCurrentPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+            RightIcon={showCurrentPassword ? <HugeiconsIcon icon={ViewIcon} strokeWidth={2} size={16} /> : <HugeiconsIcon icon={ViewOffSlashIcon} strokeWidth={2} size={16} />}
             placeholder={showCurrentPassword ? "Enter Current Password" : "********"}
             onRightIconClick={() => setShowCurrentPassword(!showCurrentPassword)}
             required
@@ -120,7 +121,7 @@ export default function ProfilePassword() {
             type={showPassword ? "text" : "password"}
             name="newPassword"
             label="New Password"
-            RightIcon={showPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+            RightIcon={showPassword ? <HugeiconsIcon icon={ViewIcon} strokeWidth={2} size={16} /> : <HugeiconsIcon icon={ViewOffSlashIcon} strokeWidth={2} size={16} />}
             placeholder={showPassword ? "Enter New Password" : "********"}
             onRightIconClick={() => setShowPassword(!showPassword)}
             required
@@ -132,7 +133,7 @@ export default function ProfilePassword() {
             type={showConfirm ? "text" : "password"}
             name="confirmPassword"
             label="Confirm Password"
-            RightIcon={showConfirm ? <Eye size={16} /> : <EyeClosed size={16} />}
+            RightIcon={showConfirm ? <HugeiconsIcon icon={ViewIcon} strokeWidth={2} size={16} /> : <HugeiconsIcon icon={ViewOffSlashIcon} strokeWidth={2} size={16} />}
             placeholder={showConfirm ? "Re-enter New Password" : "********"}
             onRightIconClick={() => setShowConfirm(!showConfirm)}
             required

@@ -12,15 +12,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetAllActivityLogsQuery } from "@/redux/api/activityLogApi";
 import { TInvoice } from "@/types";
-import {
-  Activity,
-  Calendar,
-  Globe,
-  Receipt as Invoice,
-  User,
-  Phone,
-  DollarSign,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Activity01Icon, Globe02Icon, Invoice01Icon } from "@hugeicons/core-free-icons";
 
 interface InvoiceActivitySheetProps {
   open: boolean;
@@ -111,7 +104,7 @@ export default function InvoiceActivitySheet({
           <SheetHeader>
             <div className="flex items-center gap-2">
               <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Invoice className="size-5" />
+                <HugeiconsIcon icon={Invoice01Icon} strokeWidth={2} className="size-5" />
               </div>
               <div>
                 <SheetTitle className="text-base font-semibold">
@@ -201,7 +194,7 @@ export default function InvoiceActivitySheet({
             </div>
           ) : logs.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center text-muted-foreground">
-              <Activity className="size-10 mb-2 opacity-30" />
+              <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-10 mb-2 opacity-30" />
               <p className="text-sm font-medium text-foreground">No logs recorded</p>
               <p className="text-xs text-muted-foreground mt-0.5">
                 No activity has been logged for this invoice yet.
@@ -274,7 +267,7 @@ export default function InvoiceActivitySheet({
                       {/* IP / UserAgent meta */}
                       {log.ipAddress && (
                         <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                          <Globe className="size-3" />
+                          <HugeiconsIcon icon={Globe02Icon} strokeWidth={2} className="size-3" />
                           <span>IP: {log.ipAddress}</span>
                         </div>
                       )}

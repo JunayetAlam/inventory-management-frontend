@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import { Eye, EyeClosed, LockKeyhole } from "lucide-react"
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ViewIcon, ViewOffSlashIcon, LockPasswordIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button"
 import CustomForm from "../Forms/CustomForm"
 import CustomInput from "../Forms/CustomInput"
@@ -76,8 +77,8 @@ export default function ResetPassword() {
                         type={showPassword ? "text" : "password"}
                         label="New Password"
                         placeholder="Enter new password"
-                        Icon={<LockKeyhole size={16} />}
-                        RightIcon={showPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+                        Icon={<HugeiconsIcon icon={LockPasswordIcon} strokeWidth={2} size={16} />}
+                        RightIcon={showPassword ? <HugeiconsIcon icon={ViewIcon} strokeWidth={2} size={16} /> : <HugeiconsIcon icon={ViewOffSlashIcon} strokeWidth={2} size={16} />}
                         onRightIconClick={() => setShowPassword(!showPassword)}
                         disabled={isLoading}
                     />
@@ -89,8 +90,8 @@ export default function ResetPassword() {
                         type={showConfirmPassword ? "text" : "password"}
                         label="Confirm Password"
                         placeholder="Confirm new password"
-                        Icon={<LockKeyhole size={16} />}
-                        RightIcon={showConfirmPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+                        Icon={<HugeiconsIcon icon={LockPasswordIcon} strokeWidth={2} size={16} />}
+                        RightIcon={showConfirmPassword ? <HugeiconsIcon icon={ViewIcon} strokeWidth={2} size={16} /> : <HugeiconsIcon icon={ViewOffSlashIcon} strokeWidth={2} size={16} />}
                         onRightIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
                         disabled={isLoading}
                     />

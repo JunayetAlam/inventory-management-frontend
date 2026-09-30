@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { Loader2 } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Loading03Icon } from "@hugeicons/core-free-icons";
 
 export default function Spinner() {
   return (
-   <Loader2 className="animate-spin w-6 h-6 text-primary" />
+   <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="animate-spin w-6 h-6 text-primary" />
       
   );
 }

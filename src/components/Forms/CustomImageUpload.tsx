@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Label } from "../ui/label";
 import Image from "next/image";
-import { X } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Cancel01Icon } from "@hugeicons/core-free-icons";
 
 type TImageUploadProps = {
   name: string;
@@ -96,7 +97,7 @@ const CustomImageUpload = ({
                     }}
                     className="absolute top-1 right-1 z-10 rounded-full bg-black/70 p-1 text-white hover:bg-black"
                   >
-                    <X size={14} />
+                    <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} size={14} />
                   </button>
                 )}
               </div>

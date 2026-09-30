@@ -3,16 +3,8 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  Pencil,
-  Trash2,
-  RotateCcw,
-  Activity,
-  FileDown,
-  Check,
-  X,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft02Icon, PencilEdit02Icon, Delete02Icon, RotateLeft01Icon, Activity01Icon, FileDownloadIcon, Tick02Icon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import {
   useGetCustomerByIdQuery,
@@ -102,7 +94,7 @@ export default function CustomerProfilePage() {
             title="Go Back"
             onClick={() => router.back()}
           >
-            <ArrowLeft className="size-4" />
+            <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
           </Button>
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">
@@ -127,7 +119,7 @@ export default function CustomerProfilePage() {
               className="h-8 gap-1.5 text-xs font-medium cursor-pointer"
               title="Customer Activity Log"
             >
-              <Activity className="size-3.5" />
+              <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-3.5" />
               Activity Log
             </Button>
 
@@ -140,7 +132,7 @@ export default function CustomerProfilePage() {
               title="Export Customer Transactions"
             >
               <Link href={`/customer-transactions/export?customerId=${customer.id}`}>
-                <FileDown className="size-3.5" />
+                <HugeiconsIcon icon={FileDownloadIcon} strokeWidth={2} className="size-3.5" />
                 Export Transactions
               </Link>
             </Button>
@@ -153,7 +145,7 @@ export default function CustomerProfilePage() {
                 onClick={() => setEditModalOpen(true)}
                 className="h-8 gap-1.5 text-xs font-medium cursor-pointer"
               >
-                <Pencil className="size-3.5" />
+                <HugeiconsIcon icon={PencilEdit02Icon} strokeWidth={2} className="size-3.5" />
                 Edit
               </Button>
             )}
@@ -174,7 +166,7 @@ export default function CustomerProfilePage() {
                     size="sm"
                     className="h-8 gap-1.5 text-xs font-medium text-primary border-primary/40 hover:bg-primary/10 cursor-pointer"
                   >
-                    <RotateCcw className="size-3.5" />
+                    <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="size-3.5" />
                     Restore Customer
                   </Button>
                 </ConfirmPopup>
@@ -195,7 +187,7 @@ export default function CustomerProfilePage() {
                       size="sm"
                       className="h-8 px-2.5 text-xs font-medium gap-1 cursor-pointer"
                     >
-                      <Check className="size-3.5" /> Confirm Delete
+                      <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="size-3.5" /> Confirm Delete
                     </Button>
                   </ConfirmPopup>
                   <ConfirmPopup
@@ -211,7 +203,7 @@ export default function CustomerProfilePage() {
                       size="sm"
                       className="h-8 px-2.5 text-xs font-medium text-muted-foreground hover:text-foreground cursor-pointer gap-1"
                     >
-                      <X className="size-3.5" /> Reject
+                      <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-3.5" /> Reject
                     </Button>
                   </ConfirmPopup>
                 </div>
@@ -230,7 +222,7 @@ export default function CustomerProfilePage() {
                 onClick={() => setDeleteModalOpen(true)}
                 className="h-8 gap-1.5 text-xs font-medium text-destructive border-destructive/30 hover:bg-destructive/10 cursor-pointer"
               >
-                <Trash2 className="size-3.5" />
+                <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-3.5" />
                 {isAdmin ? "Delete" : "Request Delete"}
               </Button>
             )}
@@ -259,7 +251,7 @@ export default function CustomerProfilePage() {
             onClick={() => router.back()}
             className="gap-2 cursor-pointer"
           >
-            <ArrowLeft className="size-4" />
+            <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
             <span className="hidden sm:inline">Go Back</span>
           </Button>
         </div>

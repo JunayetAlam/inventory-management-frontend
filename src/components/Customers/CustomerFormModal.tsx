@@ -19,7 +19,8 @@ import {
 } from "@/redux/api/customerApi";
 import { useUploadAssetMutation } from "@/redux/api/assestApi";
 import { TCustomer } from "@/types";
-import { UserPlus, UserCheck, Camera, Trash2, Loader2 } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { UserAdd01Icon, UserCheck01Icon, Camera01Icon, Delete02Icon, Loading03Icon } from "@hugeicons/core-free-icons";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 import CustomPhoneInput from "@/components/Forms/CustomPhoneInput";
 
@@ -167,9 +168,9 @@ export default function CustomerFormModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg">
             {isEditing ? (
-              <UserCheck className="size-5 text-primary" />
+              <HugeiconsIcon icon={UserCheck01Icon} strokeWidth={2} className="size-5 text-primary" />
             ) : (
-              <UserPlus className="size-5 text-primary" />
+              <HugeiconsIcon icon={UserAdd01Icon} strokeWidth={2} className="size-5 text-primary" />
             )}
             {isEditing ? "Edit Customer" : "Add New Customer"}
           </DialogTitle>
@@ -190,7 +191,7 @@ export default function CustomerFormModal({
 
               {isUploadingImage && (
                 <div className="absolute inset-0 bg-background/70 backdrop-blur-xs flex items-center justify-center rounded-full">
-                  <Loader2 className="size-5 animate-spin text-primary" />
+                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-5 animate-spin text-primary" />
                 </div>
               )}
             </div>
@@ -202,7 +203,7 @@ export default function CustomerFormModal({
                   htmlFor="customer-image-upload"
                   className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md border border-border bg-background hover:bg-muted cursor-pointer transition-colors"
                 >
-                  <Camera className="size-3.5 text-muted-foreground" />
+                  <HugeiconsIcon icon={Camera01Icon} strokeWidth={2} className="size-3.5 text-muted-foreground" />
                   <span>{image ? "Change Photo" : "Upload Photo"}</span>
                   <input
                     id="customer-image-upload"
@@ -223,7 +224,7 @@ export default function CustomerFormModal({
                     className="h-7 px-2 text-xs text-destructive hover:text-destructive hover:bg-destructive/10 cursor-pointer"
                     disabled={isUploadingImage || isCreating || isUpdating}
                   >
-                    <Trash2 className="size-3.5 mr-1" />
+                    <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-3.5 mr-1" />
                     Remove
                   </Button>
                 )}

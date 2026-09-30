@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAddPaymentMutation } from "@/redux/api/invoiceApi";
 import { TInvoice } from "@/types";
-import { Banknote, CheckCircle2 } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Money03Icon, CheckmarkCircle02Icon } from "@hugeicons/core-free-icons";
 import { errorMessageGenerator } from "@/utils/errorMessageGenerator";
 
 interface AddPaymentModalProps {
@@ -76,7 +77,7 @@ export default function AddPaymentModal({
       <DialogContent className="max-w-md p-6">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg font-bold">
-            <Banknote className="size-5 text-primary" />
+            <HugeiconsIcon icon={Money03Icon} strokeWidth={2} className="size-5 text-primary" />
             Add Due Payment
           </DialogTitle>
         </DialogHeader>
@@ -149,7 +150,7 @@ export default function AddPaymentModal({
                 "Recording..."
               ) : (
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="size-4" /> Record Payment
+                  <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-4" /> Record Payment
                 </span>
               )}
             </Button>

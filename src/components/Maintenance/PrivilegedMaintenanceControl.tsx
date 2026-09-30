@@ -2,20 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Wrench,
-  Power,
-  Save,
-  Clock,
-  Mail,
-  Phone,
-  AlertTriangle,
-  ExternalLink,
-  LogOut,
-  ShieldAlert,
-  ShieldCheck,
-  RotateCw,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Wrench01Icon, PowerServiceIcon, FloppyDiskIcon, Clock01Icon, Mail01Icon, Call02Icon, Alert02Icon, LinkSquare02Icon, Logout01Icon, SecurityWarningIcon, SecurityCheckIcon, RefreshIcon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import {
   useGetPrivilegedMaintenanceQuery,
@@ -174,7 +162,7 @@ export default function PrivilegedMaintenanceControl() {
             disabled={isFetching}
             className="gap-1.5 text-xs"
           >
-            <RotateCw
+            <HugeiconsIcon icon={RefreshIcon} strokeWidth={2}
               className={`h-3.5 w-3.5 ${isFetching ? "animate-spin" : ""}`}
             />
             Refresh
@@ -186,7 +174,7 @@ export default function PrivilegedMaintenanceControl() {
             onClick={() => window.open("/maintenance", "_blank")}
             className="gap-1.5 text-xs"
           >
-            <ExternalLink className="h-3.5 w-3.5" />
+            <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="h-3.5 w-3.5" />
             View Public Page
           </Button>
 
@@ -196,7 +184,7 @@ export default function PrivilegedMaintenanceControl() {
             onClick={handleExitPrivilegedMode}
             className="gap-1.5 text-xs"
           >
-            <LogOut className="h-3.5 w-3.5" />
+            <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} className="h-3.5 w-3.5" />
             Exit Privileged Mode
           </Button>
         </div>
@@ -218,9 +206,9 @@ export default function PrivilegedMaintenanceControl() {
           }`}
         >
           {isMaintenanceActive ? (
-            <ShieldAlert className="h-5 w-5" />
+            <HugeiconsIcon icon={SecurityWarningIcon} strokeWidth={2} className="h-5 w-5" />
           ) : (
-            <ShieldCheck className="h-5 w-5" />
+            <HugeiconsIcon icon={SecurityCheckIcon} strokeWidth={2} className="h-5 w-5" />
           )}
         </div>
 
@@ -272,7 +260,7 @@ export default function PrivilegedMaintenanceControl() {
           >
             <div className="flex items-center justify-between border-b pb-3">
               <div className="flex items-center gap-2">
-                <Wrench className="h-4 w-4 text-primary" />
+                <HugeiconsIcon icon={Wrench01Icon} strokeWidth={2} className="h-4 w-4 text-primary" />
                 <h2 className="text-sm font-semibold text-foreground">
                   Maintenance Configuration
                 </h2>
@@ -391,7 +379,7 @@ export default function PrivilegedMaintenanceControl() {
                 disabled={isUpdating}
                 className="w-full gap-2 sm:w-auto"
               >
-                <Save className="h-4 w-4" />
+                <HugeiconsIcon icon={FloppyDiskIcon} strokeWidth={2} className="h-4 w-4" />
                 {isUpdating ? "Saving..." : "Save Settings"}
               </Button>
             </div>
@@ -412,7 +400,7 @@ export default function PrivilegedMaintenanceControl() {
 
             <div className="rounded-lg border border-border/80 bg-muted/20 p-5 text-center">
               <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400">
-                <Wrench className="h-6 w-6" />
+                <HugeiconsIcon icon={Wrench01Icon} strokeWidth={2} className="h-6 w-6" />
               </div>
 
               <div className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-0.5 text-[10px] font-semibold text-amber-700 dark:text-amber-300">
@@ -431,7 +419,7 @@ export default function PrivilegedMaintenanceControl() {
 
               {reason && (
                 <div className="mt-3 inline-flex items-center gap-1.5 rounded border border-border bg-muted/50 px-2 py-1 text-[11px] text-muted-foreground">
-                  <AlertTriangle className="h-3 w-3 text-amber-500" />
+                  <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="h-3 w-3 text-amber-500" />
                   <span>Scope: {reason}</span>
                 </div>
               )}
@@ -439,7 +427,7 @@ export default function PrivilegedMaintenanceControl() {
               {estimatedEndTime && (
                 <div className="mt-4 rounded-md border border-border bg-background p-3 text-center">
                   <div className="flex items-center justify-center gap-1.5 text-[10px] font-semibold uppercase text-muted-foreground">
-                    <Clock className="h-3 w-3 text-primary" />
+                    <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="h-3 w-3 text-primary" />
                     <span>Target: {new Date(estimatedEndTime).toLocaleString()}</span>
                   </div>
                 </div>
@@ -449,13 +437,13 @@ export default function PrivilegedMaintenanceControl() {
                 <div className="mt-4 flex flex-wrap justify-center gap-2 text-[11px]">
                   {contactEmail && (
                     <span className="inline-flex items-center gap-1 rounded-full border bg-background px-2.5 py-0.5 text-muted-foreground">
-                      <Mail className="h-3 w-3 text-primary" />
+                      <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="h-3 w-3 text-primary" />
                       {contactEmail}
                     </span>
                   )}
                   {contactPhone && (
                     <span className="inline-flex items-center gap-1 rounded-full border bg-background px-2.5 py-0.5 text-muted-foreground">
-                      <Phone className="h-3 w-3 text-primary" />
+                      <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="h-3 w-3 text-primary" />
                       {contactPhone}
                     </span>
                   )}
@@ -480,7 +468,7 @@ export default function PrivilegedMaintenanceControl() {
         <DialogContent>
           <DialogHeader>
             <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-amber-500/10 text-amber-600">
-              <Power className="h-5 w-5" />
+              <HugeiconsIcon icon={PowerServiceIcon} strokeWidth={2} className="h-5 w-5" />
             </div>
             <DialogTitle>
               {pendingActiveState

@@ -15,7 +15,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { Check, ChevronsUpDown, Loader2 } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Tick02Icon, UnfoldMoreIcon, Loading03Icon } from "@hugeicons/core-free-icons";
 import { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -120,7 +121,7 @@ export default function CustomCombobox({
                   )}
                 >
                   {selectedOption?.label || placeholder}
-                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  <HugeiconsIcon icon={UnfoldMoreIcon} strokeWidth={2} className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent
@@ -143,7 +144,7 @@ export default function CustomCombobox({
                   >
                     {isSearching ? (
                       <div className="flex items-center justify-center py-6">
-                        <Loader2 className="text-muted-foreground h-5 w-5 animate-spin" />
+                        <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="text-muted-foreground h-5 w-5 animate-spin" />
                         <span className="text-muted-foreground ml-2 text-sm">
                           Searching...
                         </span>
@@ -171,7 +172,7 @@ export default function CustomCombobox({
                                 setOpen(false);
                               }}
                             >
-                              <Check
+                              <HugeiconsIcon icon={Tick02Icon} strokeWidth={2}
                                 className={cn(
                                   "mr-2 h-4 w-4",
                                   selectedValue === String(option.value)

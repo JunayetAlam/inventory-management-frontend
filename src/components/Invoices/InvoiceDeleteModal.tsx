@@ -11,7 +11,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Trash2, ShieldAlert } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Delete02Icon, SecurityWarningIcon } from "@hugeicons/core-free-icons";
 import { useDeleteInvoiceMutation } from "@/redux/api/invoiceApi";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import { TInvoice } from "@/types";
@@ -58,9 +59,9 @@ export default function InvoiceDeleteModal({
           <div className="flex items-center gap-2.5 text-destructive">
             <div className="flex size-9 items-center justify-center rounded-full bg-rose-500/10">
               {isAdmin ? (
-                <Trash2 className="size-5 text-rose-600" />
+                <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-5 text-rose-600" />
               ) : (
-                <ShieldAlert className="size-5 text-amber-600" />
+                <HugeiconsIcon icon={SecurityWarningIcon} strokeWidth={2} className="size-5 text-amber-600" />
               )}
             </div>
             <DialogTitle className="text-base font-semibold text-foreground">

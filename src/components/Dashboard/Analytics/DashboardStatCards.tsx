@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertTriangle, Receipt as Invoice, TrendingDown, Users } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Invoice01Icon, UserMultipleIcon, ChartDecreaseIcon, Alert02Icon } from "@hugeicons/core-free-icons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatInvoiceMoney } from "@/utils/formatInvoiceMoney";
@@ -18,25 +19,25 @@ export default function DashboardStatCards({
     {
       label: "Total Sale Amount",
       value: formatInvoiceMoney(summary?.totalSales ?? 0),
-      icon: Invoice,
+      icon: Invoice01Icon,
       tone: "",
     },
     {
       label: "Total Customers",
       value: String(summary?.totalCustomers ?? 0),
-      icon: Users,
+      icon: UserMultipleIcon,
       tone: "",
     },
     {
       label: "Total Expenses",
       value: formatInvoiceMoney(summary?.totalExpenses ?? 0),
-      icon: TrendingDown,
+      icon: ChartDecreaseIcon,
       tone: "",
     },
     {
       label: "Low Stock Items",
       value: String(summary?.lowStockCount ?? 0),
-      icon: AlertTriangle,
+      icon: Alert02Icon,
       tone: (summary?.lowStockCount ?? 0) > 0 ? "text-amber-600" : "",
     },
   ];
@@ -56,7 +57,7 @@ export default function DashboardStatCards({
                 </p>
               )}
             </div>
-            <Icon className={cn("size-6 shrink-0 text-muted-foreground", tone)} />
+            <HugeiconsIcon icon={Icon} strokeWidth={2} className={cn("size-6 shrink-0 text-muted-foreground", tone)} />
           </CardContent>
         </Card>
       ))}

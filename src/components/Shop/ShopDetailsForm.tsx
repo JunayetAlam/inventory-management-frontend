@@ -1,21 +1,8 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import {
-  Store,
-  Upload,
-  Trash2,
-  Plus,
-  Phone,
-  Mail,
-  MapPin,
-  Save,
-  CheckCircle2,
-  AlertCircle,
-  Loader2,
-  Building2,
-  Sparkles,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Store01Icon, Upload01Icon, Delete02Icon, Add01Icon, Call02Icon, Mail01Icon, Location01Icon, FloppyDiskIcon, CheckmarkCircle02Icon, AlertCircleIcon, Loading03Icon, Building03Icon, SparklesIcon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -229,7 +216,7 @@ export default function ShopDetailsForm() {
       {/* Top Banner / Status Alert if Read-Only */}
       {!isAdmin && (
         <div className="flex items-center gap-3 rounded-lg border border-amber-500/20 bg-amber-500/10 p-3.5 text-xs text-amber-700 dark:text-amber-300">
-          <AlertCircle className="size-4 shrink-0" />
+          <HugeiconsIcon icon={AlertCircleIcon} strokeWidth={2} className="size-4 shrink-0" />
           <span>
             You are logged in as a <strong>Cashier</strong>. You have read-only access. Only Store Admins and Superadmins can modify shop details.
           </span>
@@ -241,7 +228,7 @@ export default function ShopDetailsForm() {
         <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs bg-muted/40 font-normal">
-              <CheckCircle2 className="mr-1.5 size-3 text-emerald-500" />
+              <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="mr-1.5 size-3 text-emerald-500" />
               Shop Configured
             </Badge>
             {shop.updatedBy && (
@@ -260,12 +247,12 @@ export default function ShopDetailsForm() {
             >
               {isSaving ? (
                 <>
-                  <Loader2 className="size-3.5 animate-spin" />
+                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-3.5 animate-spin" />
                   Saving...
                 </>
               ) : (
                 <>
-                  <Save className="size-3.5" />
+                  <HugeiconsIcon icon={FloppyDiskIcon} strokeWidth={2} className="size-3.5" />
                   Save Changes
                 </>
               )}
@@ -280,7 +267,7 @@ export default function ShopDetailsForm() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="text-base font-semibold flex items-center gap-2">
-                <Store className="size-4 text-primary" />
+                <HugeiconsIcon icon={Store01Icon} strokeWidth={2} className="size-4 text-primary" />
                 Shop Logo & Identity
               </CardTitle>
               <CardDescription className="text-xs">
@@ -306,7 +293,7 @@ export default function ShopDetailsForm() {
                         disabled={isSaving || isUploadingLogo}
                         className="text-xs text-destructive hover:bg-destructive/10 h-7 px-2.5"
                       >
-                        <Trash2 className="size-3 mr-1" />
+                        <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-3 mr-1" />
                         Remove Logo
                       </Button>
                     )}
@@ -314,7 +301,7 @@ export default function ShopDetailsForm() {
                 ) : (
                   <div className="flex flex-col items-center gap-2 py-4">
                     <div className="size-16 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
-                      <Building2 className="size-8" />
+                      <HugeiconsIcon icon={Building03Icon} strokeWidth={2} className="size-8" />
                     </div>
                     <span className="text-xs text-muted-foreground">
                       No logo uploaded yet
@@ -344,12 +331,12 @@ export default function ShopDetailsForm() {
                   >
                     {isUploadingLogo ? (
                       <>
-                        <Loader2 className="size-3.5 mr-2 animate-spin" />
+                        <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-3.5 mr-2 animate-spin" />
                         Uploading Logo...
                       </>
                     ) : (
                       <>
-                        <Upload className="size-3.5 mr-2" />
+                        <HugeiconsIcon icon={Upload01Icon} strokeWidth={2} className="size-3.5 mr-2" />
                         {logo ? "Change Logo Image" : "Upload Logo Image"}
                       </>
                     )}
@@ -363,7 +350,7 @@ export default function ShopDetailsForm() {
               {/* Quick Preview Card */}
               <div className="rounded-lg border border-border p-3.5 bg-card/60 space-y-1.5">
                 <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
-                  <Sparkles className="size-3 text-amber-500" />
+                  <HugeiconsIcon icon={SparklesIcon} strokeWidth={2} className="size-3 text-amber-500" />
                   Invoice Preview
                 </div>
                 <div className="border border-dashed border-border/80 rounded p-2.5 bg-background text-center space-y-0.5">
@@ -436,7 +423,7 @@ export default function ShopDetailsForm() {
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Phone className="size-4 text-primary" />
+                  <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="size-4 text-primary" />
                   Phone Numbers
                 </CardTitle>
                 <CardDescription className="text-xs">
@@ -452,7 +439,7 @@ export default function ShopDetailsForm() {
                   disabled={isSaving}
                   className="h-8 text-xs gap-1"
                 >
-                  <Plus className="size-3" />
+                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-3" />
                   Add Number
                 </Button>
               )}
@@ -479,7 +466,7 @@ export default function ShopDetailsForm() {
                       className="size-9 text-muted-foreground hover:text-destructive shrink-0"
                       title="Remove phone number"
                     >
-                      <Trash2 className="size-4" />
+                      <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
                     </Button>
                   )}
                 </div>
@@ -492,7 +479,7 @@ export default function ShopDetailsForm() {
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Mail className="size-4 text-primary" />
+                  <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="size-4 text-primary" />
                   Email Addresses
                 </CardTitle>
                 <CardDescription className="text-xs">
@@ -508,7 +495,7 @@ export default function ShopDetailsForm() {
                   disabled={isSaving}
                   className="h-8 text-xs gap-1"
                 >
-                  <Plus className="size-3" />
+                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-3" />
                   Add Email
                 </Button>
               )}
@@ -536,7 +523,7 @@ export default function ShopDetailsForm() {
                       className="size-9 text-muted-foreground hover:text-destructive shrink-0"
                       title="Remove email"
                     >
-                      <Trash2 className="size-4" />
+                      <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
                     </Button>
                   )}
                 </div>
@@ -549,7 +536,7 @@ export default function ShopDetailsForm() {
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
               <div>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <MapPin className="size-4 text-primary" />
+                  <HugeiconsIcon icon={Location01Icon} strokeWidth={2} className="size-4 text-primary" />
                   Locations & Branches
                 </CardTitle>
                 <CardDescription className="text-xs">
@@ -565,7 +552,7 @@ export default function ShopDetailsForm() {
                   disabled={isSaving}
                   className="h-8 text-xs gap-1"
                 >
-                  <Plus className="size-3" />
+                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-3" />
                   Add Location
                 </Button>
               )}
@@ -592,7 +579,7 @@ export default function ShopDetailsForm() {
                       className="size-9 text-muted-foreground hover:text-destructive shrink-0"
                       title="Remove location"
                     >
-                      <Trash2 className="size-4" />
+                      <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-4" />
                     </Button>
                   )}
                 </div>
@@ -610,12 +597,12 @@ export default function ShopDetailsForm() {
               >
                 {isSaving ? (
                   <>
-                    <Loader2 className="size-4 animate-spin" />
+                    <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
                     Saving Details...
                   </>
                 ) : (
                   <>
-                    <Save className="size-4" />
+                    <HugeiconsIcon icon={FloppyDiskIcon} strokeWidth={2} className="size-4" />
                     Save Shop Details
                   </>
                 )}

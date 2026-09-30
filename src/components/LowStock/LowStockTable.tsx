@@ -2,17 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  Search,
-  Filter,
-  RotateCcw,
-  Pencil,
-  Activity,
-  FileDown,
-  ChevronLeft,
-  ChevronRight,
-  Package,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Search01Icon, FilterIcon, RotateLeft01Icon, PencilEdit02Icon, Activity01Icon, FileDownloadIcon, ArrowLeft01Icon, ArrowRight01Icon, PackageIcon } from "@hugeicons/core-free-icons";
 import { useGetAllProductsQuery } from "@/redux/api/productApi";
 import { TProduct } from "@/types";
 import { Button } from "@/components/ui/button";
@@ -178,7 +169,7 @@ export default function LowStockTable() {
           className="h-9 gap-1.5 text-xs font-semibold"
         >
           <Link href={exportHref}>
-            <FileDown className="size-4" />
+            <HugeiconsIcon icon={FileDownloadIcon} strokeWidth={2} className="size-4" />
             Export List
           </Link>
         </Button>
@@ -189,7 +180,7 @@ export default function LowStockTable() {
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
           {/* Search Input */}
           <div className="relative lg:col-span-6">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
               type="text"
               placeholder="Search product by name or description..."
@@ -213,7 +204,7 @@ export default function LowStockTable() {
               }}
             >
               <SelectTrigger className="h-9 text-xs w-44">
-                <Filter className="size-3.5 mr-1 text-muted-foreground" />
+                <HugeiconsIcon icon={FilterIcon} strokeWidth={2} className="size-3.5 mr-1 text-muted-foreground" />
                 <SelectValue placeholder="Stock Level" />
               </SelectTrigger>
               <SelectContent>
@@ -274,7 +265,7 @@ export default function LowStockTable() {
                 className="h-9 px-2.5 text-xs text-muted-foreground hover:text-foreground gap-1.5"
                 title="Reset Filters"
               >
-                <RotateCcw className="size-3.5" />
+                <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="size-3.5" />
                 Reset
               </Button>
             )}
@@ -320,7 +311,7 @@ export default function LowStockTable() {
                 disabled={page <= 1 || isFetching}
                 className="h-8 px-2.5 text-xs"
               >
-                <ChevronLeft className="mr-1 size-3.5" />
+                <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="mr-1 size-3.5" />
                 Previous
               </Button>
 
@@ -336,7 +327,7 @@ export default function LowStockTable() {
                 className="h-8 px-2.5 text-xs"
               >
                 Next
-                <ChevronRight className="ml-1 size-3.5" />
+                <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="ml-1 size-3.5" />
               </Button>
             </div>
           )}
@@ -384,7 +375,7 @@ export default function LowStockTable() {
                   className="py-12 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center justify-center space-y-2">
-                    <Package className="size-8 text-muted-foreground/40" />
+                    <HugeiconsIcon icon={PackageIcon} strokeWidth={2} className="size-8 text-muted-foreground/40" />
                     <p className="text-base font-medium text-foreground">
                       No low stock products found
                     </p>
@@ -504,7 +495,7 @@ export default function LowStockTable() {
                           onClick={() => handleOpenActivity(product)}
                           className="size-7 text-muted-foreground hover:text-foreground"
                         >
-                          <Activity className="size-3.5" />
+                          <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-3.5" />
                         </Button>
 
                         <Button
@@ -514,7 +505,7 @@ export default function LowStockTable() {
                           onClick={() => handleOpenEdit(product)}
                           className="size-7 text-muted-foreground hover:text-foreground"
                         >
-                          <Pencil className="size-3.5" />
+                          <HugeiconsIcon icon={PencilEdit02Icon} strokeWidth={2} className="size-3.5" />
                         </Button>
                       </div>
                     </TableCell>
@@ -559,7 +550,7 @@ export default function LowStockTable() {
                   disabled={page <= 1 || isFetching}
                   className="h-8 px-2.5 text-xs"
                 >
-                  <ChevronLeft className="mr-1 size-3.5" />
+                  <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="mr-1 size-3.5" />
                   Previous
                 </Button>
 
@@ -575,7 +566,7 @@ export default function LowStockTable() {
                   className="h-8 px-2.5 text-xs"
                 >
                   Next
-                  <ChevronRight className="ml-1 size-3.5" />
+                  <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="ml-1 size-3.5" />
                 </Button>
               </div>
             )}

@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, Monitor, Trash2 } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft02Icon, ComputerIcon, Delete02Icon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import {
@@ -83,7 +84,7 @@ export default function UserDetail() {
           onClick={() => router.back()}
           className="gap-2 mt-2 cursor-pointer"
         >
-          <ArrowLeft className="size-4" />
+          <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
           <span className="hidden sm:inline">Go Back</span>
         </Button>
       </div>
@@ -99,7 +100,7 @@ export default function UserDetail() {
         className="px-0 gap-2 cursor-pointer"
         onClick={() => router.back()}
       >
-        <ArrowLeft className="size-4" />
+        <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
         <span className="hidden sm:inline">Go Back</span>
       </Button>
 
@@ -149,7 +150,7 @@ export default function UserDetail() {
                   className="flex flex-col gap-3 rounded-md border border-border p-4 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="flex min-w-0 items-start gap-3">
-                    <Monitor className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
+                    <HugeiconsIcon icon={ComputerIcon} strokeWidth={2} className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium">
                         {device.userAgent || "Unknown device"}
@@ -173,7 +174,7 @@ export default function UserDetail() {
                       className="text-destructive"
                       disabled={pendingId === device.id}
                     >
-                      <Trash2 className="mr-2 size-4" />
+                      <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="mr-2 size-4" />
                       Log out device
                     </Button>
                   </ConfirmPopup>

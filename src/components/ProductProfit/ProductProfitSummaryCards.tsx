@@ -1,12 +1,7 @@
 "use client";
 
-import {
-  Package,
-  ShoppingCart,
-  TrendingDown,
-  TrendingUp,
-  Wallet,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { PackageIcon, ShoppingCart01Icon, Wallet01Icon, ChartDecreaseIcon, ChartIncreaseIcon } from "@hugeicons/core-free-icons";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatInvoiceMoney } from "@/utils/formatInvoiceMoney";
@@ -37,25 +32,25 @@ export default function ProductProfitSummaryCards({
     {
       label: "Products",
       value: String(productCount),
-      icon: Package,
+      icon: PackageIcon,
       tone: "neutral" as const,
     },
     {
       label: "Sold Qty",
       value: formatQty(soldQty),
-      icon: ShoppingCart,
+      icon: ShoppingCart01Icon,
       tone: "neutral" as const,
     },
     {
       label: "Sales Total",
       value: formatInvoiceMoney(salesTotal),
-      icon: Wallet,
+      icon: Wallet01Icon,
       tone: "neutral" as const,
     },
     {
       label: "Purchase Cost",
       value: formatInvoiceMoney(purchaseCost),
-      icon: TrendingDown,
+      icon: ChartDecreaseIcon,
       tone: "neutral" as const,
     },
     {
@@ -64,7 +59,7 @@ export default function ProductProfitSummaryCards({
         profitPercent != null
           ? `${formatInvoiceMoney(profit)} (${profitPercent}%)`
           : formatInvoiceMoney(profit),
-      icon: TrendingUp,
+      icon: ChartIncreaseIcon,
       tone:
         profit > 0 ? ("profit" as const) : profit < 0 ? ("loss" as const) : ("neutral" as const),
     },
@@ -85,7 +80,7 @@ export default function ProductProfitSummaryCards({
                   card.tone === "neutral" && "bg-primary/10 text-primary",
                 )}
               >
-                <Icon className="size-5" />
+                <HugeiconsIcon icon={Icon} strokeWidth={2} className="size-5" />
               </div>
               <div className="min-w-0">
                 <p className="text-xs font-medium text-muted-foreground">

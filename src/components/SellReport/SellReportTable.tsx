@@ -3,14 +3,8 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  ChevronLeft,
-  ChevronRight,
-  FileDown,
-  Package,
-  RotateCcw,
-  Search,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft01Icon, ArrowRight01Icon, FileDownloadIcon, PackageIcon, RotateLeft01Icon, Search01Icon } from "@hugeicons/core-free-icons";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import { useGetProductProfitQuery } from "@/redux/api/productApi";
 import type { ProductProfitSortField } from "@/types";
@@ -188,7 +182,7 @@ export default function SellReportTable() {
             className="flex min-w-0 flex-1 gap-2 sm:min-w-[220px]"
           >
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
@@ -229,7 +223,7 @@ export default function SellReportTable() {
             className="gap-1.5"
             onClick={handleReset}
           >
-            <RotateCcw className="size-3.5" />
+            <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="size-3.5" />
             Reset
           </Button>
           <Button
@@ -238,7 +232,7 @@ export default function SellReportTable() {
             className="h-9 gap-1.5 text-xs font-semibold"
           >
             <Link href={exportHref}>
-              <FileDown className="size-4" />
+              <HugeiconsIcon icon={FileDownloadIcon} strokeWidth={2} className="size-4" />
               Export List
             </Link>
           </Button>
@@ -295,7 +289,7 @@ export default function SellReportTable() {
                 disabled={page <= 1 || isFetching}
                 className="h-8 px-2.5 text-xs"
               >
-                <ChevronLeft className="mr-1 size-3.5" />
+                <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="mr-1 size-3.5" />
                 Previous
               </Button>
 
@@ -311,7 +305,7 @@ export default function SellReportTable() {
                 className="h-8 px-2.5 text-xs"
               >
                 Next
-                <ChevronRight className="ml-1 size-3.5" />
+                <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="ml-1 size-3.5" />
               </Button>
             </div>
           )}
@@ -368,7 +362,7 @@ export default function SellReportTable() {
                     className="py-12 text-center text-muted-foreground"
                   >
                     <div className="flex flex-col items-center justify-center space-y-2">
-                      <Package className="size-8 text-muted-foreground/40" />
+                      <HugeiconsIcon icon={PackageIcon} strokeWidth={2} className="size-8 text-muted-foreground/40" />
                       <p className="text-base font-medium text-foreground">
                         No products found
                       </p>
@@ -469,7 +463,7 @@ export default function SellReportTable() {
                   disabled={page <= 1 || isFetching}
                   className="h-8 px-2.5 text-xs"
                 >
-                  <ChevronLeft className="mr-1 size-3.5" />
+                  <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="mr-1 size-3.5" />
                   Previous
                 </Button>
 
@@ -485,7 +479,7 @@ export default function SellReportTable() {
                   className="h-8 px-2.5 text-xs"
                 >
                   Next
-                  <ChevronRight className="ml-1 size-3.5" />
+                  <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="ml-1 size-3.5" />
                 </Button>
               </div>
             )}

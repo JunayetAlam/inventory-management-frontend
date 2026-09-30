@@ -12,15 +12,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetAllActivityLogsQuery } from "@/redux/api/activityLogApi";
 import { TCustomer } from "@/types";
-import {
-  Activity,
-  Calendar,
-  Globe,
-  Mail,
-  MapPin,
-  Phone,
-  User,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Activity01Icon, Globe02Icon, Mail01Icon, Location01Icon, Call02Icon, UserIcon } from "@hugeicons/core-free-icons";
 
 interface CustomerActivitySheetProps {
   open: boolean;
@@ -98,7 +91,7 @@ export default function CustomerActivitySheet({
           <SheetHeader>
             <div className="flex items-center gap-2">
               <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Activity className="size-5" />
+                <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-5" />
               </div>
               <div>
                 <SheetTitle className="text-base font-semibold">
@@ -114,18 +107,18 @@ export default function CustomerActivitySheet({
           {customer && (
             <div className="mt-4 rounded-lg border border-border/80 bg-background/80 p-3 text-xs space-y-1.5">
               <div className="flex items-center gap-2 font-medium text-foreground">
-                <Phone className="size-3.5 text-muted-foreground" />
+                <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="size-3.5 text-muted-foreground" />
                 <span>{customer.phoneNumber}</span>
               </div>
               {customer.email && (
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Mail className="size-3.5" />
+                  <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="size-3.5" />
                   <span>{customer.email}</span>
                 </div>
               )}
               {customer.address && (
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <MapPin className="size-3.5" />
+                  <HugeiconsIcon icon={Location01Icon} strokeWidth={2} className="size-3.5" />
                   <span className="truncate">{customer.address}</span>
                 </div>
               )}
@@ -149,7 +142,7 @@ export default function CustomerActivitySheet({
             </div>
           ) : logs.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-center text-muted-foreground">
-              <User className="size-10 mb-2 opacity-30" />
+              <HugeiconsIcon icon={UserIcon} strokeWidth={2} className="size-10 mb-2 opacity-30" />
               <p className="text-sm font-medium text-foreground">No logs recorded</p>
               <p className="text-xs text-muted-foreground mt-0.5">
                 No activity has been logged for this customer yet.
@@ -222,7 +215,7 @@ export default function CustomerActivitySheet({
                       {/* IP / UserAgent meta */}
                       {log.ipAddress && (
                         <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                          <Globe className="size-3" />
+                          <HugeiconsIcon icon={Globe02Icon} strokeWidth={2} className="size-3" />
                           <span>IP: {log.ipAddress}</span>
                         </div>
                       )}

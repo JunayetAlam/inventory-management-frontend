@@ -49,27 +49,8 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-import {
-  Plus,
-  X,
-  AlertTriangle,
-  Lock,
-  Receipt as Invoice,
-  User,
-  Package,
-  Save,
-  ArrowLeft,
-  Search,
-  CheckCircle2,
-  Unlock,
-  Loader2,
-  Banknote,
-  Clock,
-  Pencil,
-  Check,
-  FileText,
-  Info,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Add01Icon, Cancel01Icon, Alert02Icon, SquareLock02Icon, Invoice01Icon, UserIcon, FloppyDiskIcon, ArrowLeft02Icon, CheckmarkCircle02Icon, SquareUnlock02Icon, Loading03Icon, Money03Icon, Clock01Icon, PencilEdit02Icon, Tick02Icon, InformationCircleIcon } from "@hugeicons/core-free-icons";
 import Link from "next/link";
 
 const formatDateTime = (dateStr?: string) => {
@@ -922,7 +903,7 @@ export default function InvoiceForm({
               onClick={() => router.back()}
               className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors h-8 px-2 cursor-pointer"
             >
-              <ArrowLeft className="size-3.5" />
+              <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-3.5" />
               <span className="hidden sm:inline">Go Back</span>
             </Button>
 
@@ -943,7 +924,7 @@ export default function InvoiceForm({
                   }}
                   className="h-8 px-3 text-xs font-medium cursor-pointer"
                 >
-                  <X className="size-3.5 mr-1" /> Cancel
+                  <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-3.5 mr-1" /> Cancel
                 </Button>
                 <Button
                   type="submit"
@@ -953,12 +934,12 @@ export default function InvoiceForm({
                 >
                   {isCreating || isUpdating ? (
                     <>
-                      <Loader2 className="size-3.5 animate-spin" />
+                      <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-3.5 animate-spin" />
                       <span>Saving...</span>
                     </>
                   ) : (
                     <>
-                      <Save className="size-3.5" />
+                      <HugeiconsIcon icon={FloppyDiskIcon} strokeWidth={2} className="size-3.5" />
                       <span>
                         {isEditing ? "Update Invoice" : "Create Invoice"}
                       </span>
@@ -976,12 +957,12 @@ export default function InvoiceForm({
             <CardHeader className="pb-3 border-b border-border/60">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <User className="size-4 text-primary" /> Customer Details
+                  <HugeiconsIcon icon={UserIcon} strokeWidth={2} className="size-4 text-primary" /> Customer Details
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   {selectedCustomerId && (
                     <span className="text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 border border-emerald-500/20">
-                      <CheckCircle2 className="size-3.5" /> Customer Linked
+                      <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-3.5" /> Customer Linked
                     </span>
                   )}
                   {isLocked ? (
@@ -992,10 +973,10 @@ export default function InvoiceForm({
                             variant="outline"
                             className="text-xs gap-1 border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400 font-medium cursor-help"
                           >
-                            <Lock className="size-3" /> Locked
+                            <HugeiconsIcon icon={SquareLock02Icon} strokeWidth={2} className="size-3" /> Locked
                           </Badge>
                           <span className="text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center">
-                            <Info className="size-3.5" />
+                            <HugeiconsIcon icon={InformationCircleIcon} strokeWidth={2} className="size-3.5" />
                           </span>
                         </div>
                       </TooltipTrigger>
@@ -1029,7 +1010,7 @@ export default function InvoiceForm({
                       className="h-8 px-2.5 text-xs rounded-xl border-border/60 hover:bg-accent flex items-center gap-1 cursor-pointer"
                       title="Unlock fields to edit details manually"
                     >
-                      <Unlock className="size-3.5 text-primary" /> Edit / Unlock
+                      <HugeiconsIcon icon={SquareUnlock02Icon} strokeWidth={2} className="size-3.5 text-primary" /> Edit / Unlock
                     </Button>
                   ) : (
                     <Button
@@ -1048,10 +1029,10 @@ export default function InvoiceForm({
                       title="Verify existing customer or register new customer"
                     >
                       {isLookingUp || isCreatingCustomer ? (
-                        <Loader2 className="size-3.5 animate-spin" />
+                        <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-3.5 animate-spin" />
                       ) : (
                         <>
-                          <CheckCircle2 className="size-3.5 mr-1" />
+                          <HugeiconsIcon icon={CheckmarkCircle02Icon} strokeWidth={2} className="size-3.5 mr-1" />
                           Confirm
                         </>
                       )}
@@ -1160,7 +1141,7 @@ export default function InvoiceForm({
             <CardHeader className="pb-3 border-b border-border/60">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Invoice className="size-4 text-primary" /> Invoice Items &
+                  <HugeiconsIcon icon={Invoice01Icon} strokeWidth={2} className="size-4 text-primary" /> Invoice Items &
                   Billing ({items.length})
                 </CardTitle>
                 {isLocked && (
@@ -1171,10 +1152,10 @@ export default function InvoiceForm({
                           variant="outline"
                           className="text-xs gap-1 border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-400 font-medium cursor-help"
                         >
-                          <Lock className="size-3" /> Locked
+                          <HugeiconsIcon icon={SquareLock02Icon} strokeWidth={2} className="size-3" /> Locked
                         </Badge>
                         <span className="text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors inline-flex items-center">
-                          <Info className="size-3.5" />
+                          <HugeiconsIcon icon={InformationCircleIcon} strokeWidth={2} className="size-3.5" />
                         </span>
                       </div>
                     </TooltipTrigger>
@@ -1248,7 +1229,7 @@ export default function InvoiceForm({
                               className="size-5 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center shadow-xs cursor-help border border-amber-600/30 transition-transform hover:scale-110"
                               aria-label="Stock shortage warning"
                             >
-                              <AlertTriangle className="size-3 text-white stroke-[2.5]" />
+                              <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-3 text-white stroke-[2.5]" />
                             </button>
                           </TooltipTrigger>
                           <TooltipContent
@@ -1257,7 +1238,7 @@ export default function InvoiceForm({
                             className="bg-popover text-popover-foreground border border-amber-500/30 shadow-lg p-2.5 rounded-xl max-w-xs"
                           >
                             <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-semibold text-xs mb-1">
-                              <AlertTriangle className="size-3.5 shrink-0" />
+                              <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-3.5 shrink-0" />
                               <span>Stock Shortage Warning</span>
                             </div>
                             <p className="text-[11px] text-muted-foreground leading-snug">
@@ -1298,7 +1279,7 @@ export default function InvoiceForm({
                             className="size-5 rounded-full bg-background border border-border shadow-xs hover:bg-destructive hover:text-destructive-foreground hover:border-destructive text-muted-foreground transition-all cursor-pointer"
                             title="Remove product"
                           >
-                            <X className="size-3" />
+                            <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-3" />
                           </Button>
                         </ConfirmPopup>
                       )}
@@ -1461,7 +1442,7 @@ export default function InvoiceForm({
                                   className="absolute right-1 text-muted-foreground hover:text-destructive transition-colors p-0.5 cursor-pointer"
                                   title="Remove discount tier"
                                 >
-                                  <X className="size-2.5" />
+                                  <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-2.5" />
                                 </button>
                               )}
                             </div>
@@ -1480,7 +1461,7 @@ export default function InvoiceForm({
                                   className="size-7 rounded-md border-dashed border-border hover:border-primary text-muted-foreground hover:text-primary shrink-0 transition-colors"
                                   title="Add another discount tier"
                                 >
-                                  <Plus className="size-3" />
+                                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-3" />
                                 </Button>
                               </TooltipTrigger>
                               <TooltipContent side="top" className="text-xs">
@@ -1524,7 +1505,7 @@ export default function InvoiceForm({
                   onClick={handleAddItem}
                   className="gap-1 text-xs w-full border-dashed"
                 >
-                  <Plus className="size-3.5" /> Add Product
+                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-3.5" /> Add Product
                 </Button>
               )}
 
@@ -1597,7 +1578,7 @@ export default function InvoiceForm({
                   <div className="pt-3 border-t border-border/60 space-y-3">
                     <div className="flex justify-between items-center">
                       <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
-                        <Clock className="size-3" /> Payment History (
+                        <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-3" /> Payment History (
                         {payments.length})
                       </span>
                       {dueAmount > 0 && (
@@ -1608,7 +1589,7 @@ export default function InvoiceForm({
                           className="h-7 text-xs gap-1.5 text-primary border-primary/40 hover:bg-primary/10"
                           onClick={handleOpenAddPayment}
                         >
-                          <Banknote className="size-3.5" /> Add Payment
+                          <HugeiconsIcon icon={Money03Icon} strokeWidth={2} className="size-3.5" /> Add Payment
                         </Button>
                       )}
                     </div>
@@ -1635,7 +1616,7 @@ export default function InvoiceForm({
                                     onClick={() => handleApprovePayment(p.id)}
                                     disabled={isApprovingPayment}
                                   >
-                                    <Check className="size-3" />
+                                    <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="size-3" />
                                   </Button>
                                 )}
 
@@ -1649,7 +1630,7 @@ export default function InvoiceForm({
                                     title="Edit Payment"
                                     onClick={() => handleOpenEditPayment(p)}
                                   >
-                                    <Pencil className="size-2.5" />
+                                    <HugeiconsIcon icon={PencilEdit02Icon} strokeWidth={2} className="size-2.5" />
                                   </Button>
                                 )}
 
@@ -1673,7 +1654,7 @@ export default function InvoiceForm({
                                       title="Delete Payment"
                                       disabled={isDeletingPayment}
                                     >
-                                      <X className="size-3" />
+                                      <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-3" />
                                     </Button>
                                   </ConfirmPopup>
                                 )}
@@ -1777,7 +1758,7 @@ export default function InvoiceForm({
             <div className="pt-2">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-xl border border-border/70 bg-muted/30">
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Lock className="size-4 text-primary shrink-0" />
+                  <HugeiconsIcon icon={SquareLock02Icon} strokeWidth={2} className="size-4 text-primary shrink-0" />
                   <span>
                     {isApproved
                       ? "This invoice is approved. Product and billing edits are locked, but installment payments can still be added or updated above."
@@ -1791,7 +1772,7 @@ export default function InvoiceForm({
                   onClick={() => router.back()}
                   className="gap-2 cursor-pointer"
                 >
-                  <ArrowLeft className="size-3.5" />
+                  <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-3.5" />
                   <span className="hidden sm:inline">Go Back</span>
                 </Button>
               </div>

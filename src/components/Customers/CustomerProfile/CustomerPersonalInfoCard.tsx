@@ -1,16 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Phone,
-  Mail,
-  MapPin,
-  Calendar,
-  User,
-  Copy,
-  Check,
-  AlertTriangle,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Call02Icon, Mail01Icon, Location01Icon, Calendar03Icon, UserIcon, Copy01Icon, Tick02Icon, Alert02Icon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import { TCustomer } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -129,7 +121,7 @@ export default function CustomerPersonalInfoCard({
               <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
                 {customer.createdAt && (
                   <span className="inline-flex items-center gap-1">
-                    <Calendar className="size-3 text-muted-foreground/70" />
+                    <HugeiconsIcon icon={Calendar03Icon} strokeWidth={2} className="size-3 text-muted-foreground/70" />
                     Since{" "}
                     {new Date(customer.createdAt).toLocaleDateString(
                       undefined,
@@ -143,7 +135,7 @@ export default function CustomerPersonalInfoCard({
                 )}
                 {customer.createdBy && (
                   <span className="inline-flex items-center gap-1">
-                    <User className="size-3 text-muted-foreground/70" />
+                    <HugeiconsIcon icon={UserIcon} strokeWidth={2} className="size-3 text-muted-foreground/70" />
                     By {customer.createdBy.firstName}
                   </span>
                 )}
@@ -176,7 +168,7 @@ export default function CustomerPersonalInfoCard({
         {/* Delete Reason Alert if Pending */}
         {customer.isDeleteRequested && customer.deleteReason && (
           <div className="flex items-center gap-1.5 text-xs text-amber-600 dark:text-amber-400 bg-amber-500/10 rounded-md px-2.5 py-1.5">
-            <AlertTriangle className="size-3.5 shrink-0" />
+            <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-3.5 shrink-0" />
             <span>Deletion Reason: "{customer.deleteReason}"</span>
           </div>
         )}
@@ -186,7 +178,7 @@ export default function CustomerPersonalInfoCard({
           {/* 1. Phone Number */}
           <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md bg-muted/30 border border-border/40 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
-              <Phone className="size-3.5 text-primary shrink-0" />
+              <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="size-3.5 text-primary shrink-0" />
               <a
                 href={`tel:${customer.phoneNumber}`}
                 className="text-xs font-semibold text-foreground hover:text-primary transition-colors font-mono truncate"
@@ -204,9 +196,9 @@ export default function CustomerPersonalInfoCard({
               title="Copy Phone Number"
             >
               {copiedField === "Phone number" ? (
-                <Check className="size-3 text-emerald-600" />
+                <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="size-3 text-emerald-600" />
               ) : (
-                <Copy className="size-3" />
+                <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} className="size-3" />
               )}
             </button>
           </div>
@@ -234,9 +226,9 @@ export default function CustomerPersonalInfoCard({
                 title="Copy WhatsApp Number"
               >
                 {copiedField === "WhatsApp number" ? (
-                  <Check className="size-3 text-emerald-600" />
+                  <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="size-3 text-emerald-600" />
                 ) : (
-                  <Copy className="size-3" />
+                  <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} className="size-3" />
                 )}
               </button>
             )}
@@ -245,7 +237,7 @@ export default function CustomerPersonalInfoCard({
           {/* 3. Email Address */}
           <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md bg-muted/30 border border-border/40 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
-              <Mail className="size-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+              <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="size-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
               {customer.email ? (
                 <a
                   href={`mailto:${customer.email}`}
@@ -268,9 +260,9 @@ export default function CustomerPersonalInfoCard({
                 title="Copy Email"
               >
                 {copiedField === "Email" ? (
-                  <Check className="size-3 text-emerald-600" />
+                  <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="size-3 text-emerald-600" />
                 ) : (
-                  <Copy className="size-3" />
+                  <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} className="size-3" />
                 )}
               </button>
             )}
@@ -279,7 +271,7 @@ export default function CustomerPersonalInfoCard({
           {/* 4. Physical Address */}
           <div className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md bg-muted/30 border border-border/40 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
-              <MapPin className="size-3.5 text-purple-600 dark:text-purple-400 shrink-0" />
+              <HugeiconsIcon icon={Location01Icon} strokeWidth={2} className="size-3.5 text-purple-600 dark:text-purple-400 shrink-0" />
               {customer.address ? (
                 <span
                   className="text-xs font-medium text-foreground truncate"
@@ -301,9 +293,9 @@ export default function CustomerPersonalInfoCard({
                 title="Copy Address"
               >
                 {copiedField === "Address" ? (
-                  <Check className="size-3 text-emerald-600" />
+                  <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="size-3 text-emerald-600" />
                 ) : (
-                  <Copy className="size-3" />
+                  <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} className="size-3" />
                 )}
               </button>
             )}

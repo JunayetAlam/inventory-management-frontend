@@ -2,7 +2,8 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Printer } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft02Icon, PrinterIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { TProduct, TShop } from "@/types";
 import { useGetShopDetailsQuery } from "@/redux/api/shopApi";
@@ -190,7 +191,7 @@ export default function ProductListExportView({
           onClick={() => router.back()}
           className="gap-2 shadow-xs bg-card cursor-pointer"
         >
-          <ArrowLeft className="size-4" />
+          <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
           <span className="hidden sm:inline">Go Back</span>
         </Button>
 
@@ -203,7 +204,7 @@ export default function ProductListExportView({
             className="gap-2 bg-primary text-primary-foreground font-semibold shadow-xs hover:opacity-95 cursor-pointer"
             size="sm"
           >
-            <Printer className="size-4" /> Print / Save as PDF
+            <HugeiconsIcon icon={PrinterIcon} strokeWidth={2} className="size-4" /> Print / Save as PDF
           </Button>
         </div>
       </div>

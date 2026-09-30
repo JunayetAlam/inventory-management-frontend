@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Banknote, Pencil, Loader2, Calendar } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Money03Icon, PencilEdit02Icon, Loading03Icon, Calendar03Icon } from "@hugeicons/core-free-icons";
 import {
   useAddPaymentMutation,
   useUpdatePaymentMutation,
@@ -141,9 +142,9 @@ export default function PaymentModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-lg font-bold">
             {isEditingPayment ? (
-              <Pencil className="size-5 text-primary" />
+              <HugeiconsIcon icon={PencilEdit02Icon} strokeWidth={2} className="size-5 text-primary" />
             ) : (
-              <Banknote className="size-5 text-primary" />
+              <HugeiconsIcon icon={Money03Icon} strokeWidth={2} className="size-5 text-primary" />
             )}
             {isEditingPayment ? "Edit Payment" : "Add Due Payment"}
           </DialogTitle>
@@ -198,7 +199,7 @@ export default function PaymentModal({
           {/* Payment Date */}
           <div className="space-y-1.5">
             <Label htmlFor="modal-payment-date" className="flex items-center gap-1">
-              <Calendar className="size-3.5 text-muted-foreground" /> Payment Date & Time
+              <HugeiconsIcon icon={Calendar03Icon} strokeWidth={2} className="size-3.5 text-muted-foreground" /> Payment Date & Time
             </Label>
             <Input
               id="modal-payment-date"
@@ -234,7 +235,7 @@ export default function PaymentModal({
             <Button type="submit" disabled={isSubmitting} className="gap-1.5">
               {isSubmitting ? (
                 <>
-                  <Loader2 className="size-4 animate-spin" />
+                  <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-4 animate-spin" />
                   {isEditingPayment ? "Updating..." : "Recording..."}
                 </>
               ) : isEditingPayment ? (

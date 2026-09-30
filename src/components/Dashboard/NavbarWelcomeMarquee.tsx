@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import { Sunrise, Sun, Sunset, Moon } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { SunriseIcon, Sun03Icon, SunsetIcon, Moon02Icon } from "@hugeicons/core-free-icons";
 import { useGetMeQuery } from "@/redux/api/userApi";
 
 interface WelcomePeriod {
@@ -128,12 +129,12 @@ export default function NavbarWelcomeMarquee() {
 
   const PeriodIcon =
     periodConfig.period === "morning"
-      ? Sunrise
+      ? SunriseIcon
       : periodConfig.period === "afternoon"
-        ? Sun
+        ? Sun03Icon
         : periodConfig.period === "evening"
-          ? Sunset
-          : Moon;
+          ? SunsetIcon
+          : Moon02Icon;
 
   if (!mounted) {
     return (
@@ -148,7 +149,7 @@ export default function NavbarWelcomeMarquee() {
       <span
         className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide border shadow-2xs ${periodConfig.badgeBg} ${periodConfig.badgeText} ${periodConfig.badgeBorder}`}
       >
-        <PeriodIcon className={`size-3.5 shrink-0 ${periodConfig.iconColor}`} />
+        <HugeiconsIcon icon={PeriodIcon} strokeWidth={2} className={`size-3.5 shrink-0 ${periodConfig.iconColor}`} />
         {periodConfig.label}
       </span>
 

@@ -23,18 +23,8 @@ const formatDateTime = (dateStr?: string) => {
 };
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  FileText,
-  Wallet,
-  Undo2,
-  Calendar,
-  User,
-  Phone,
-  ExternalLink,
-  DollarSign,
-  AlertCircle,
-  FileCheck,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { File02Icon, Wallet01Icon, Undo02Icon, Calendar03Icon, UserIcon, Call02Icon, LinkSquare02Icon, DollarCircleIcon, AlertCircleIcon, FileValidationIcon } from "@hugeicons/core-free-icons";
 import { TCustomerTransaction } from "@/types";
 import { formatInvoiceMoney, formatSignedDue } from "@/utils/formatInvoiceMoney";
 
@@ -61,9 +51,9 @@ export default function CustomerTransactionDetailModal({
         <DialogHeader>
           <div className="flex items-center justify-between gap-2 pr-6">
             <DialogTitle className="text-lg font-bold flex items-center gap-2">
-              {isInvoice && <FileText className="size-5 text-blue-500" />}
-              {isPayment && <Wallet className="size-5 text-emerald-500" />}
-              {isReturn && <Undo2 className="size-5 text-amber-500" />}
+              {isInvoice && <HugeiconsIcon icon={File02Icon} strokeWidth={2} className="size-5 text-blue-500" />}
+              {isPayment && <HugeiconsIcon icon={Wallet01Icon} strokeWidth={2} className="size-5 text-emerald-500" />}
+              {isReturn && <HugeiconsIcon icon={Undo02Icon} strokeWidth={2} className="size-5 text-amber-500" />}
               <span>Transaction Details</span>
             </DialogTitle>
             <Badge
@@ -86,7 +76,7 @@ export default function CustomerTransactionDetailModal({
           <div className="grid grid-cols-2 gap-3 rounded-lg border border-border/60 bg-muted/20 p-3 text-xs">
             <div className="space-y-1">
               <span className="text-muted-foreground flex items-center gap-1.5">
-                <Calendar className="size-3.5" /> Date & Time
+                <HugeiconsIcon icon={Calendar03Icon} strokeWidth={2} className="size-3.5" /> Date & Time
               </span>
               <p className="font-medium text-foreground">
                 {formatDateTime(transaction.createdAt)}
@@ -94,7 +84,7 @@ export default function CustomerTransactionDetailModal({
             </div>
             <div className="space-y-1">
               <span className="text-muted-foreground flex items-center gap-1.5">
-                <FileCheck className="size-3.5" /> Reference
+                <HugeiconsIcon icon={FileValidationIcon} strokeWidth={2} className="size-3.5" /> Reference
               </span>
               <p className="font-semibold text-foreground font-mono">
                 {transaction.referenceNumber || "N/A"}
@@ -105,13 +95,13 @@ export default function CustomerTransactionDetailModal({
           {/* Customer Info Card */}
           <div className="rounded-lg border border-border/60 p-3.5 space-y-2">
             <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-              <User className="size-3.5" /> Customer Details
+              <HugeiconsIcon icon={UserIcon} strokeWidth={2} className="size-3.5" /> Customer Details
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               <div>
                 <p className="text-foreground font-medium">{transaction.customer?.name}</p>
                 <p className="text-muted-foreground flex items-center gap-1 mt-0.5">
-                  <Phone className="size-3" />
+                  <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="size-3" />
                   {transaction.customer?.countryCode || "+880"}{" "}
                   {transaction.customer?.phoneNumber}
                 </p>
@@ -128,7 +118,7 @@ export default function CustomerTransactionDetailModal({
           {/* Financial Breakdown */}
           <div className="rounded-lg border border-border/60 p-3.5 space-y-3">
             <span className="text-xs font-semibold text-muted-foreground flex items-center gap-1.5">
-              <DollarSign className="size-3.5" /> Financial Summary
+              <HugeiconsIcon icon={DollarCircleIcon} strokeWidth={2} className="size-3.5" /> Financial Summary
             </span>
 
             <div className="grid grid-cols-3 gap-2 text-center">
@@ -173,7 +163,7 @@ export default function CustomerTransactionDetailModal({
           {(transaction.note || transaction.payment?.note || transaction.invoice?.note) && (
             <div className="rounded-lg border border-border/60 bg-muted/10 p-3 text-xs space-y-1">
               <span className="text-muted-foreground flex items-center gap-1.5 font-medium">
-                <AlertCircle className="size-3.5" /> Note
+                <HugeiconsIcon icon={AlertCircleIcon} strokeWidth={2} className="size-3.5" /> Note
               </span>
               <p className="text-foreground whitespace-pre-wrap break-words leading-relaxed">
                 {transaction.note || transaction.payment?.note || transaction.invoice?.note}
@@ -201,7 +191,7 @@ export default function CustomerTransactionDetailModal({
                   transaction.returnInvoiceId || transaction.returnInvoice?.id
                 }/invoice`}
               >
-                <ExternalLink className="size-3.5" />
+                <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3.5" />
                 View Invoice
               </Link>
             </Button>
@@ -219,7 +209,7 @@ export default function CustomerTransactionDetailModal({
                     transaction.invoice?.id
                   }/invoice`}
                 >
-                  <ExternalLink className="size-3.5" />
+                  <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3.5" />
                   View Invoice
                 </Link>
               </Button>

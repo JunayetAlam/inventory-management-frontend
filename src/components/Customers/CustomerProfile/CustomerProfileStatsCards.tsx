@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { ArrowLeftRight, Clock, Wallet, Scale } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowDataTransferHorizontalIcon, Clock01Icon, Wallet01Icon, BalanceScaleIcon } from "@hugeicons/core-free-icons";
 import { useGetCustomerTransactionStatsQuery } from "@/redux/api/customerTransactionApi";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -32,28 +33,28 @@ export default function CustomerProfileStatsCards({
     {
       label: "Total Transactions",
       value: totalTransactions.toLocaleString(),
-      icon: ArrowLeftRight,
+      icon: ArrowDataTransferHorizontalIcon,
       iconBg: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
       description: "Total recorded transactions",
     },
     {
       label: "Total Due",
       value: formatInvoiceMoney(totalDue),
-      icon: Clock,
+      icon: Clock01Icon,
       iconBg: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
       description: "Sum of all invoiced amounts",
     },
     {
       label: "Total Cash / Payment",
       value: formatInvoiceMoney(totalPayment),
-      icon: Wallet,
+      icon: Wallet01Icon,
       iconBg: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
       description: "Total payments & return credits",
     },
     {
       label: "Present Due",
       value: formatSignedDue(totalBalance),
-      icon: Scale,
+      icon: BalanceScaleIcon,
       iconBg:
         totalBalance > 0
           ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
@@ -72,7 +73,7 @@ export default function CustomerProfileStatsCards({
               <div
                 className={`flex size-12 shrink-0 items-center justify-center rounded-xl ${card.iconBg}`}
               >
-                <Icon className="size-6" />
+                <HugeiconsIcon icon={Icon} strokeWidth={2} className="size-6" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-medium text-muted-foreground truncate">

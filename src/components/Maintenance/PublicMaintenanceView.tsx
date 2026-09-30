@@ -2,19 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Wrench,
-  Clock,
-  Mail,
-  Phone,
-  AlertTriangle,
-  RotateCw,
-  KeyRound,
-  ShieldCheck,
-  Check,
-  Copy,
-  Lock,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Wrench01Icon, Clock01Icon, Mail01Icon, Call02Icon, Alert02Icon, RefreshIcon, Key01Icon, SecurityCheckIcon, Tick02Icon, Copy01Icon, SquareLock02Icon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import { useGetPublicMaintenanceStatusQuery } from "@/redux/api/maintenanceApi";
 import { setPrivilegedToken } from "@/hooks/useIsPrivileged";
@@ -169,7 +158,7 @@ export default function PublicMaintenanceView() {
         {/* Animated Badge & Icon */}
         <div className="flex flex-col items-center text-center">
           <div className="relative mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 shadow-inner ring-1 ring-amber-500/30">
-            <Wrench className="h-10 w-10 text-amber-600 dark:text-amber-400 animate-pulse" />
+            <HugeiconsIcon icon={Wrench01Icon} strokeWidth={2} className="h-10 w-10 text-amber-600 dark:text-amber-400 animate-pulse" />
             <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400 opacity-75" />
               <span className="relative inline-flex h-4 w-4 rounded-full bg-amber-500" />
@@ -196,7 +185,7 @@ export default function PublicMaintenanceView() {
           {/* Reason Badge if available */}
           {maintenance?.reason && (
             <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-border bg-muted/60 px-3 py-1.5 text-xs text-muted-foreground">
-              <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
+              <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="h-3.5 w-3.5 text-amber-500" />
               <span>Scope: {maintenance.reason}</span>
             </div>
           )}
@@ -206,7 +195,7 @@ export default function PublicMaintenanceView() {
         {timeLeft && (
           <div className="mt-8 rounded-xl border border-border/60 bg-muted/40 p-5 text-center">
             <div className="mb-3 flex items-center justify-center gap-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              <Clock className="h-3.5 w-3.5 text-primary" />
+              <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="h-3.5 w-3.5 text-primary" />
               <span>
                 {timeLeft.isPast
                   ? "Wrapping up maintenance..."
@@ -248,7 +237,7 @@ export default function PublicMaintenanceView() {
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             {maintenance.contactEmail && (
               <div className="flex items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground transition hover:border-border/90">
-                <Mail className="h-3.5 w-3.5 text-primary" />
+                <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="h-3.5 w-3.5 text-primary" />
                 <a
                   href={`mailto:${maintenance.contactEmail}`}
                   className="font-medium hover:underline"
@@ -264,9 +253,9 @@ export default function PublicMaintenanceView() {
                   title="Copy email"
                 >
                   {copiedField === "email" ? (
-                    <Check className="h-3 w-3 text-emerald-500" />
+                    <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="h-3 w-3 text-emerald-500" />
                   ) : (
-                    <Copy className="h-3 w-3" />
+                    <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} className="h-3 w-3" />
                   )}
                 </button>
               </div>
@@ -274,7 +263,7 @@ export default function PublicMaintenanceView() {
 
             {maintenance.contactPhone && (
               <div className="flex items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground transition hover:border-border/90">
-                <Phone className="h-3.5 w-3.5 text-primary" />
+                <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="h-3.5 w-3.5 text-primary" />
                 <a
                   href={`tel:${maintenance.contactPhone}`}
                   className="font-medium hover:underline"
@@ -290,9 +279,9 @@ export default function PublicMaintenanceView() {
                   title="Copy phone"
                 >
                   {copiedField === "phone" ? (
-                    <Check className="h-3 w-3 text-emerald-500" />
+                    <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="h-3 w-3 text-emerald-500" />
                   ) : (
-                    <Copy className="h-3 w-3" />
+                    <HugeiconsIcon icon={Copy01Icon} strokeWidth={2} className="h-3 w-3" />
                   )}
                 </button>
               </div>
@@ -319,7 +308,7 @@ export default function PublicMaintenanceView() {
             disabled={isFetching || isLoading}
             className="w-full gap-2 sm:w-auto"
           >
-            <RotateCw
+            <HugeiconsIcon icon={RefreshIcon} strokeWidth={2}
               className={`h-4 w-4 ${isFetching ? "animate-spin" : ""}`}
             />
             <span>Refresh Status</span>
@@ -331,7 +320,7 @@ export default function PublicMaintenanceView() {
             onClick={() => setIsSecretModalOpen(true)}
             className="text-xs text-muted-foreground hover:text-foreground"
           >
-            <Lock className="mr-1 h-3 w-3" />
+            <HugeiconsIcon icon={SquareLock02Icon} strokeWidth={2} className="mr-1 h-3 w-3" />
             Operator Access
           </Button>
         </div>
@@ -351,7 +340,7 @@ export default function PublicMaintenanceView() {
           <form onSubmit={handleUnlockOperator}>
             <DialogHeader>
               <div className="mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <KeyRound className="h-5 w-5" />
+                <HugeiconsIcon icon={Key01Icon} strokeWidth={2} className="h-5 w-5" />
               </div>
               <DialogTitle>Privileged Operator Access</DialogTitle>
               <DialogDescription>
@@ -389,7 +378,7 @@ export default function PublicMaintenanceView() {
                 disabled={isValidatingToken || !secretTokenInput.trim()}
                 className="gap-2"
               >
-                <ShieldCheck className="h-4 w-4" />
+                <HugeiconsIcon icon={SecurityCheckIcon} strokeWidth={2} className="h-4 w-4" />
                 {isValidatingToken ? "Verifying..." : "Unlock Access"}
               </Button>
             </DialogFooter>

@@ -2,33 +2,8 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import {
-  Users,
-  UserPlus,
-  User,
-  Search,
-  Filter,
-  RotateCcw,
-  Clock,
-  Pencil,
-  Trash2,
-  Check,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  Activity,
-  Archive,
-  Phone,
-  Mail,
-  MapPin,
-  Contact,
-  FileDown,
-  LayoutGrid,
-  List,
-  MoreVertical,
-  ExternalLink,
-  Eye,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { UserAdd01Icon, Search01Icon, FilterIcon, RotateLeft01Icon, Clock01Icon, PencilEdit02Icon, Delete02Icon, Tick02Icon, Cancel01Icon, ArrowLeft01Icon, ArrowRight01Icon, Activity01Icon, Archive01Icon, Call02Icon, Mail01Icon, Location01Icon, ContactBookIcon, FileDownloadIcon, GridViewIcon, ListViewIcon, MoreVerticalIcon, LinkSquare02Icon, ViewIcon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import {
   useGetAllCustomersQuery,
@@ -275,7 +250,7 @@ export default function CustomerTable() {
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
-            <Clock className="size-3 text-rose-500" />
+            <HugeiconsIcon icon={Clock01Icon} strokeWidth={2} className="size-3 text-rose-500" />
             Pending Deletion
           </button>
 
@@ -293,7 +268,7 @@ export default function CustomerTable() {
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
-              <Archive className="size-3 text-slate-500" />
+              <HugeiconsIcon icon={Archive01Icon} strokeWidth={2} className="size-3 text-slate-500" />
               Archived
             </button>
           )}
@@ -315,7 +290,7 @@ export default function CustomerTable() {
               )}
               title="List View"
             >
-              <List className="size-3.5" />
+              <HugeiconsIcon icon={ListViewIcon} strokeWidth={2} className="size-3.5" />
               <span className="hidden sm:inline">List</span>
             </Button>
             <Button
@@ -331,7 +306,7 @@ export default function CustomerTable() {
               )}
               title="Grid View"
             >
-              <LayoutGrid className="size-3.5" />
+              <HugeiconsIcon icon={GridViewIcon} strokeWidth={2} className="size-3.5" />
               <span className="hidden sm:inline">Grid</span>
             </Button>
           </div>
@@ -342,7 +317,7 @@ export default function CustomerTable() {
             className="h-9 gap-1.5 text-xs font-semibold"
           >
             <Link href={exportHref}>
-              <FileDown className="size-4" />
+              <HugeiconsIcon icon={FileDownloadIcon} strokeWidth={2} className="size-4" />
               Export List
             </Link>
           </Button>
@@ -350,7 +325,7 @@ export default function CustomerTable() {
             onClick={handleOpenCreate}
             className="h-9 gap-1.5 text-xs font-semibold cursor-pointer"
           >
-            <UserPlus className="size-4" />
+            <HugeiconsIcon icon={UserAdd01Icon} strokeWidth={2} className="size-4" />
             Add Customer
           </Button>
         </div>
@@ -361,7 +336,7 @@ export default function CustomerTable() {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {/* Text Search */}
           <div className="relative lg:col-span-2">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
               placeholder="Search customer by name, phone number, email or address..."
               value={searchTerm}
@@ -398,7 +373,7 @@ export default function CustomerTable() {
         {(searchTerm || sortIndex !== "0") && (
           <div className="flex items-center justify-between pt-2 border-t border-border/60">
             <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-              <Filter className="size-3.5" />
+              <HugeiconsIcon icon={FilterIcon} strokeWidth={2} className="size-3.5" />
               <span>Filters active</span>
             </div>
             <Button
@@ -407,7 +382,7 @@ export default function CustomerTable() {
               onClick={handleResetFilters}
               className="h-7 text-xs text-muted-foreground hover:text-foreground"
             >
-              <RotateCcw className="mr-1.5 size-3.5" />
+              <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="mr-1.5 size-3.5" />
               Reset filters
             </Button>
           </div>
@@ -465,7 +440,7 @@ export default function CustomerTable() {
                     className="py-12 text-center text-muted-foreground"
                   >
                     <div className="flex flex-col items-center justify-center space-y-2">
-                      <Contact className="size-8 text-muted-foreground/40" />
+                      <HugeiconsIcon icon={ContactBookIcon} strokeWidth={2} className="size-8 text-muted-foreground/40" />
                       <p className="text-base font-medium text-foreground">
                         No customers found
                       </p>
@@ -530,7 +505,7 @@ export default function CustomerTable() {
                                 <span className="font-semibold text-foreground text-xs sm:text-sm truncate max-w-xs group-hover:text-primary transition-colors">
                                   {customer.name}
                                 </span>
-                                <ExternalLink className="size-3 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
+                                <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
                                 {customer.isDeleteRequested && (
                                   <Badge className="bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30 text-[10px] py-0 px-1.5 font-normal">
                                     Pending Deletion
@@ -565,7 +540,7 @@ export default function CustomerTable() {
                       <TableCell>
                         <div className="flex flex-col gap-1">
                           <span className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground">
-                            <Phone className="size-3.5 text-muted-foreground" />
+                            <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="size-3.5 text-muted-foreground" />
                             <span className="font-mono text-muted-foreground text-[11px]">
                               {customer.countryCode || "+880"}
                             </span>
@@ -591,7 +566,7 @@ export default function CustomerTable() {
                       <TableCell className="text-xs text-muted-foreground">
                         {customer.email ? (
                           <span className="inline-flex items-center gap-1.5 truncate max-w-[160px]">
-                            <Mail className="size-3.5 text-muted-foreground/70 shrink-0" />
+                            <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="size-3.5 text-muted-foreground/70 shrink-0" />
                             <span className="truncate">{customer.email}</span>
                           </span>
                         ) : (
@@ -603,7 +578,7 @@ export default function CustomerTable() {
                       <TableCell className="text-xs text-muted-foreground">
                         {customer.address ? (
                           <span className="inline-flex items-center gap-1.5 truncate max-w-[180px]">
-                            <MapPin className="size-3.5 text-muted-foreground/70 shrink-0" />
+                            <HugeiconsIcon icon={Location01Icon} strokeWidth={2} className="size-3.5 text-muted-foreground/70 shrink-0" />
                             <span className="truncate">{customer.address}</span>
                           </span>
                         ) : (
@@ -640,7 +615,7 @@ export default function CustomerTable() {
                             title="View Details"
                           >
                             <Link href={`/customers/${customer.id}`}>
-                              <Eye className="size-3.5 text-muted-foreground" />
+                              <HugeiconsIcon icon={ViewIcon} strokeWidth={2} className="size-3.5 text-muted-foreground" />
                               <span>Details</span>
                             </Link>
                           </Button>
@@ -653,7 +628,7 @@ export default function CustomerTable() {
                             onClick={() => handleOpenActivity(customer)}
                             className="size-7 text-muted-foreground hover:text-foreground cursor-pointer"
                           >
-                            <Activity className="size-3.5" />
+                            <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-3.5" />
                           </Button>
 
                           {/* If Deleted (Admin Restore) */}
@@ -673,7 +648,7 @@ export default function CustomerTable() {
                                   disabled={isRestoring}
                                   className="h-7 px-2 text-xs text-primary cursor-pointer"
                                 >
-                                  <RotateCcw className="mr-1 size-3" />
+                                  <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="mr-1 size-3" />
                                   Restore
                                 </Button>
                               </ConfirmPopup>
@@ -700,7 +675,7 @@ export default function CustomerTable() {
                                       className="h-7 px-2 text-xs cursor-pointer"
                                       title="Confirm deletion request"
                                     >
-                                      <Check className="mr-1 size-3" />
+                                      <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="mr-1 size-3" />
                                       Approve
                                     </Button>
                                   </ConfirmPopup>
@@ -722,7 +697,7 @@ export default function CustomerTable() {
                                       className="h-7 px-2 text-xs cursor-pointer"
                                       title="Reject deletion request"
                                     >
-                                      <X className="mr-1 size-3" />
+                                      <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="mr-1 size-3" />
                                     </Button>
                                   </ConfirmPopup>
                                 </div>
@@ -736,7 +711,7 @@ export default function CustomerTable() {
                                 onClick={() => handleOpenEdit(customer)}
                                 className="size-7 text-muted-foreground hover:text-foreground cursor-pointer"
                               >
-                                <Pencil className="size-3.5" />
+                                <HugeiconsIcon icon={PencilEdit02Icon} strokeWidth={2} className="size-3.5" />
                               </Button>
 
                               {customer.isDeleteRequested && !isAdmin ? (
@@ -759,7 +734,7 @@ export default function CustomerTable() {
                                   onClick={() => handleOpenDelete(customer)}
                                   className="size-7 text-muted-foreground hover:text-destructive cursor-pointer"
                                 >
-                                  <Trash2 className="size-3.5" />
+                                  <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="size-3.5" />
                                 </Button>
                               )}
                             </>
@@ -802,7 +777,7 @@ export default function CustomerTable() {
           ) : customers.length === 0 ? (
             <div className="rounded-xl border border-border bg-card p-12 text-center text-muted-foreground shadow-xs">
               <div className="flex flex-col items-center justify-center space-y-2">
-                <Contact className="size-10 text-muted-foreground/40" />
+                <HugeiconsIcon icon={ContactBookIcon} strokeWidth={2} className="size-10 text-muted-foreground/40" />
                 <p className="text-base font-semibold text-foreground">
                   No customers found
                 </p>
@@ -870,7 +845,7 @@ export default function CustomerTable() {
                                 >
                                   {customer.name}
                                 </p>
-                                <ExternalLink className="size-3 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
+                                <HugeiconsIcon icon={LinkSquare02Icon} strokeWidth={2} className="size-3 text-muted-foreground/60 group-hover:text-primary transition-colors shrink-0" />
                               </div>
                               <div className="flex items-center gap-1 flex-wrap mt-0.5">
                                 {customer.isDeleteRequested && (
@@ -912,7 +887,7 @@ export default function CustomerTable() {
                               title="View Details"
                             >
                               <Link href={`/customers/${customer.id}`}>
-                                <Eye className="size-3.5 text-muted-foreground" />
+                                <HugeiconsIcon icon={ViewIcon} strokeWidth={2} className="size-3.5 text-muted-foreground" />
                                 <span>Details</span>
                               </Link>
                             </Button>
@@ -926,7 +901,7 @@ export default function CustomerTable() {
                                   className="size-7 text-muted-foreground hover:text-foreground shrink-0 cursor-pointer"
                                   title="Actions"
                                 >
-                                  <MoreVertical className="size-4" />
+                                  <HugeiconsIcon icon={MoreVerticalIcon} strokeWidth={2} className="size-4" />
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent
@@ -941,7 +916,7 @@ export default function CustomerTable() {
                                     href={`/customers/${customer.id}`}
                                     className="flex items-center w-full"
                                   >
-                                    <Eye className="mr-2 size-3.5" />
+                                    <HugeiconsIcon icon={ViewIcon} strokeWidth={2} className="mr-2 size-3.5" />
                                     <span>View Details</span>
                                   </Link>
                                 </DropdownMenuItem>
@@ -950,7 +925,7 @@ export default function CustomerTable() {
                                   onClick={() => handleOpenActivity(customer)}
                                   className="cursor-pointer"
                                 >
-                                  <Activity className="mr-2 size-3.5" />
+                                  <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="mr-2 size-3.5" />
                                   <span>Activity Log</span>
                                 </DropdownMenuItem>
 
@@ -959,7 +934,7 @@ export default function CustomerTable() {
                                     onClick={() => handleOpenEdit(customer)}
                                     className="cursor-pointer"
                                   >
-                                    <Pencil className="mr-2 size-3.5" />
+                                    <HugeiconsIcon icon={PencilEdit02Icon} strokeWidth={2} className="mr-2 size-3.5" />
                                     <span>Edit Customer</span>
                                   </DropdownMenuItem>
                                 )}
@@ -974,7 +949,7 @@ export default function CustomerTable() {
                                       }
                                       className="text-primary cursor-pointer"
                                     >
-                                      <RotateCcw className="mr-2 size-3.5" />
+                                      <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="mr-2 size-3.5" />
                                       <span>Restore Customer</span>
                                     </DropdownMenuItem>
                                   )
@@ -986,7 +961,7 @@ export default function CustomerTable() {
                                       }
                                       className="text-destructive cursor-pointer"
                                     >
-                                      <Check className="mr-2 size-3.5" />
+                                      <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="mr-2 size-3.5" />
                                       <span>Confirm Delete</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem
@@ -995,7 +970,7 @@ export default function CustomerTable() {
                                       }
                                       className="cursor-pointer"
                                     >
-                                      <X className="mr-2 size-3.5" />
+                                      <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="mr-2 size-3.5" />
                                       <span>Reject Request</span>
                                     </DropdownMenuItem>
                                   </>
@@ -1004,7 +979,7 @@ export default function CustomerTable() {
                                     onClick={() => handleOpenDelete(customer)}
                                     className="text-destructive cursor-pointer"
                                   >
-                                    <Trash2 className="mr-2 size-3.5" />
+                                    <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="mr-2 size-3.5" />
                                     <span>
                                       {isAdmin
                                         ? "Delete Customer"
@@ -1030,7 +1005,7 @@ export default function CustomerTable() {
                       <div className="space-y-2 text-xs pt-1 border-t border-border/50">
                         {/* Primary Phone */}
                         <div className="flex items-center gap-2 text-muted-foreground">
-                          <Phone className="size-3.5 shrink-0 text-muted-foreground/70" />
+                          <HugeiconsIcon icon={Call02Icon} strokeWidth={2} className="size-3.5 shrink-0 text-muted-foreground/70" />
                           <span className="font-mono text-[11px] text-foreground">
                             {customer.countryCode || "+880"}{" "}
                             {customer.phoneNumber}
@@ -1042,7 +1017,7 @@ export default function CustomerTable() {
                         {/* Email */}
                         {customer.email && (
                           <div className="flex items-center gap-2 text-muted-foreground truncate">
-                            <Mail className="size-3.5 shrink-0 text-muted-foreground/70" />
+                            <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="size-3.5 shrink-0 text-muted-foreground/70" />
                             <span className="truncate">{customer.email}</span>
                           </div>
                         )}
@@ -1050,7 +1025,7 @@ export default function CustomerTable() {
                         {/* Address */}
                         {customer.address && (
                           <div className="flex items-center gap-2 text-muted-foreground truncate">
-                            <MapPin className="size-3.5 shrink-0 text-muted-foreground/70" />
+                            <HugeiconsIcon icon={Location01Icon} strokeWidth={2} className="size-3.5 shrink-0 text-muted-foreground/70" />
                             <span className="truncate">{customer.address}</span>
                           </div>
                         )}
@@ -1106,7 +1081,7 @@ export default function CustomerTable() {
               disabled={page <= 1 || isFetching}
               className="h-8 px-2.5 text-xs cursor-pointer"
             >
-              <ChevronLeft className="mr-1 size-3.5" />
+              <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="mr-1 size-3.5" />
               Previous
             </Button>
 
@@ -1122,7 +1097,7 @@ export default function CustomerTable() {
               className="h-8 px-2.5 text-xs cursor-pointer"
             >
               Next
-              <ChevronRight className="ml-1 size-3.5" />
+              <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="ml-1 size-3.5" />
             </Button>
           </div>
         </div>

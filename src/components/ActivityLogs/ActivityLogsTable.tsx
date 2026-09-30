@@ -2,22 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  Search,
-  Filter,
-  RotateCcw,
-  Check,
-  ChevronsUpDown,
-  User as UserIcon,
-  Shield,
-  Activity,
-  Calendar,
-  Globe,
-  Info,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Search01Icon, FilterIcon, RotateLeft01Icon, Tick02Icon, UnfoldMoreIcon, UserIcon, Activity01Icon, Calendar03Icon, Globe02Icon, ArrowLeft01Icon, ArrowRight01Icon, ViewIcon } from "@hugeicons/core-free-icons";
 import { useGetAllActivityLogsQuery } from "@/redux/api/activityLogApi";
 import { useGetAllUsersQuery } from "@/redux/api/userApi";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -289,7 +275,7 @@ export default function ActivityLogsTable() {
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {/* Text Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+            <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
             <Input
               placeholder="Search action or IP..."
               value={searchTerm}
@@ -311,14 +297,14 @@ export default function ActivityLogsTable() {
                 className="justify-between text-left font-normal"
               >
                 <div className="flex items-center gap-2 truncate">
-                  <UserIcon className="size-4 shrink-0 text-muted-foreground" />
+                  <HugeiconsIcon icon={UserIcon} strokeWidth={2} className="size-4 shrink-0 text-muted-foreground" />
                   <span className="truncate">
                     {selectedUserObj
                       ? `${selectedUserObj.firstName} ${selectedUserObj.lastName}`
                       : "Filter by User"}
                   </span>
                 </div>
-                <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
+                <HugeiconsIcon icon={UnfoldMoreIcon} strokeWidth={2} className="ml-2 size-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-64 p-0" align="start">
@@ -334,7 +320,7 @@ export default function ActivityLogsTable() {
                         setPage(1);
                       }}
                     >
-                      <Check
+                      <HugeiconsIcon icon={Tick02Icon} strokeWidth={2}
                         className={cn(
                           "mr-2 size-4",
                           selectedUser === null ? "opacity-100" : "opacity-0",
@@ -351,7 +337,7 @@ export default function ActivityLogsTable() {
                           setPage(1);
                         }}
                       >
-                        <Check
+                        <HugeiconsIcon icon={Tick02Icon} strokeWidth={2}
                           className={cn(
                             "mr-2 size-4",
                             selectedUser === user.id
@@ -423,7 +409,7 @@ export default function ActivityLogsTable() {
           selectedEntity !== "ALL") && (
           <div className="flex items-center justify-between pt-2 border-t border-border/60">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Filter className="size-3.5" />
+              <HugeiconsIcon icon={FilterIcon} strokeWidth={2} className="size-3.5" />
               <span>Active filters applied</span>
             </div>
             <Button
@@ -432,7 +418,7 @@ export default function ActivityLogsTable() {
               onClick={handleResetFilters}
               className="h-7 text-xs text-muted-foreground hover:text-foreground"
             >
-              <RotateCcw className="mr-1.5 size-3.5" />
+              <HugeiconsIcon icon={RotateLeft01Icon} strokeWidth={2} className="mr-1.5 size-3.5" />
               Reset filters
             </Button>
           </div>
@@ -489,7 +475,7 @@ export default function ActivityLogsTable() {
                   className="py-12 text-center text-muted-foreground"
                 >
                   <div className="flex flex-col items-center justify-center space-y-2">
-                    <Activity className="size-8 text-muted-foreground/50" />
+                    <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-8 text-muted-foreground/50" />
                     <p className="text-base font-medium text-foreground">
                       No activity logs found
                     </p>
@@ -623,7 +609,7 @@ export default function ActivityLogsTable() {
                     {/* IP Address */}
                     <TableCell>
                       <span className="inline-flex items-center gap-1 text-xs text-muted-foreground font-mono">
-                        <Globe className="size-3 text-muted-foreground/70" />
+                        <HugeiconsIcon icon={Globe02Icon} strokeWidth={2} className="size-3 text-muted-foreground/70" />
                         {log.ipAddress || "—"}
                       </span>
                     </TableCell>
@@ -631,7 +617,7 @@ export default function ActivityLogsTable() {
                     {/* Date & Time */}
                     <TableCell>
                       <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <Calendar className="size-3.5 text-muted-foreground/70" />
+                        <HugeiconsIcon icon={Calendar03Icon} strokeWidth={2} className="size-3.5 text-muted-foreground/70" />
                         <span>{formatDateTime(log.createdAt)}</span>
                       </div>
                     </TableCell>
@@ -645,7 +631,7 @@ export default function ActivityLogsTable() {
                           onClick={() => setDetailModalLog(log)}
                           className="h-7 text-xs px-2 hover:bg-muted"
                         >
-                          <Eye className="mr-1 size-3.5 text-muted-foreground" />
+                          <HugeiconsIcon icon={ViewIcon} strokeWidth={2} className="mr-1 size-3.5 text-muted-foreground" />
                           Details
                         </Button>
                       ) : (
@@ -678,7 +664,7 @@ export default function ActivityLogsTable() {
                 disabled={page <= 1 || isFetching}
                 className="h-8 px-2.5 text-xs"
               >
-                <ChevronLeft className="mr-1 size-3.5" />
+                <HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} className="mr-1 size-3.5" />
                 Previous
               </Button>
 
@@ -694,7 +680,7 @@ export default function ActivityLogsTable() {
                 className="h-8 px-2.5 text-xs"
               >
                 Next
-                <ChevronRight className="ml-1 size-3.5" />
+                <HugeiconsIcon icon={ArrowRight01Icon} strokeWidth={2} className="ml-1 size-3.5" />
               </Button>
             </div>
           </div>
@@ -709,7 +695,7 @@ export default function ActivityLogsTable() {
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-base">
-              <Activity className="size-4.5 text-primary" />
+              <HugeiconsIcon icon={Activity01Icon} strokeWidth={2} className="size-4.5 text-primary" />
               Activity Details
             </DialogTitle>
           </DialogHeader>

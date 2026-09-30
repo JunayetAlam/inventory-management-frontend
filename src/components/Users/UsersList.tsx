@@ -2,7 +2,8 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Search01Icon } from "@hugeicons/core-free-icons";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import useHandleSearchParams from "@/hooks/useHandleSearchParams";
 import { useGetAllUsersQuery, useGetMeQuery } from "@/redux/api/userApi";
@@ -90,7 +91,7 @@ export default function UsersList() {
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
         <form onSubmit={handleSearch} className="flex min-w-0 flex-1 gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <HugeiconsIcon icon={Search01Icon} strokeWidth={2} className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}

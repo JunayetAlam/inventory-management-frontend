@@ -3,7 +3,8 @@
 import React, { useId, useMemo, useEffect, useState } from "react";
 import Select from "react-select";
 import { TCustomer } from "@/types";
-import { Users, User } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { UserMultipleIcon, UserIcon } from "@hugeicons/core-free-icons";
 
 export interface CustomerFilterOption {
   value: string;
@@ -118,7 +119,7 @@ export default function CustomerFilterSelect({
             if (option.value === "ALL" || !option.customer) {
               return (
                 <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
-                  <Users className="size-3.5 text-muted-foreground shrink-0" />
+                  <HugeiconsIcon icon={UserMultipleIcon} strokeWidth={2} className="size-3.5 text-muted-foreground shrink-0" />
                   <span className="truncate">All Customers</span>
                 </div>
               );
@@ -127,7 +128,7 @@ export default function CustomerFilterSelect({
             const cust = option.customer;
             return (
               <div className="flex items-center gap-1.5 text-xs text-foreground font-medium truncate">
-                <User className="size-3.5 text-muted-foreground shrink-0" />
+                <HugeiconsIcon icon={UserIcon} strokeWidth={2} className="size-3.5 text-muted-foreground shrink-0" />
                 <span className="truncate">{cust.name}</span>
                 <span className="text-muted-foreground font-mono text-[11px] shrink-0">
                   ({cust.phoneNumber})
@@ -139,7 +140,7 @@ export default function CustomerFilterSelect({
           if (option.value === "ALL" || !option.customer) {
             return (
               <div className="flex items-center gap-2 py-0.5 text-xs font-semibold text-foreground">
-                <Users className="size-3.5 text-primary shrink-0" />
+                <HugeiconsIcon icon={UserMultipleIcon} strokeWidth={2} className="size-3.5 text-primary shrink-0" />
                 <span>All Customers</span>
               </div>
             );

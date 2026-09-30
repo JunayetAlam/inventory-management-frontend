@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarRange } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Calendar04Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -97,7 +98,7 @@ export default function DashboardHeader({
         <Popover open={open} onOpenChange={handleOpenChange}>
           <PopoverTrigger asChild>
             <Button size="sm" variant={preset === "custom" ? "default" : "outline"}>
-              <CalendarRange className="size-4" />
+              <HugeiconsIcon icon={Calendar04Icon} strokeWidth={2} className="size-4" />
               Select Date Range
             </Button>
           </PopoverTrigger>

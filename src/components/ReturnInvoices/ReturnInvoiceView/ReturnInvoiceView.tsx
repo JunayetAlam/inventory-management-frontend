@@ -2,7 +2,8 @@
 
 import React, { useRef, useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { Printer, ArrowLeft } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { PrinterIcon, ArrowLeft02Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { TInvoice, TInvoiceItem, TReturnInvoice } from "@/types";
 import { useGetShopDetailsQuery } from "@/redux/api/shopApi";
@@ -233,7 +234,7 @@ export default function ReturnInvoiceView({
           onClick={() => router.back()}
           className="gap-2 shadow-xs bg-card cursor-pointer"
         >
-          <ArrowLeft className="size-4" />
+          <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-4" />
           <span className="hidden sm:inline">Go Back</span>
         </Button>
         <div className="flex items-center gap-2">
@@ -245,7 +246,7 @@ export default function ReturnInvoiceView({
             className="gap-2 font-semibold shadow-xs"
             size="sm"
           >
-            <Printer className="size-4" /> Print / Save as PDF
+            <HugeiconsIcon icon={PrinterIcon} strokeWidth={2} className="size-4" /> Print / Save as PDF
           </Button>
         </div>
       </div>

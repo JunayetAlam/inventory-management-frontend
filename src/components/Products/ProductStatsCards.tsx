@@ -1,6 +1,7 @@
 "use client";
 
-import { Package, ShoppingCart, Warehouse } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { PackageIcon, WarehouseIcon, ShoppingCart01Icon } from "@hugeicons/core-free-icons";
 import { useGetProductStatsQuery } from "@/redux/api/productApi";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,17 +23,17 @@ export default function ProductStatsCards() {
     {
       label: "Total Product",
       value: String(totalProducts),
-      icon: Package,
+      icon: PackageIcon,
     },
     {
       label: "Total Stock",
       value: formatQty(totalStock),
-      icon: Warehouse,
+      icon: WarehouseIcon,
     },
     {
       label: "Total Sold Qty",
       value: formatQty(totalSoldQty),
-      icon: ShoppingCart,
+      icon: ShoppingCart01Icon,
     },
   ];
 
@@ -44,7 +45,7 @@ export default function ProductStatsCards() {
           <Card key={card.label} className="shadow-xs ring-border/60">
             <CardContent className="flex items-center gap-4">
               <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Icon className="size-5" />
+                <HugeiconsIcon icon={Icon} strokeWidth={2} className="size-5" />
               </div>
               <div className="min-w-0">
                 <p className="text-xs font-medium text-muted-foreground">

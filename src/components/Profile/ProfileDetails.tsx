@@ -2,7 +2,8 @@
 "use client"
 
 import { useState } from "react"
-import { Edit3, X, Check } from "lucide-react"
+import { HugeiconsIcon } from "@hugeicons/react";
+import { PencilEdit01Icon, Cancel01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button"
 import CustomForm from "../Forms/CustomForm"
 import CustomInput from "../Forms/CustomInput"
@@ -58,7 +59,7 @@ export default function ProfileDetails({ userData }: { userData: DefaultValues }
                         className="text-primary border-primary hover:bg-primary/10"
                         disabled={isLoading}
                     >
-                        <Edit3 className="w-4 h-4 mr-2" /> Edit
+                        <HugeiconsIcon icon={PencilEdit01Icon} strokeWidth={2} className="w-4 h-4 mr-2" /> Edit
                     </Button>
                 ) : (
                     <div className="flex gap-2">
@@ -70,14 +71,14 @@ export default function ProfileDetails({ userData }: { userData: DefaultValues }
                             className="text-gray-600"
                             disabled={isLoading}
                         >
-                            <X className="w-4 h-4 mr-2" /> Cancel
+                            <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="w-4 h-4 mr-2" /> Cancel
                         </Button>
                         <Button
                             size="sm"
                             className="bg-primary hover:bg-primary/90 text-white flex items-center"
                             disabled={isLoading}
                         >
-                            {isLoading ? <Spinner /> : <Check className="w-4 h-4 mr-2" />}
+                            {isLoading ? <Spinner /> : <HugeiconsIcon icon={Tick02Icon} strokeWidth={2} className="w-4 h-4 mr-2" />}
                             Save
                         </Button>
                     </div>

@@ -3,7 +3,8 @@
 import React, { useId, useMemo, useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { TProduct } from "@/types";
-import { PlusCircle } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { AddCircleIcon } from "@hugeicons/core-free-icons";
 
 export interface ProductOption {
   value: string;
@@ -103,7 +104,7 @@ export default function ProductSelect({
         }
         formatCreateLabel={(inputValue) => (
           <span className="flex items-center gap-2 text-primary font-medium text-xs">
-            <PlusCircle className="size-3.5" /> Use &quot;{inputValue}&quot; as custom product
+            <HugeiconsIcon icon={AddCircleIcon} strokeWidth={2} className="size-3.5" /> Use &quot;{inputValue}&quot; as custom product
           </span>
         )}
         onChange={(option, actionMeta) => {
@@ -140,7 +141,7 @@ export default function ProductSelect({
           if (option.isNew || !option.product) {
             return (
               <div className="flex items-center gap-2 py-0.5">
-                <PlusCircle className="size-3 text-primary shrink-0" />
+                <HugeiconsIcon icon={AddCircleIcon} strokeWidth={2} className="size-3 text-primary shrink-0" />
                 <span className="font-medium text-xs text-foreground">
                   Custom: &quot;{option.label}&quot;
                 </span>

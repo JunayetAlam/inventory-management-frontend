@@ -4,14 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
-import {
-  ArrowLeft,
-  Loader2,
-  Package,
-  Plus,
-  Save,
-  X,
-} from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowLeft02Icon, Loading03Icon, PackageIcon, Add01Icon, FloppyDiskIcon, Cancel01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -490,7 +484,7 @@ export default function ReturnInvoiceForm({
             onClick={() => router.back()}
             className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground h-8 px-2 cursor-pointer"
           >
-            <ArrowLeft className="size-3.5" />
+            <HugeiconsIcon icon={ArrowLeft02Icon} strokeWidth={2} className="size-3.5" />
             <span className="hidden sm:inline">Go Back</span>
           </Button>
           <div className="flex items-center gap-2">
@@ -501,7 +495,7 @@ export default function ReturnInvoiceForm({
               className="h-8 text-xs"
               onClick={() => router.push("/return-invoices")}
             >
-              <X className="size-3.5 mr-1" /> Cancel
+              <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-3.5 mr-1" /> Cancel
             </Button>
             <Button
               type="submit"
@@ -510,9 +504,9 @@ export default function ReturnInvoiceForm({
               disabled={isCreating || isUpdating}
             >
               {isCreating || isUpdating ? (
-                <Loader2 className="size-3.5 animate-spin" />
+                <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-3.5 animate-spin" />
               ) : (
-                <Save className="size-3.5" />
+                <HugeiconsIcon icon={FloppyDiskIcon} strokeWidth={2} className="size-3.5" />
               )}
               {isEditing ? "Update Return" : "Create Return"}
             </Button>
@@ -627,7 +621,7 @@ export default function ReturnInvoiceForm({
       <Card className="shadow-xs">
         <CardHeader className="pb-3">
           <CardTitle className="text-base flex items-center gap-2">
-            <Package className="size-4" /> Return Products
+            <HugeiconsIcon icon={PackageIcon} strokeWidth={2} className="size-4" /> Return Products
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -863,7 +857,7 @@ export default function ReturnInvoiceForm({
                                   className="absolute right-1 text-muted-foreground hover:text-destructive transition-colors p-0.5 cursor-pointer"
                                   title="Remove discount tier"
                                 >
-                                  <X className="size-2.5" />
+                                  <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} className="size-2.5" />
                                 </button>
                               )}
                             </div>
@@ -882,7 +876,7 @@ export default function ReturnInvoiceForm({
                                   className="size-7 rounded-md border-dashed border-border hover:border-primary text-muted-foreground hover:text-primary shrink-0 transition-colors"
                                   title="Add another discount tier"
                                 >
-                                  <Plus className="size-3" />
+                                  <HugeiconsIcon icon={Add01Icon} strokeWidth={2} className="size-3" />
                                 </Button>
                               </TooltipTrigger>
                               <TooltipContent side="top" className="text-xs">

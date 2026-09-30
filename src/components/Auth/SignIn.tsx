@@ -1,7 +1,8 @@
 'use client';
 
 import React, { FormEvent, useState } from 'react';
-import { Eye, Mail, LockKeyhole, EyeClosed } from 'lucide-react';
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ViewIcon, Mail01Icon, LockPasswordIcon, ViewOffSlashIcon } from "@hugeicons/core-free-icons";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Subtitle from '../Global/Subtitle';
@@ -57,7 +58,7 @@ export default function SignIn() {
                 {/* Email Field */}
                 <div className="space-y-2">
                     <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                        <HugeiconsIcon icon={Mail01Icon} strokeWidth={2} className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                         <Input
                             id="email"
                             name="email"
@@ -73,7 +74,7 @@ export default function SignIn() {
                 {/* Password Field */}
                 <div className="space-y-2">
                     <div className="relative">
-                        <LockKeyhole className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                        <HugeiconsIcon icon={LockPasswordIcon} strokeWidth={2} className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                         <Input
                             id="password"
                             name="password"
@@ -91,7 +92,7 @@ export default function SignIn() {
                             className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
                             disabled={isLoading}
                         >
-                            {!showPassword ? <EyeClosed /> : <Eye />}
+                            {!showPassword ? <HugeiconsIcon icon={ViewOffSlashIcon} strokeWidth={2} /> : <HugeiconsIcon icon={ViewIcon} strokeWidth={2} />}
                         </Button>
                     </div>
                 </div>

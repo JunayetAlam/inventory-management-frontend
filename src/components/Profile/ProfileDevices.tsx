@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Monitor, Trash2 } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ComputerIcon, Delete02Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Spinner from "../Global/Spinner";
@@ -31,7 +32,7 @@ function DeviceRow({
   return (
     <div className="flex flex-col gap-3 rounded-md border border-gray-200 p-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 items-start gap-3">
-        <Monitor className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
+        <HugeiconsIcon icon={ComputerIcon} strokeWidth={2} className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
         <div className="min-w-0 space-y-1">
           <div className="flex flex-wrap items-center gap-2">
             <p className="truncate text-sm font-medium text-gray-900">
@@ -62,7 +63,7 @@ function DeviceRow({
           className="text-destructive"
           disabled={isRemoving}
         >
-          <Trash2 className="mr-2 size-4" />
+          <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="mr-2 size-4" />
           {device.isCurrent ? "Log out" : "Remove"}
         </Button>
       </ConfirmPopup>

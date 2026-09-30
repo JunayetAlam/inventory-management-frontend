@@ -3,24 +3,24 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
 import {
-  AlertTriangle,
-  ArrowLeftRight,
-  Contact,
-  FileSpreadsheet,
-  History,
-  LayoutDashboard,
-  Package,
-  PanelLeftClose,
-  PanelLeftOpen,
-  ReceiptText as InvoiceText,
-  Store,
-  TrendingUp,
-  Undo2,
-  Users,
-  Wrench,
-} from "lucide-react";
+  Alert02Icon,
+  ArrowDataTransferHorizontalIcon,
+  ChartIncreaseIcon,
+  ContactBookIcon,
+  DashboardSquare01Icon,
+  HistoryIcon,
+  Invoice02Icon,
+  PackageIcon,
+  SidebarLeft01Icon,
+  SidebarRight01Icon,
+  Store01Icon,
+  Undo02Icon,
+  UserMultipleIcon,
+  Wrench01Icon,
+  Xls01Icon,
+} from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import useIsPrivileged from "@/hooks/useIsPrivileged";
@@ -38,7 +38,7 @@ const SIDEBAR_COLLAPSED_KEY = "rms-sidebar-collapsed";
 type NavItem = {
   name: string;
   href: string;
-  icon: LucideIcon;
+  icon: IconSvgElement;
 };
 
 type NavGroup = {
@@ -68,7 +68,7 @@ function SidebarItem({
           : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
       )}
     >
-      <Icon className="size-4 shrink-0" />
+      <HugeiconsIcon icon={Icon} strokeWidth={2} className="size-4 shrink-0" />
       <span className={cn("truncate", collapsed && "sr-only")}>{item.name}</span>
     </Link>
   );
@@ -118,20 +118,20 @@ export default function DashboardSidebar() {
   const navGroups: NavGroup[] = [
     {
       items: [
-        { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+        { name: "Dashboard", href: "/dashboard", icon: DashboardSquare01Icon },
       ],
     },
     {
       title: "Profiles",
       items: [
-        { name: "Customers", href: "/customers", icon: Contact },
+        { name: "Customers", href: "/customers", icon: ContactBookIcon },
       ],
     },
     {
       title: "Manage Inventory",
       items: [
-        { name: "Products", href: "/products", icon: Package },
-        { name: "Low Stock", href: "/low-stock", icon: AlertTriangle },
+        { name: "Products", href: "/products", icon: PackageIcon },
+        { name: "Low Stock", href: "/low-stock", icon: Alert02Icon },
       ],
     },
     {
@@ -140,10 +140,10 @@ export default function DashboardSidebar() {
         {
           name: "Customer Transactions",
           href: "/customer-transactions",
-          icon: ArrowLeftRight,
+          icon: ArrowDataTransferHorizontalIcon,
         },
-        { name: "Invoices", href: "/invoices", icon: InvoiceText },
-        { name: "Return Invoices", href: "/return-invoices", icon: Undo2 },
+        { name: "Invoices", href: "/invoices", icon: Invoice02Icon },
+        { name: "Return Invoices", href: "/return-invoices", icon: Undo02Icon },
       ],
     },
     ...(isAdmin
@@ -154,20 +154,20 @@ export default function DashboardSidebar() {
               {
                 name: "Product Profit/Loss",
                 href: "/product-profit-loss",
-                icon: TrendingUp,
+                icon: ChartIncreaseIcon,
               },
               {
                 name: "Sell Report",
                 href: "/sell-report",
-                icon: FileSpreadsheet,
+                icon: Xls01Icon,
               },
             ],
           },
           {
             title: "Administration",
             items: [
-              { name: "Users", href: "/users", icon: Users },
-              { name: "Activity Logs", href: "/activity-logs", icon: History },
+              { name: "Users", href: "/users", icon: UserMultipleIcon },
+              { name: "Activity Logs", href: "/activity-logs", icon: HistoryIcon },
             ],
           },
         ]
@@ -175,9 +175,9 @@ export default function DashboardSidebar() {
     {
       title: "Shop Management",
       items: [
-        { name: "Shop Details", href: "/shop-details", icon: Store },
+        { name: "Shop Details", href: "/shop-details", icon: Store01Icon },
         ...(isPrivileged
-          ? [{ name: "Maintenance", href: "/privileged/maintenance", icon: Wrench }]
+          ? [{ name: "Maintenance", href: "/privileged/maintenance", icon: Wrench01Icon }]
           : []),
       ],
     },
@@ -218,7 +218,7 @@ export default function DashboardSidebar() {
             aria-label={shop?.name || "Invoice Management"}
           >
             {collapsed ? (
-              <Store className="size-5" />
+              <HugeiconsIcon icon={Store01Icon} strokeWidth={2} className="size-5" />
             ) : (
               <>
                 <p className="truncate text-sm font-semibold text-sidebar-foreground">
@@ -276,9 +276,9 @@ export default function DashboardSidebar() {
             className="absolute bottom-4 right-0 z-30 translate-x-1/2 rounded-full bg-background shadow-sm"
           >
             {collapsed ? (
-              <PanelLeftOpen className="size-4" />
+              <HugeiconsIcon icon={SidebarRight01Icon} strokeWidth={2} className="size-4" />
             ) : (
-              <PanelLeftClose className="size-4" />
+              <HugeiconsIcon icon={SidebarLeft01Icon} strokeWidth={2} className="size-4" />
             )}
           </Button>
         </TooltipTrigger>

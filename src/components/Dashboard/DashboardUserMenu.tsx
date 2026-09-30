@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { LogOut, User } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Logout01Icon, UserIcon } from "@hugeicons/core-free-icons";
 import { useGetMeQuery } from "@/redux/api/userApi";
 import { useHandleLogout } from "@/hooks/useHandleLogout";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -54,7 +55,7 @@ export default function DashboardUserMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="/profile" className="flex items-center gap-2">
-            <User className="size-4" />
+            <HugeiconsIcon icon={UserIcon} strokeWidth={2} className="size-4" />
             Profile
           </Link>
         </DropdownMenuItem>
@@ -63,7 +64,7 @@ export default function DashboardUserMenu() {
           onClick={handleLogout}
           className="cursor-pointer"
         >
-          <LogOut className="size-4" />
+          <HugeiconsIcon icon={Logout01Icon} strokeWidth={2} className="size-4" />
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>

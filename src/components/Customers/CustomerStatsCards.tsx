@@ -1,13 +1,7 @@
 "use client";
 
-import {
-  CalendarClock,
-  CalendarDays,
-  CalendarRange,
-  Wallet,
-  ArrowDownLeft,
-  ArrowUpRight,
-} from "lucide-react";
+import { HugeiconsIcon, type IconSvgElement } from "@hugeicons/react";
+import { ArrowDownLeft01Icon, ArrowUpRight01Icon, CalendarClockIcon, Calendar01Icon, Calendar04Icon, Wallet01Icon } from "@hugeicons/core-free-icons";
 import { useGetCustomerStatsQuery } from "@/redux/api/statsApi";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 interface StatItemProps {
   title: string;
-  icon: React.ElementType;
+  icon: IconSvgElement;
   iconBg: string;
   iconColor: string;
   due: number;
@@ -48,7 +42,7 @@ function PeriodStatCard({
                 iconColor,
               )}
             >
-              <Icon className="size-4" />
+              <HugeiconsIcon icon={Icon} strokeWidth={2} className="size-4" />
             </div>
             <div className="min-w-0">
               <p className="text-xs font-semibold text-foreground truncate">
@@ -74,7 +68,7 @@ function PeriodStatCard({
             {/* Deposit */}
             <div className="rounded-lg bg-emerald-500/5 dark:bg-emerald-500/10 p-2 border border-emerald-500/15">
               <div className="flex items-center gap-1 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
-                <ArrowDownLeft className="size-3 shrink-0" />
+                <HugeiconsIcon icon={ArrowDownLeft01Icon} strokeWidth={2} className="size-3 shrink-0" />
                 <span>Deposit</span>
               </div>
               <p className="mt-0.5 text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400 truncate">
@@ -99,7 +93,7 @@ function PeriodStatCard({
                     : "text-muted-foreground",
                 )}
               >
-                <ArrowUpRight className="size-3 shrink-0" />
+                <HugeiconsIcon icon={ArrowUpRight01Icon} strokeWidth={2} className="size-3 shrink-0" />
                 <span>Due</span>
               </div>
               <p
@@ -142,7 +136,7 @@ export default function CustomerStatsCards() {
       {/* 1. Today Amount */}
       <PeriodStatCard
         title="Today Amount"
-        icon={CalendarClock}
+        icon={CalendarClockIcon}
         iconBg="bg-blue-500/10"
         iconColor="text-blue-600 dark:text-blue-400"
         due={todayDue}
@@ -153,7 +147,7 @@ export default function CustomerStatsCards() {
       {/* 2. This Month Amount */}
       <PeriodStatCard
         title="This Month Amount"
-        icon={CalendarDays}
+        icon={Calendar01Icon}
         iconBg="bg-violet-500/10"
         iconColor="text-violet-600 dark:text-violet-400"
         due={thisMonthDue}
@@ -164,7 +158,7 @@ export default function CustomerStatsCards() {
       {/* 3. This Year Amount */}
       <PeriodStatCard
         title="This Year Amount"
-        icon={CalendarRange}
+        icon={Calendar04Icon}
         iconBg="bg-amber-500/10"
         iconColor="text-amber-600 dark:text-amber-400"
         due={thisYearDue}
@@ -176,7 +170,7 @@ export default function CustomerStatsCards() {
       <PeriodStatCard
         title="Total Amount"
         subtitle={`${totalCustomers} active ${totalCustomers === 1 ? "customer" : "customers"}`}
-        icon={Wallet}
+        icon={Wallet01Icon}
         iconBg="bg-primary/10"
         iconColor="text-primary"
         due={totalDue}

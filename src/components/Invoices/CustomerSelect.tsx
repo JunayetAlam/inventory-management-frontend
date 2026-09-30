@@ -3,7 +3,8 @@
 import React, { useId, useMemo, useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import { TCustomer } from "@/types";
-import { PlusCircle } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { AddCircleIcon } from "@hugeicons/core-free-icons";
 
 export interface CustomerOption {
   value: string;
@@ -109,7 +110,7 @@ export default function CustomerSelect({
         }
         formatCreateLabel={(inputValue) => (
           <span className="flex items-center gap-2 text-primary font-medium text-xs">
-            <PlusCircle className="size-3.5" /> Use &quot;{inputValue}&quot; as new customer
+            <HugeiconsIcon icon={AddCircleIcon} strokeWidth={2} className="size-3.5" /> Use &quot;{inputValue}&quot; as new customer
           </span>
         )}
         onChange={(option, actionMeta) => {
@@ -146,7 +147,7 @@ export default function CustomerSelect({
           if (option.isNew || !option.customer) {
             return (
               <div className="flex items-center gap-2 py-0.5">
-                <PlusCircle className="size-3.5 text-primary shrink-0" />
+                <HugeiconsIcon icon={AddCircleIcon} strokeWidth={2} className="size-3.5 text-primary shrink-0" />
                 <span className="font-medium text-xs text-foreground">
                   New Customer: &quot;{option.label}&quot;
                 </span>

@@ -1,6 +1,7 @@
 "use client";
 
-import { Edit, Trash2 } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Edit02Icon, Delete02Icon } from "@hugeicons/core-free-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import defaultUser from "@/assets/user.png";
 import { useUpdateProfileImgMutation } from "@/redux/api/userApi";
@@ -84,14 +85,14 @@ export default function ProfilePicture({
             title="Remove photo"
             className="absolute top-0 right-0 w-7 h-7 rounded-full p-0 bg-red-600 text-white border-2 border-white shadow-sm flex items-center justify-center hover:bg-red-700 transition-colors"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <HugeiconsIcon icon={Delete02Icon} strokeWidth={2} className="w-3.5 h-3.5" />
           </button>
         )}
 
         <div className="absolute bottom-0 right-0">
           <div className="w-8 h-8 rounded-full p-0 bg-white border-2 border-white shadow-sm flex items-center justify-center">
             {!isLoading ? (
-              <Edit className="w-4 h-4 text-primary" />
+              <HugeiconsIcon icon={Edit02Icon} strokeWidth={2} className="w-4 h-4 text-primary" />
             ) : (
               <Spinner />
             )}

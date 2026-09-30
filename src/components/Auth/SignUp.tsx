@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from "react"
-import { Eye, EyeClosed, LockKeyhole, Mail, Phone, User } from "lucide-react"
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ViewIcon, ViewOffSlashIcon, LockPasswordIcon, Mail01Icon, Call02Icon, UserIcon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button"
 import CustomForm from "../Forms/CustomForm"
 import CustomInput from "../Forms/CustomInput"
@@ -78,7 +79,7 @@ export default function SignUp() {
                             type="text"
                             label="First Name"
                             placeholder="John"
-                            Icon={<User size={16} />}
+                            Icon={<HugeiconsIcon icon={UserIcon} strokeWidth={2} size={16} />}
                             disabled={isLoading}
                         />
                         <CustomInput
@@ -87,7 +88,7 @@ export default function SignUp() {
                             type="text"
                             label="Last Name"
                             placeholder="Doe"
-                            Icon={<User size={16} />}
+                            Icon={<HugeiconsIcon icon={UserIcon} strokeWidth={2} size={16} />}
                             disabled={isLoading}
                         />
                     </div>
@@ -100,7 +101,7 @@ export default function SignUp() {
                             type="email"
                             label="Email Address"
                             placeholder="your.email@example.com"
-                            Icon={<Mail size={16} />}
+                            Icon={<HugeiconsIcon icon={Mail01Icon} strokeWidth={2} size={16} />}
                             disabled={isLoading}
                         />
                         <CustomInput
@@ -109,7 +110,7 @@ export default function SignUp() {
                             type="tel"
                             label="Phone Number"
                             placeholder="Enter your phone number"
-                            Icon={<Phone size={16} />}
+                            Icon={<HugeiconsIcon icon={Call02Icon} strokeWidth={2} size={16} />}
                             disabled={isLoading}
                         />
                     </div>
@@ -122,8 +123,8 @@ export default function SignUp() {
                             type={showPassword ? "text" : "password"}
                             label="Password"
                             placeholder="Enter password"
-                            Icon={<LockKeyhole size={16} />}
-                            RightIcon={showPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+                            Icon={<HugeiconsIcon icon={LockPasswordIcon} strokeWidth={2} size={16} />}
+                            RightIcon={showPassword ? <HugeiconsIcon icon={ViewIcon} strokeWidth={2} size={16} /> : <HugeiconsIcon icon={ViewOffSlashIcon} strokeWidth={2} size={16} />}
                             onRightIconClick={() => setShowPassword(!showPassword)}
                             disabled={isLoading}
                         />
@@ -133,8 +134,8 @@ export default function SignUp() {
                             type={showConfirmPassword ? "text" : "password"}
                             label="Confirm Password"
                             placeholder="Confirm password"
-                            Icon={<LockKeyhole size={16} />}
-                            RightIcon={showConfirmPassword ? <Eye size={16} /> : <EyeClosed size={16} />}
+                            Icon={<HugeiconsIcon icon={LockPasswordIcon} strokeWidth={2} size={16} />}
+                            RightIcon={showConfirmPassword ? <HugeiconsIcon icon={ViewIcon} strokeWidth={2} size={16} /> : <HugeiconsIcon icon={ViewOffSlashIcon} strokeWidth={2} size={16} />}
                             onRightIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             disabled={isLoading}
                         />

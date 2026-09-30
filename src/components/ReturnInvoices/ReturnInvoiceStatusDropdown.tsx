@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Loader2, AlertTriangle } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowDown01Icon, Loading03Icon, Alert02Icon } from "@hugeicons/core-free-icons";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -109,12 +110,12 @@ export default function ReturnInvoiceStatusDropdown({
         >
           {isCurrentUpdating ? (
             <span className="flex items-center gap-1 mx-auto">
-              <Loader2 className="size-3 animate-spin" /> Updating...
+              <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-3 animate-spin" /> Updating...
             </span>
           ) : (
             <>
               <span>{returnInvoice.status}</span>
-              <ChevronDown className="size-3 opacity-60 ml-1" />
+              <HugeiconsIcon icon={ArrowDown01Icon} strokeWidth={2} className="size-3 opacity-60 ml-1" />
             </>
           )}
         </Button>
@@ -198,7 +199,7 @@ export default function ReturnInvoiceStatusDropdown({
               >
                 <PopoverHeader className="gap-1.5 text-left">
                   <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-semibold text-xs">
-                    <AlertTriangle className="size-3.5 shrink-0" />
+                    <HugeiconsIcon icon={Alert02Icon} strokeWidth={2} className="size-3.5 shrink-0" />
                     <span>Confirm Status Change</span>
                   </div>
                   <PopoverDescription className="text-xs text-muted-foreground leading-relaxed">
@@ -242,7 +243,7 @@ export default function ReturnInvoiceStatusDropdown({
                   >
                     {isCurrentUpdating ? (
                       <span className="flex items-center gap-1 text-white">
-                        <Loader2 className="size-3 animate-spin text-white" /> Updating...
+                        <HugeiconsIcon icon={Loading03Icon} strokeWidth={2} className="size-3 animate-spin text-white" /> Updating...
                       </span>
                     ) : (
                       <span className="text-white font-semibold">Confirm</span>
